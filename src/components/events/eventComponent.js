@@ -3,9 +3,12 @@ import {Layout} from 'antd';
 const {Content} = Layout;
 
 class EventComponent extends React.Component {
-
     render(){
-        return(<Content style={{marginleft: '20%'}}>ok</Content>);
+        return(
+            <div>
+                COMPONENTE EVENTOS
+            </div>
+        );
     }
 }
 
