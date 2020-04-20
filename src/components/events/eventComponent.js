@@ -1,10 +1,11 @@
 import React from 'react';
-
+import {Layout} from 'antd';
+const {Content} = Layout;
 
 class EventComponent extends React.Component {
 
     render(){
-        return(<span>ok</span>);
+        return(<Content style={{marginleft: '20%'}}>ok</Content>);
     }
 }
 

@@ -6,7 +6,7 @@ import {MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined, VideoCameraOutlined,
 import { Link } from 'react-router-dom';
 
 
-const {Sider, Header, Content} = Layout;
+const {Sider, Header} = Layout;
 
 class PrincipalComponent  extends React.Component{
       state = {
@@ -18,7 +18,6 @@ class PrincipalComponent  extends React.Component{
           collapsed: !this.state.collapsed,
         });
       };
-    
       render() {
         return (
           <Layout>
@@ -48,16 +47,6 @@ class PrincipalComponent  extends React.Component{
                   onClick: this.toggle,
                 })}
               </Header>
-              <Content
-                className="site-layout-background"
-                style={{
-                  margin: '24px 16px',
-                  padding: 24,
-                  minHeight: 280,
-                }}
-              >
-                Content
-              </Content>
             </Layout>
           </Layout>
         );
