@@ -1,22 +1,20 @@
 import React from "react";
 import {
     BrowserRouter as Router,
-    Switch, 
+    Switch,
     Route,
    // Link
 } from "react-router-dom";
-
+import Home from '../View/Home/Home';
 import PrincipalComponent from "../components/menu/PrincipalComponent";
-import EventComponent from "../components/events/eventComponent";
 
 function RouterMain(){
-    return( 
+    return(
         <Router>
-            <PrincipalComponent/>
             <Switch>
-                <Route exact path="/events" render={()=> <EventComponent/>}/>
-                <Route exact path="/services" render={()=> "Hola services "}/>
-                <Route exact path="/tracing" render={()=> "Hola services "}/>
+                <Route path="/" component={Home}/>
+                {/*<Route exact path="/services" render={()=> "Hola services "}/>*/}
+                {/*<Route exact path="/tracing" render={()=> "Hola services "}/>*/}
             </Switch>
         </Router>
     );
