@@ -18,7 +18,7 @@ class PrincipalComponent  extends React.Component{
       };
       render() {
         return (
-            <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+            <Sider trigger={null} collapsible collapsed={this.state.collapsed} style={{height:'100vh'}}>
               <div className="logo" />
               <Menu theme="dark" mode="inline">
                 <Menu.Item key="1">
