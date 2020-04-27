@@ -14,18 +14,20 @@ class EventComponent extends React.Component {
 
     constructor(){
         super();
+
          this.handleDelete =  this.handleDelete.bind(this);
          this.handleDelete = this.handleDelete.bind(this);
     }
     
     state = {
-            nameEvent: '',
-            description : '',
-            idEdit: '', // olny is used for edit event
-            date : moment(new Date(), 'YYYY-MM-DD'),
-            data : [],
-            edit: false
-        };
+        nameEvent: '',
+        description : '',
+        idEdit: '', // olny is used for edit event
+        date : moment(new Date(), 'YYYY-MM-DD'),
+        data : [],
+        edit: false
+    };
+
 
     handleDelete = recoder =>{
         this.showConfirmDeleteEvent(recoder);
@@ -40,6 +42,8 @@ class EventComponent extends React.Component {
             idEdit: recoder.idEvents,
             edit: true
         });
+        console.log(this.state.nameEvent);
+        
     }
         
     showConfirmDeleteEvent(recoder){
