@@ -12,8 +12,8 @@ class Home extends React.Component {
             <Layout>
                 <PrincipalComponent/>
                 <Layout className="site-layout">
-                <Header/>
-                <Content/>
+                    <Header/>
+                    <Content/>
                 </Layout>
             </Layout>
         )
