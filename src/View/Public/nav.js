@@ -21,12 +21,12 @@ class Nav extends React.Component{
             </Col>
             <Col push={14}>
 
-                <a type="primary" >
+                <span type="primary" >
                     <Link to="/signup">Iniciar Seccion</Link>
-                </a>
-                <a type="primary" style={{marginLeft: '20px'}}>
+                </span>
+                <span type="primary" style={{marginLeft: '20px'}}>
                     <Link to="/signin">Registrarse</Link>
-                </a>
+                </span>
             </Col>
         </Row>
         );

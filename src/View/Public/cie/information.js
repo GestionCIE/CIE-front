@@ -14,24 +14,43 @@ class Information extends React.Component{
                 <Title level={3} > 
                     <h3 className="info-h3"  >Centro de Innovacion y Emprendimiento</h3> 
                 </Title>
-                <Row>
-                    <Col span={8} >
+                <Row className="jty">
+                    <Col span={8} className="margin-buttom" >
                         <Card  hoverable   style={{ width: 240, height: 20}} cover={<img src="http://localhost:3000/tutor.jpg"/>}>
 
                         </Card>
                     </Col>
 
-                    <Col span={8} >
+                    <Col span={8} className="margin-buttom" >
                         <Card  hoverable   style={{ width: 240, height: 20}} cover={<img src="http://localhost:3000/tutor.jpg"/>}>
 
                         </Card>
                     </Col>
 
-                    <Col span={8} >
+                    <Col span={8} className="margin-buttom" >
                         <Card  hoverable   style={{ width: 240, height: 20}} cover={<img src="http://localhost:3000/tutor.jpg"/>}>
 
                         </Card>
                     </Col>
+
+                    <Col span={8} className="margin-buttom" >
+                        <Card  hoverable   style={{ width: 240, height: 20}} cover={<img src="http://localhost:3000/tutor.jpg"/>}>
+
+                        </Card>
+                    </Col>
+
+                    <Col span={8} className="margin-buttom" >
+                        <Card  hoverable   style={{ width: 240, height: 20}} cover={<img src="http://localhost:3000/tutor.jpg"/>}>
+
+                        </Card>
+                    </Col>
+
+                    <Col span={8} className="margin-buttom" >
+                        <Card  hoverable   style={{ width: 240, height: 20}} cover={<img src="http://localhost:3000/tutor.jpg"/>}>
+
+                        </Card>
+                    </Col>
+
                 </Row>
           
            </Content>

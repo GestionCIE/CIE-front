@@ -1,5 +1,5 @@
 import React from 'react';
-import  {Layout} from 'antd';
+import  {Layout, Row, Col} from 'antd';
 import 'antd/dist/antd.css';
 import './public.css';
 import ContentPublic from './switchContent';
@@ -19,7 +19,13 @@ class Public extends React.Component {
             <Content  className="content">
                 <ContentPublic></ContentPublic>
             </Content>
-            <Footer className="footer">Footer</Footer>
+            <Footer className="footer">
+                <Row>
+                    <Col span={24}>
+                        <h1>Copyrigth</h1>
+                    </Col>
+                </Row>
+            </Footer>
         </Layout>
         );
     }

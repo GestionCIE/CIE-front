@@ -1,0 +1,14 @@
+
+.parent{
+    display: center;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.child{
+    margin-bottom: 5%;
+    margin-left: 40% ;
+}
+.login-form-button{
+    width: 100%;
+}

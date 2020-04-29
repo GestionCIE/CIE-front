@@ -4,15 +4,17 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import history from './history';
+
 import Home from '../view/Public/public';
 
 
 function RouterMain(){
     return(
-        <Router>
-            <Switch>
-                <Route path="/" component={Home}/>
-            </Switch>
+        <Router history = {history}>
+
+                {/* <Route expath="/" component={}/> */}
+                <Home></Home>
         </Router>
     );
 }

@@ -1,9 +1,4 @@
-/* For demo */
 .ant-carousel .slick-slide {
-    /* text-align: center; */
-    
-    background: #364d79;
-    /* overflow: hidden; */
     margin: 0;
     padding: 0;
     max-width: 100%;
@@ -31,5 +26,16 @@
   }
 
   .info-h3{
-      text-align: center !important;
+    
+      text-align: center;
+  }
+
+  .jty{
+    justify-self: center;
+    margin-left: 10%;
+  }
+
+  .margin-buttom{
+    
+    margin-bottom: 250px;
   }

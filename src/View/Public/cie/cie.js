@@ -34,9 +34,7 @@ class Cie extends React.Component {
                 <Col span={24}>
                     <Information></Information>
                 </Col>
-              
             </Row>
-         
         );
     }
 }
