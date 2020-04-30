@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Formulario from "./form";
 import { Row, Col, Typography, Card, Layout, Modal } from "antd";
 import tutor from "../../../assets/img/tutor.jpg";
@@ -7,6 +7,11 @@ const { Content } = Layout;
 
 function Information() {
   const [visible, setVisible] = useState(false);
+  const [dataEvents, setDataEvent] = useState({data:[]});
+
+  useEffect(()=>{
+    getDataEvent();
+  }, []);
 
   const showModal = () => {
     setVisible(true);
@@ -19,6 +24,20 @@ function Information() {
   const handleCancel = (e) => {
     console.log(e);
     setVisible(false);
+  };
+
+  const getDataEvent = ()=>{
+    let data = [];
+    fetch('http://localhost:3005/event/getEvents')
+    .then(res=> res.json())
+    .then((response)=>{
+        console.log(response);
+        for(let i=0; i < response.result.length; i++){
+            data.push(response.result[i]);
+        }
+       setDataEvent({data: data});
+        
+    });
   };
   return (
     <Content className="information">

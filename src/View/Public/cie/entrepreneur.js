@@ -21,14 +21,6 @@ function Entrepreneur() {
           />
         </Col>
       </Row>
-      {/*   <div className="entrepreneur">
-        <Progress
-          type="circle"
-          percent={75}
-          format={(percent) => `${percent} Emprendedores`}
-        />
-        <Progress type="circle" percent={100} format={() => "Done"} />
-      </div> */}
     </React.Fragment>
   );
 }
