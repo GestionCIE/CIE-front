@@ -7,8 +7,8 @@ import { Public as Home } from "../view/Public/public";
 function RouterMain() {
   return (
     <Router history={history}>
-      {/* <Route expath="/" component={}/> */}
-      <Home></Home>
+      <Route expath="/cie" component={Home}/>
+      {/* <Home></Home> */}
     </Router>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Select } from "antd";
+import { Form, Input, Button, Select, message } from "antd";
 const { Option } = Select;
 const layout = {
   labelCol: {
@@ -16,167 +16,67 @@ const tailLayout = {
   },
 };
 
-// function Formulario() {
-
-//   return (
-//     <React.Fragment>
-//       <Form
-//         {...layout}
-//         form={form}
-//         className="form"
-//         name="control-hooks"
-//         onFinish={onFinish}
-//       >
-//         <Form.Item
-//           name="nombre"
-//           label="Nombre"
-//           rules={[
-//             {
-//               required: true,
-//             },
-//           ]}
-//         >
-//           <Input />
-//         </Form.Item>
-//         <Form.Item
-//           name="academico"
-//           label="Prog. Acádemico"
-//           rules={[
-//             {
-//               required: false,
-//             },
-//           ]}
-//         >
-//           <Input />
-//         </Form.Item>
-//         <Form.Item
-//           name="semestre"
-//           label="Semestre actual"
-//           rules={[
-//             {
-//               required: false,
-//             },
-//           ]}
-//         >
-//           <Input />
-//         </Form.Item>
-//         <Form.Item
-//           name="university"
-//           label="Rel. Universidad"
-//           rules={[
-//             {
-//               required: true,
-//             },
-//           ]}
-//         >
-//           <Select
-//             placeholder="Selecciona una opción"
-//             /*  onChange={onUniversityChange} */
-//             allowClear
-//           >
-//             <Option value="egresado">Egresado</Option>
-//             <Option value="estudiante">Estudiante</Option>
-//             <Option value="otro">Otro</Option>
-//           </Select>
-//         </Form.Item>
-//         <Form.Item
-//           noStyle
-//           shouldUpdate={(prevValues, currentValues) =>
-//             prevValues.university !== currentValues.university
-//           }
-//         >
-//           {({ getFieldValue }) =>
-//             getFieldValue("university") === "otro" ? (
-//               <Form.Item
-//                 name="customizeUniversity"
-//                 label="Customize University"
-//                 rules={[
-//                   {
-//                     required: true,
-//                   },
-//                 ]}
-//               >
-//                 <Input />
-//               </Form.Item>
-//             ) : null
-//           }
-//         </Form.Item>
-//         <Form.Item
-//           name="company"
-//           label="Compañia"
-//           rules={[
-//             {
-//               required: false,
-//             },
-//           ]}
-//         >
-//           <Input />
-//         </Form.Item>
-//         <Form.Item
-//           name="email"
-//           label="E-mail"
-//           rules={[
-//             {
-//               required: true,
-//             },
-//           ]}
-//         >
-//           <Input />
-//         </Form.Item>
-//         <Form.Item
-//           name="phone"
-//           label="Telefono"
-//           rules={[
-//             {
-//               required: true,
-//             },
-//           ]}
-//         >
-//           <Input />
-//         </Form.Item>
-//         <Form.Item {...tailLayout}>
-//           <Button className="Form_button" type="primary" htmlType="submit">
-//             Aceptar
-//           </Button>
-//           <Button className="Form_button" htmlType="button" onClick={onReset}>
-//             Limpiar
-//           </Button>
-//         </Form.Item>
-//       </Form>{" "}
-//       <React.Fragment />
-//     </React.Fragment>
-//   );
-// }
-
 class Attendance extends React.Component {
+  state = {
+    fullname: '',
+    program: '',
+    semester: '',
+    relationship: '',
+    email: '',
+    phoneNumer: ''
+  };
   regster = () =>{
+    const data = {...this.state, idEvent: this.props.idEvent};
     console.log("register");
+    console.log(data);
+    fetch('http://localhost:3005/event/createAttendance', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers:{
+                'Content-Type': 'application/json'
+        }}).then(res =>res.json())
+        .then((response) =>{
+            console.log(response);
+            if(response.result == 'created'){
+               message.success("Te has inscrito al evento");
+            } 
+        });
   }
+
+  onChangeData = (e)=>{
+    console.log(e.target.name)
+    this.setState({[e.target.name]: e.target.value});
+  }
+
+  onChangeSelect = (value) =>{
+    this.setState({relationship: value});
+  }
+
   render(){
     return (
       <React.Fragment>
         <Form {...layout}  className="form" name="control-hooks" >
-          <Form.Item name="nombre" label="Nombre"
+          <Form.Item label="Nombre"
            rules={[{ required: true,},]}>
-            <Input />
+            <Input  name="fullname" onChange={this.onChangeData} />
           </Form.Item>
           <Form.Item
-            name="academico" label="Prog. Acádemico"
+             label="Prog. Acádemico"
             rules={[{ required: false,},]}>
-            <Input />
+            <Input  name="program" onChange={this.onChangeData} />
           </Form.Item>
           <Form.Item
-            name="semestre" label="Semestre actual"
+           label="Semestre actual"
             rules={[{  required: false, },]}>
-            <Input />
+            <Input  name="semester" onChange={this.onChangeData} />
           </Form.Item>
           <Form.Item
-            name="university" label="Rel. Universidad"
+            name="relationship" label="Rel. Universidad"
             rules={[{ required: true, },]}>
-            <Select placeholder="Selecciona una opción" allowClear>
-              <Option value="egresado">Egresado</Option>
-              <Option value="estudiante">Estudiante</Option>
-              <Option value="otro">Otro</Option>
+            <Select placeholder="Selecciona una opción" allowClear onChange={this.onChangeSelect} >
+              <Option value="graduate">Egresado</Option>
+              <Option value="student">Estudiante</Option>
+              <Option value="other">Otro</Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -194,19 +94,19 @@ class Attendance extends React.Component {
             }
           </Form.Item>
           <Form.Item
-            name="company" label="Compañia"
+            label="Compañia"
             rules={[{ required: false, },]}>
-            <Input />
+            <Input  name="company" onChange={this.onChangeData} />
           </Form.Item>
           <Form.Item
-            name="email" label="E-mail"
+            label="E-mail"
             rules={[{required: true, },]}>
-            <Input />
+            <Input  name="email" onChange={this.onChangeData} />
           </Form.Item>
           <Form.Item
-            name="phone" label="Telefono"
+            label="Telefono"
             rules={[{required: true,},]}>
-            <Input />
+            <Input name="phoneNumer" onChange={this.onChangeData}/>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button className="Form_button" type="primary" htmlType="submit" onClick={this.regster}>

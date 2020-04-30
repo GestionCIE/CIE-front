@@ -1,30 +1,75 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Formulario from "./form";
 import { Row, Col, Typography, Card, Layout, Modal } from "antd";
 import tutor from "../../../assets/img/tutor.jpg";
+import moment from 'moment';
 const { Title } = Typography;
 const { Content } = Layout;
 
+
+class Events extends React.Component {
+  state = {
+    visible:false
+  }
+   handleOk = (e) => {
+    console.log(e);
+    this.setState({visible: false});
+  };
+   handleCancel = (e) => {
+    console.log(e);
+    this.setState({visible: false});
+  };
+  handleModal = ()=>{
+    this.setState({visible: true});
+  }
+  render(){
+    return(  
+    <Col xs={24} sm={16} md={12} lg={8} xl={8}>
+      <Card
+      onClick={this.handleModal}
+      hoverable
+      cover={<img src={tutor} alt="tutor" />}
+    >
+      <span className="card__name"> Nombre del evento: </span>
+      {this.props.eventName}<br />
+      <span className="card__date">Día del Evento:</span> {this.props.eventDate}
+      <br />
+      <span className="card__value"> Inscripción:</span> $100 <br />
+      <span className="card__ponent"> Ponente:</span> Marcos Aurelio
+      </Card>
+      <Modal centered visible={this.state.visible}
+        onOk={this.handleOk} onCancel={this.handleCancel}>
+        <Formulario key={this.props.idEvent} idEvent={this.props.idEvent} />
+      </Modal>
+    </Col>);
+  }
+}
+
+class Services extends React.Component {
+  
+  render(){
+    return(
+    <Col xs={24} sm={18} md={12} lg={8} xl={8}>
+      <Card hoverable cover={<img src={tutor} alt="tutor" />}>
+        <span className="card__serviceName"> Servicio: </span>
+        {this.props.serviceName } <br />
+        <span className="card__serviceDesc">Descripción: </span>
+        {this.props.serviceDescription}
+      </Card>
+    </Col>);
+  }
+}
+
 function Information() {
-  const [visible, setVisible] = useState(false);
-  const [dataEvents, setDataEvent] = useState({data:[]});
+
+  const [dataEvent, setDataEvent] = useState({data:[]});
+  const [dataService, setDataService] = useState({data:[]});
 
   useEffect(()=>{
     getDataEvent();
+    getDataService();
   }, []);
 
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const handleOk = (e) => {
-    console.log(e);
-    setVisible(false);
-  };
-  const handleCancel = (e) => {
-    console.log(e);
-    setVisible(false);
-  };
 
   const getDataEvent = ()=>{
     let data = [];
@@ -38,93 +83,46 @@ function Information() {
        setDataEvent({data: data});
         
     });
-  };
+  }
+
+    const getDataService = ()=>{
+      let data = [];
+      fetch('http://localhost:3005/service/getServices')
+      .then(res=> res.json())
+      .then((response)=>{
+          console.log(response);
+          for(let i=0; i < response.result.length; i++){
+              data.push(response.result[i]);
+          }
+         setDataService({data: data});
+          
+      });
+    }
   return (
     <Content className="information">
       <Title level={3}>
         <h3 className="info-h3">Centro de Innovacion y Emprendimiento</h3>
       </Title>
 
-      <div information__container>
-        <Row className="information__container--row">
-          <Col xs={24} sm={16} md={12} lg={8} xl={8}>
-            <Card
-              onClick={showModal}
-              hoverable
-              cover={<img src={tutor} alt="tutor" />}
-            >
-              <span className="card__name"> Nombre del evento: </span>
-              Seminario de sitios web <br />
-              <span className="card__date">Día del Evento:</span> Miercoles 19 a
-              las 18:00 hs
-              <br />
-              <span className="card__value"> Inscripción:</span> $100 <br />
-              <span className="card__ponent"> Ponente:</span> Marcos Aurelio
-            </Card>
-            <Modal
-              centered
-              visible={visible}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <Formulario />
-            </Modal>
-          </Col>
-          <Col xs={24} sm={16} md={12} lg={8} xl={8}>
-            <Card hoverable cover={<img src={tutor} alt="tutor" />}>
-              <span className="card__name"> Nombre del evento: </span>
-              Seminario de sitios web <br />
-              <span className="card__date">Día del Evento:</span> Miercoles 19 a
-              las 18:00 hs
-              <br />
-              <span className="card__value"> Inscripción:</span> $100 <br />
-              <span className="card__ponent"> Ponente:</span> Marcos Aurelio
-            </Card>
-          </Col>
-          <Col xs={24} sm={16} md={12} lg={8} xl={8}>
-            <Card hoverable cover={<img src={tutor} alt="tutor" />}>
-              <span className="card__name"> Nombre del evento: </span>
-              Seminario de sitios web <br />
-              <span className="card__date">Día del Evento:</span> Miercoles 19 a
-              las 18:00 hs
-              <br />
-              <span className="card__value"> Inscripción:</span> $100 <br />
-              <span className="card__ponent"> Ponente:</span> Marcos Aurelio
-            </Card>
-          </Col>
-          <Col xs={24} sm={16} md={12} lg={8} xl={8}>
-            <Card hoverable cover={<img src={tutor} alt="tutor" />}>
-              <span className="card__serviceName"> Servicio: </span>
-              Co-Working <br />
-              <span className="card__serviceDesc">Descripción: </span>Lorem
-              ipsum dolor, sit amet consectetur adipisicing elit. Doloribus nemo
-              placeat nesciunt alias tempore? Quos minus assumenda voluptate
-              exercitationem quisquam quasi labore at, tenetur modi velit,
-              dolorum accusantium nemo corporis.
-            </Card>
-          </Col>
-          <Col xs={24} sm={16} md={12} lg={8} xl={8}>
-            <Card hoverable cover={<img src={tutor} alt="tutor" />}>
-              <span className="card__serviceName"> Servicio: </span>
-              Co-Working <br />
-              <span className="card__serviceDesc">Descripción: </span>Lorem
-              ipsum dolor, sit amet consectetur adipisicing elit. Doloribus nemo
-              placeat nesciunt alias tempore? Quos minus assumenda voluptate
-              exercitationem quisquam quasi labore at, tenetur modi velit,
-              dolorum accusantium nemo corporis.
-            </Card>
-          </Col>
-          <Col xs={24} sm={18} md={12} lg={8} xl={8}>
-            <Card hoverable cover={<img src={tutor} alt="tutor" />}>
-              <span className="card__serviceName"> Servicio: </span>
-              Co-Working <br />
-              <span className="card__serviceDesc">Descripción: </span>Lorem
-              ipsum dolor, sit amet consectetur adipisicing elit. Doloribus nemo
-              placeat nesciunt alias tempore? Quos minus assumenda voluptate
-              exercitationem quisquam quasi labore at, tenetur modi velit,
-              dolorum accusantium nemo corporis.
-            </Card>
-          </Col>
+      <div>
+      <Row className="information__container--row">
+        <Fragment>
+        {
+          dataEvent.data.map((event, index)=>{
+          return <Events 
+           idEvent={event.idEvents}
+           eventName={event.eventName}
+           eventDescription={event.eventDescription}
+           eventDate={event.eventDate.split("T")[0]}></Events>
+          })
+        }
+
+        {
+          dataService.data.map((service, index)=>{
+            return  <Services></Services>
+          })
+        }
+        </Fragment>
         </Row>
       </div>
     </Content>
