@@ -1,13 +1,50 @@
-.logo {
-    width: 120px;
-    height: 31px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px 24px 16px 0;
-    float: left;
-  }
-/* 
-  .footer{
-    height: 10%;
-    margin-top: 30%;
+.header {
+  display: flex;
+  align-items: center;
+}
 
-  } */
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255, 255, 255, 0.2);
+  float: left;
+}
+.row {
+  width: 100%;
+}
+.navbar {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.navbar > div {
+  display: flex;
+  align-items: center;
+}
+.navbar > div > div {
+  margin-right: 20px;
+}
+
+.navbar > div > div > a {
+  color: white;
+}
+.navbar > div > div > a:hover {
+  color: rgb(141, 141, 148);
+}
+
+@media (max-width: 640px) {
+  .row {
+    padding: 0 0px;
+  }
+  .header {
+    padding: 0 00px;
+  }
+  .navbar > div > div {
+    margin-right: 5px;
+  }
+  .logo {
+    width: 70px;
+    height: 20px;
+  }
+}

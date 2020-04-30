@@ -1,36 +1,42 @@
-import React from 'react';
-import {Menu, Row, Col, Button} from 'antd';
-import {BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import 'antd/dist/antd.css';
-import './public.css';
+import React from "react";
+import { /* Menu, */ Row, Col /* Button  */ } from "antd";
+import {
+  /*  BrowserRouter as Router, Switch, Route,  */ Link,
+} from "react-router-dom";
+import "antd/dist/antd.css";
+import "./public.css";
 
-
-class Nav extends React.Component{
-    
-    
-    render(){
-        return(
-            
-        <Row>
-            <Col >
-                <Menu theme="dark" mode="horizontal" > 
-                    <Menu.Item key="1"> <Link to="/cie">CIE</Link></Menu.Item>
-                    <Menu.Item key="2"> Acerca de</Menu.Item>
-                    <Menu.Item key="3">Perfiles</Menu.Item>
-                </Menu>
+class Nav extends React.Component {
+  render() {
+    return (
+      <Row className="row">
+        <Col className="navbar">
+          <Row>
+            <Col>
+              <div className="logo"></div>
             </Col>
-            <Col push={14}>
-
-                <span type="primary" >
-                    <Link to="/signup">Iniciar Seccion</Link>
-                </span>
-                <span type="primary" style={{marginLeft: '20px'}}>
-                    <Link to="/signin">Registrarse</Link>
-                </span>
+            <Col>
+              <Link to="/cie">CIE</Link>
             </Col>
-        </Row>
-        );
-    }
+            <Col>
+              <Link to="/cie">Acerca de</Link>
+            </Col>
+            <Col>
+              <Link to="/cie">Perfiles</Link>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Link to="/signup">Iniciar Seccion</Link>
+            </Col>
+            <Col>
+              <Link to="/signin">Registrarse</Link>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    );
+  }
 }
 
 export default Nav;
