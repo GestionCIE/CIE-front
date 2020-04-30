@@ -119,7 +119,9 @@ function Information() {
 
         {
           dataService.data.map((service, index)=>{
-            return  <Services></Services>
+            return  <Services key={service.idServices}
+             serviceName={service.serviceName}
+             serviceDescription={service.serviceDescription} ></Services>
           })
         }
         </Fragment>
