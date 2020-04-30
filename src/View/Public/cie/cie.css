@@ -71,7 +71,7 @@ div {
   margin-top: 40px;
 }
 .ant-btn {
-  display: none;
+  /* display: none; */
 }
 .Form_button {
   display: inline-block;

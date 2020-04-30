@@ -91,7 +91,7 @@ class Register extends React.Component{
                         </Select>
                     </Form.Item>
                     <Form.Item>
-                        <Button   onClick={this.register} type={"primary"} className="login-form-button">Registrarme</Button>
+                        <Button onClick={this.register} type={"primary"} className="login-form-button">Registrarme</Button>
                     </Form.Item>
                     </Form>
                 </Col>

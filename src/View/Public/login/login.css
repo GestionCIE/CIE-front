@@ -10,5 +10,6 @@
     margin-left: 40% ;
 }
 .login-form-button{
+    display: block;
     width: 100%;
 }
