@@ -33,6 +33,10 @@ class PrincipalComponent  extends React.Component{
                   <UploadOutlined />
                   <Link to="/tracing"><span>Seguimiento</span></Link>
                 </Menu.Item>
+                <Menu.Item key="4">
+                  <UploadOutlined />
+                  <Link to="/config"><span>Configuracion</span></Link>
+                </Menu.Item>
               </Menu>
             </Sider>
         );
