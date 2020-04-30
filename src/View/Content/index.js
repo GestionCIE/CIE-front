@@ -6,6 +6,8 @@ import {
 
 import EventComponent from '../../components/events/eventComponent';
 import ServiceComponent from '../../components/services/serviceComponent';
+import ConfigurationComponent from '../../components/configuration/configurationComponent';
+
 import { Layout } from 'antd';
 const {  Content } = Layout;
 
@@ -24,6 +26,8 @@ class index extends React.Component {
                 <Switch>
                     <Route path ="/events" component={EventComponent}/>
                     <Route path ="/services" component={ServiceComponent}/>
+
+                    <Route path ="/config" component={ConfigurationComponent}/>
                 </Switch>
             </Content>
         )
