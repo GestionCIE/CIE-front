@@ -28,6 +28,7 @@ class index extends React.Component {
                     <Route path ="/events" component={EventComponent}/>
                     <Route path ="/services" component={ServiceComponent}/>
                     <Route path ="/tracing" component={TracingComponent}/>
+
                     <Route path ="/config" component={ConfigurationComponent}/>
                 </Switch>
             </Content>
