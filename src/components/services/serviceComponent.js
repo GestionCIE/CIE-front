@@ -1,14 +1,15 @@
 import React from "react";
 
 import { Input, Button, Layout, Row, Col, Upload, Table, message, 
-    Modal, Form } from 'antd';
+    Modal, Form} from 'antd';
 import {UploadOutlined, SaveOutlined , EditOutlined, DeleteOutlined, ShareAltOutlined, 
-    ExclamationCircleOutlined} from '@ant-design/icons';
+    ExclamationCircleOutlined } from '@ant-design/icons';
     //import moment from 'moment';
 
 const {Content} = Layout;
 const {TextArea} = Input;
 const {confirm} = Modal;
+
 
 class ServiceComponent extends React.Component {
 
@@ -178,6 +179,8 @@ class ServiceComponent extends React.Component {
         return button;
     }
 
+   
+
     render(){
         const columns = [
             {
@@ -236,6 +239,7 @@ class ServiceComponent extends React.Component {
                         <Table rowKey={recoder => recoder.idServices } columns={columns} dataSource={this.state.data} ></Table>
                     </Col>
                 </Row>
+        
             </Content>
         );
     }

@@ -8,7 +8,7 @@ import moment from 'moment';
 const {Content} = Layout;
 const {TextArea} = Input;
 const {confirm} = Modal;
-
+ 
 
 class EventComponent extends React.Component {
 
@@ -34,7 +34,7 @@ class EventComponent extends React.Component {
     }
 
     handleEdit = recoder =>{
-        console.log('edit', this.state.nameEvent);
+        console.log('edit', recoder.idEvents);
         this.setState({
             nameEvent : recoder.eventName,
             description: recoder.eventDescription,
