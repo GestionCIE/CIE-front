@@ -2,6 +2,7 @@ import React from 'react';
 import {Input, Form, Button, Layout, Row, Col, Avatar} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {Redirect} from 'react-router-dom';
+import history from '../../../routers/history';
 const {Content} = Layout;
 
 class Login extends React.Component{
@@ -31,7 +32,8 @@ class Login extends React.Component{
             .then((response) =>{
                 console.log(response);
                 if(response.login){
-                    window.history.replaceState("http://localhost:3000", "hola", "/signin");
+                    localStorage.setItem("TOKEN", response.token);
+                    this.props.history.push('/admin');
                 }
             });
     }
