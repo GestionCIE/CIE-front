@@ -3,17 +3,20 @@ import 'antd/dist/antd.css';
 import {Layout} from 'antd';
 import PrincipalComponent from '../../components/menu/PrincipalComponent';
 import Header from '../../components/Header/Header';
-import Content from '../Content';
 import './Home.css';
+import ContentPrivate from '../Content/index';
 
+const {Content} = Layout;
 class Home extends React.Component {
     render() {
         return (
-            <Layout>
+            <Layout>  
                 <PrincipalComponent/>
                 <Layout className="site-layout">
-                <Header/>
-                <Content/>
+                    <Header/>
+                    <Content>
+                    <ContentPrivate></ContentPrivate>
+                    </Content>
                 </Layout>
             </Layout>
         )

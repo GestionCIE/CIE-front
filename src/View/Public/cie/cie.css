@@ -1,0 +1,79 @@
+.ant-carousel .slick-slide {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+.carousel ul {
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+.ant-carousel .slick-slide {
+  color: #fff;
+}
+
+.entrepreneur {
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.info-h3 {
+  text-align: center;
+}
+
+/* .jty {
+  justify-self: center;
+  margin-left: 10%;
+}
+
+.margin-buttom {
+  margin-bottom: 250px;
+} */
+
+.informationContent {
+  height: auto;
+}
+.information__container--row {
+  padding: 0 50px;
+  justify-content: center;
+}
+.information__container--row > div {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+.ant-card {
+  width: 300px;
+}
+.card__name,
+.card__date,
+.card__value,
+.card__ponent,
+.card__serviceName,
+.card__serviceDesc {
+  font-weight: 700;
+}
+.form {
+  margin-top: 40px;
+}
+.ant-btn {
+  /* display: none; */
+}
+.Form_button {
+  display: inline-block;
+  margin-right: 20px;
+}
