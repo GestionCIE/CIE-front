@@ -3,20 +3,22 @@ import { Layout, Row, Col } from "antd";
 import "antd/dist/antd.css";
 import "./public.css";
 import ContentPublic from "./switchContent";
-
+import Inicio from '../Public/cie/cie';
 import Nav from "./nav";
 
 const { Header, Content, Footer } = Layout;
 
-export class Public extends React.Component {
+ class Public extends React.Component {
   render() {
     return (
       <Layout>
         <Header className="header">
           <Nav />
+        
         </Header>
         <Content className="content">
-          <ContentPublic />
+        <ContentPublic />
+          <Inicio/>
         </Content>
         <Footer className="footer">
           <Row>
@@ -29,3 +31,5 @@ export class Public extends React.Component {
     );
   }
 }
+
+export default Public;

@@ -1,14 +1,17 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {  BrowserRouter as Router,  Switch, Route } from "react-router-dom";
 import history from "./history";
 
-import { Public as Home } from "../view/Public/public";
+import Public from "../view/Public/public";
+import Home from '../view/Home/Home';
 
 function RouterMain() {
   return (
     <Router history={history}>
-      <Route expath="/cie" component={Home}/>
-      {/* <Home></Home> */}
+
+      <Route path="/inicio" component={Public}></Route>
+      <Route path="/admin" component={Home}></Route>
+
     </Router>
   );
 }

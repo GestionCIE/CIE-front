@@ -2,8 +2,8 @@ import React from 'react';
 import './index.css'
 import {Layout, Menu} from 'antd';
 import {UserOutlined, VideoCameraOutlined, UploadOutlined} from "@ant-design/icons";
-import { Link } from 'react-router-dom';
-
+import { Link, Switch, Route} from 'react-router-dom';
+import EventComponent from './../events/eventComponent';
 const {Sider} = Layout;
 
 class PrincipalComponent  extends React.Component{
@@ -23,15 +23,15 @@ class PrincipalComponent  extends React.Component{
               <Menu theme="dark" mode="inline">
                 <Menu.Item key="1">
                   <UserOutlined />
-                  <Link to="/events"><span>Eventos</span></Link>
+                  <Link to="/admin/events"><span>Eventos</span></Link>
                 </Menu.Item>
                 <Menu.Item key="2">
                   <VideoCameraOutlined />
-                  <Link to="/services"><span>Servicios</span></Link>
+                  <Link to="/admin/services"><span>Servicios</span></Link>
                 </Menu.Item>
                 <Menu.Item key="3">
                   <UploadOutlined />
-                  <Link to="/tracing"><span>Seguimiento</span></Link>
+                  <Link to="/admin/tracing"><span>Seguimiento</span></Link>
                 </Menu.Item>
               </Menu>
             </Sider>

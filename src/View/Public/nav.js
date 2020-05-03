@@ -16,7 +16,7 @@ class Nav extends React.Component {
               <div className="logo"></div>
             </Col>
             <Col>
-              <Link to="/cie">CIE</Link>
+              <Link to="/inicio/cie">CIE</Link>
             </Col>
             <Col>
               <Link to="/cie">Acerca de</Link>
@@ -27,10 +27,10 @@ class Nav extends React.Component {
           </Row>
           <Row>
             <Col>
-              <Link to="/signup">Iniciar Seccion</Link>
+              <Link to="/inicio/signup">Iniciar Seccion</Link>
             </Col>
             <Col>
-              <Link to="/signin">Registrarse</Link>
+              <Link to="/inicio/signin">Registrarse</Link>
             </Col>
           </Row>
         </Col>

@@ -32,10 +32,9 @@ class Register extends React.Component{
             console.log(response);
             if(response.result == 'created'){
                 message.success("Se ha registrado correctamente");
-                history.push('/signup');
-            } 
+                this.props.history.push('/signup')
+            }
         });
-       
     }
 
     onChangeSelect = (value)=>{
@@ -49,16 +48,16 @@ class Register extends React.Component{
     render(){
 
         return(
-        
+
         <Content>
             <Row className="parent">
                 <Col span={8} >
                     <Form >
-                    <Form.Item 
+                    <Form.Item
                      rules={[{required: true, message: 'Ingresar su nombre'},]}>
                         <Input prefix={<UserOutlined/>} name="fullname"  value={this.state.fullname} placeholder={"Nombre completo"} onChange={this.onChangeData}/>
                     </Form.Item>
-                    <Form.Item 
+                    <Form.Item
                      rules={[{required: true, message: 'Ingresa el nombre del usuario'},]}>
                         <Input prefix={<UserOutlined/>} name="username" value={this.state.username} placeholder={"Nombre de usuario"} onChange={this.onChangeData}/>
                     </Form.Item>
@@ -67,13 +66,13 @@ class Register extends React.Component{
                         <Input.Password prefix={<LockOutlined/>}  value={this.state.password} name="password" placeholder={"Contraseña"} onChange={this.onChangeData} />
                     </Form.Item>
                     <Form.Item name="r-password"
-                    hasFeedback rules={[{required: true, message: 'Ingresa tu contraseña'}, 
-                    ({getFieldValue})=>({ 
+                    hasFeedback rules={[{required: true, message: 'Ingresa tu contraseña'},
+                    ({getFieldValue})=>({
                        validator(rule, value){
                            if(!value || getFieldValue('password') == value)
                                 return Promise.resolve();
                             return Promise.reject('La contraseña no coincide');
-                       } 
+                       }
                      })]}
                     dependencies={['password']}>
                         <Input.Password prefix={<LockOutlined/>} name="r-password" placeholder={"Repite tu Contraseña"}/>
