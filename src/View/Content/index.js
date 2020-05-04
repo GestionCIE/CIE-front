@@ -8,15 +8,16 @@ import EventComponent from '../../components/events/eventComponent';
 import ServiceComponent from '../../components/services/serviceComponent';
 import TracingComponent from "../../components/seguimiento/tracingComponent"
 import ConfigurationComponent from '../../components/configuration/configurationComponent';
-
+import ProjectManagement from '../../components/management/management';
 import { Layout } from 'antd';
 const {  Content } = Layout;
 
 
 
-class index extends React.Component {
+class ContentPrivate extends React.Component {
     render() {
         return (
+ 
             <Content  
             className="site-layout-background"
             style={{
@@ -25,15 +26,15 @@ class index extends React.Component {
               minHeight: 280,
             }}>
                 <Switch>
-                    <Route path ="/events" component={EventComponent}/>
-                    <Route path ="/services" component={ServiceComponent}/>
-                    <Route path ="/tracing" component={TracingComponent}/>
-
-                    <Route path ="/config" component={ConfigurationComponent}/>
+                    <Route path ="/admin/events" component={EventComponent}/>
+                    <Route path ="/admin/services" component={ServiceComponent}/>
+                    <Route path ="/admin/tracing" component={TracingComponent}/>
+                    <Route path ="/admin/config" component={ConfigurationComponent}/>
+                    <Route path ="/admin/management" component={ProjectManagement}/>
                 </Switch>
             </Content>
         )
     }
 }
 
-export default index;
+export default ContentPrivate;
