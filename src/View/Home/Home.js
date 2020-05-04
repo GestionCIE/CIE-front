@@ -5,15 +5,28 @@ import PrincipalComponent from '../../components/menu/PrincipalComponent';
 import Header from '../../components/Header/Header';
 import './Home.css';
 import ContentPrivate from '../Content/index';
-
+import {useLocation} from 'react-router-dom';
 const {Content} = Layout;
 class Home extends React.Component {
+
+    state={
+        path: ''
+    }
+    componentDidUpdate(){
+        console.log(this.props.location.pathname);
+        const path = this.props.location.pathname;
+        if(this.state.path != path)
+            this.setState({path: this.props.location.pathname});
+
+
+    }
+
     render() {
         return (
             <Layout>  
                 <PrincipalComponent/>
                 <Layout className="site-layout">
-                    <Header/>
+                    <Header path={this.state.path}/>
                     <Content>
                     <ContentPrivate></ContentPrivate>
                     </Content>

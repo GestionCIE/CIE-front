@@ -8,7 +8,7 @@ class Content extends React.Component{
     render(){
         return(
         <Switch>
-            <Route exact path="/inicio/cie" component={Inicio}></Route>
+            <Route exact path="/inicio" component={Inicio}></Route>
             <Route exact path="/inicio/signup" component={Login}></Route>
             <Route exact path="/inicio/signin" component={Register}></Route>
         </Switch>     

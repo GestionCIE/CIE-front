@@ -16,7 +16,7 @@ class Nav extends React.Component {
               <div className="logo"></div>
             </Col>
             <Col>
-              <Link to="/inicio/cie">CIE</Link>
+              <Link to="/inicio/">CIE</Link>
             </Col>
             <Col>
               <Link to="/cie">Acerca de</Link>

@@ -1,9 +1,10 @@
 import React from 'react';
 import './index.css'
 import {Layout, Menu} from 'antd';
-import {UserOutlined, VideoCameraOutlined, UploadOutlined} from "@ant-design/icons";
-import { Link, Switch, Route} from 'react-router-dom';
-import EventComponent from './../events/eventComponent';
+import {UserOutlined, VideoCameraOutlined, UploadOutlined, ArrowLeftOutlined} from "@ant-design/icons";
+import { Link } from 'react-router-dom';
+import Profile from './profile';
+
 const {Sider} = Layout;
 
 class PrincipalComponent  extends React.Component{
@@ -16,10 +17,17 @@ class PrincipalComponent  extends React.Component{
           collapsed: !this.state.collapsed,
         });
       };
+
+      exit = () =>{
+        alert(localStorage.getItem("TOKEN"));
+      }
+
       render() {
         return (
             <Sider trigger={null} collapsible collapsed={this.state.collapsed} style={{height:'100vh'}}>
-              <div className="logo" />
+              <div className="logo">
+                <Profile className="profile"/>
+              </div>
               <Menu theme="dark" mode="inline">
                 <Menu.Item key="1">
                   <UserOutlined />
@@ -36,6 +44,14 @@ class PrincipalComponent  extends React.Component{
                 <Menu.Item key="4">
                   <UploadOutlined />
                   <Link to="/admin/config"><span>Configuracion</span></Link>
+                </Menu.Item>
+                <Menu.Item key="5">
+                  <UploadOutlined />
+                  <Link to="/admin/management"><span>Gestion de proyectos</span></Link>
+                </Menu.Item>
+                <Menu.Item key="6">
+                  <ArrowLeftOutlined />
+                  <Link to="/inicio" onClick={this.exit}><span>Salir</span></Link>
                 </Menu.Item>
               </Menu>
             </Sider>

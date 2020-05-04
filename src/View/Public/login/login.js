@@ -33,6 +33,10 @@ class Login extends React.Component{
                 console.log(response);
                 if(response.login){
                     localStorage.setItem("TOKEN", response.token);
+                    const username = response.result[0].username;
+                    const role = response.result[0].role;
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("role", role);
                     this.props.history.push('/admin');
                 }
             });

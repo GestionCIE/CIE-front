@@ -12,9 +12,23 @@
 }
 
 .logo {
-  height: 32px;
+  height: 15%;
   background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.profile{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+  
+}
+
+.profile-text {
+  color: #fff;
 }
 
 .site-layout .site-layout-background {
