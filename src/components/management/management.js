@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 
 
-export default class management extends Component {
+class management extends Component {
 
-    render() {
-        return (
-            <div>
-                hola proyecto
-            </div>
-        )
-    }
+  render(){
+    return(
+      <div>
+        hola proyecto
+      </div>
+    );
+  }
+
 }
+
+
+export default management;
+
+

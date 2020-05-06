@@ -50,9 +50,14 @@ class PrincipalComponent  extends React.Component{
                   <Link to="/admin/management"><span>Gestion de proyectos</span></Link>
                 </Menu.Item>
                 <Menu.Item key="6">
+                  <UploadOutlined />
+                  <Link to="/admin/proyect"><span>Crear Proyecto</span></Link>
+                </Menu.Item>
+                <Menu.Item key="7">
                   <ArrowLeftOutlined />
                   <Link to="/inicio" onClick={this.exit}><span>Salir</span></Link>
                 </Menu.Item>
+                
               </Menu>
             </Sider>
         );

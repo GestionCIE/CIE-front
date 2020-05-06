@@ -1,0 +1,9 @@
+.site-tag-plus {
+  background: #fff;
+  border-style: dashed;
+}
+
+  [data-theme="dark"] .site-tag-plus {
+    background: transparent;
+    border-style: dashed;
+  }
