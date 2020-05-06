@@ -15,7 +15,6 @@ class EventComponent extends React.Component {
     constructor(){
         super();
 
-         this.handleDelete =  this.handleDelete.bind(this);
          this.handleDelete = this.handleDelete.bind(this);
     }
     

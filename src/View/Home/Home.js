@@ -15,7 +15,7 @@ class Home extends React.Component {
     componentDidUpdate(){
         console.log(this.props.location.pathname);
         const path = this.props.location.pathname;
-        if(this.state.path != path)
+        if(this.state.path !== path)
             this.setState({path: this.props.location.pathname});
 
 

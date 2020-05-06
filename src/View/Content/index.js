@@ -9,6 +9,7 @@ import ServiceComponent from '../../components/services/serviceComponent';
 import TracingComponent from "../../components/seguimiento/tracingComponent"
 import ConfigurationComponent from '../../components/configuration/configurationComponent';
 import ProjectManagement from '../../components/management/management';
+import ProjectComponent from "../../components/proyect/ProyectComponent";
 import { Layout } from 'antd';
 const {  Content } = Layout;
 
@@ -31,6 +32,7 @@ class ContentPrivate extends React.Component {
                     <Route path ="/admin/tracing" component={TracingComponent}/>
                     <Route path ="/admin/config" component={ConfigurationComponent}/>
                     <Route path ="/admin/management" component={ProjectManagement}/>
+                    <Route path = "/admin/proyect" component={ProjectComponent}/>
                 </Switch>
             </Content>
         )
