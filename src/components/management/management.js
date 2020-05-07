@@ -304,7 +304,7 @@ const f3 = [
   },
 ];
 const { TabPane } = Tabs;
-export default class management extends Component {
+class management extends Component {
   render() {
     return (
       <>
@@ -338,3 +338,5 @@ export default class management extends Component {
     );
   }
 }
+
+export default management;
