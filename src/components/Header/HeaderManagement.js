@@ -4,21 +4,9 @@ import { BellOutlined, SettingOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 class HeaderManagement extends Component {
-  navRight = () => {
-    return (
-      <div className="NavRight">
-        <div className="NavRight__Settings">
-          <SettingOutlined className="icon" style={{ fontSize: "20px" }} />
-        </div>
-        <div className="NavRight__Notif">
-          <BellOutlined className="icon" style={{ fontSize: "20px" }} />
-        </div>
-      </div>
-    );
-  };
   render() {
     return (
-      <div className="NavContainer">
+      <>
         <div className="NavLeft">
           <Select
             defaultValue="Selecione Un Proyecto"
@@ -55,9 +43,22 @@ class HeaderManagement extends Component {
             </Space>
           </div>
         </div>
-        <this.navRight></this.navRight>
-      </div>
+        <NavRight></NavRight>
+      </>
     );
   }
 }
 export default HeaderManagement;
+
+export const NavRight = () => {
+  return (
+    <div className="NavRight">
+      <div className="NavRight__Settings">
+        <SettingOutlined className="icon" style={{ fontSize: "20px" }} />
+      </div>
+      <div className="NavRight__Notif">
+        <BellOutlined className="icon" style={{ fontSize: "20px" }} />
+      </div>
+    </div>
+  );
+};

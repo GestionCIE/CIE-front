@@ -2,13 +2,8 @@ import React from "react";
 import "./Header.css";
 
 import { Layout, Button } from "antd";
-import {
-  BellOutlined,
-  SettingOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from "@ant-design/icons";
-import HeaderManagement, { navRight } from "./HeaderManagement";
+import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import HeaderManagement, { NavRight } from "./HeaderManagement";
 
 const { Header } = Layout;
 
@@ -62,14 +57,16 @@ class HeaderComponent extends React.Component {
     if (this.props.path === "/admin/management") {
       this.getProjects();
       return (
-        <HeaderManagement
-          projects={this.state.projects}
-          names={this.state.names}
-          advisor={this.state.advisor}
-        />
+        <div className="NavContainer">
+          <HeaderManagement
+            projects={this.state.projects}
+            names={this.state.names}
+            advisor={this.state.advisor}
+          />
+        </div>
       );
     } else {
-      options = <navRight />;
+      options = <NavRight />;
     }
 
     return options;
