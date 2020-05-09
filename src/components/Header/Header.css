@@ -1,71 +1,103 @@
-
 .header {
-    height: 30px;
-    background-color: #1890ff;
-    position: fixed;
-    z-index: 30;
-    width: 100%;
+  height: 30px;
+  background-color: #1890ff;
+  position: fixed;
+  z-index: 30;
+  width: 100%;
 }
 
-.ul-header{
-    display: flex;   
-    justify-content: space-between;
-
+.ul-header {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
-.ul-div{
-    display: flex;
-    justify-content: space-between;
-    width: 10%;
-    align-items: center;
+.ul-div {
+  display: flex;
+  justify-content: space-between;
+  width: 10%;
+  align-items: center;
 }
 
-.ul-header-2{
-    display: flex;   
-    justify-content: flex-end;
-
+.ul-header-2 {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .ul-div-2 {
-    display: flex;
-    justify-content: flex-end;
-    width: 5%;
-    
+  display: flex;
+  justify-content: flex-end;
+  width: 5%;
 }
 
-.div-avatar{
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row;
-    align-items: center;
+.div-avatar {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
 }
 
-/* .ant-avatar-cus {
-    padding: 15px;
-    margin: 10px;
-  }
-   */
-
-.ul-header-li-project{
+.ul-header-li-project {
   list-style: none;
   text-decoration: none;
   align-self: center;
   display: block;
   margin-left: 50%;
-  margin-right:20%;
-  
-
+  margin-right: 20%;
 }
 
-.ul-header-li{
-    list-style: none;
-    text-decoration: none;
-    align-self: center;
-    display: block;
-    margin-right:20%;
-  
-  }
+.ul-header-li {
+  list-style: none;
+  text-decoration: none;
+  align-self: center;
+  display: block;
+  margin-right: 20%;
+}
 
-.ul-header-li, .ul-header-li-project :hover .icon{
-    color:#1890ff !important; 
+.ul-header-li,
+.ul-header-li-project :hover .icon {
+  color: #1890ff !important;
+}
+.Menu-button {
+  margin-left: 16px;
+}
+.Navbar {
+  display: flex;
+  width: 100%;
+}
+.NavLeft {
+  padding-left: 20px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 450px;
+}
+.NavContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.NavRight {
+  display: flex;
+  align-items: center;
+  width: 5%;
+  justify-content: space-around;
+  margin-right: 16px;
+}
+.NavRight > * {
+  cursor: pointer;
+}
+
+@media (max-width: 570px) {
+  .NavContainer {
+    justify-content: flex-end;
+  }
+  .NavLeft {
+    display: none;
+  }
+  .NavRight {
+    width: 20%;
+  }
 }
