@@ -10,8 +10,6 @@ const { Header } = Layout;
 class HeaderComponent extends React.Component {
   state = {
     projects: [],
-    names: [],
-    advisor: "",
     collapsed: true,
   };
 
@@ -34,17 +32,14 @@ class HeaderComponent extends React.Component {
       });
   }
 
-
   optionsHeader() {
     let options = null;
     if (this.props.path === "/admin/management") {
       this.getProjects();
       return (
         <div className="NavContainer">
-          <HeaderManagement
+          <HeaderManagement handerProject = {this.setProject}
             projects={this.state.projects}
-            names={this.state.names}
-            advisor={this.state.advisor}
           />
         </div>
       );
@@ -54,7 +49,13 @@ class HeaderComponent extends React.Component {
 
     return options;
   }
+  setProject = (id)=>{
+    console.log("entre");
+    this.props.setProject(id);
+  }
+
   componentDidMount() {
+    this.setProject();
     this.optionsHeader();
   }
 
