@@ -24,14 +24,14 @@ class ContentPrivate extends React.Component {
             style={{
               margin: '24px 16px',
               padding: 24,
-              minHeight: 280,
+              minHeight: '85vh',
             }}>
                 <Switch>
                     <Route path ="/admin/events" component={EventComponent}/>
                     <Route path ="/admin/services" component={ServiceComponent}/>
                     <Route path ="/admin/tracing" component={TracingComponent}/>
                     <Route path ="/admin/config" component={ConfigurationComponent}/>
-                    <Route path ="/admin/management" component={ProjectManagement}/>
+                    <Route path ="/admin/management" render={()=><ProjectManagement idProject={this.props.idProject} />}/>
                     <Route path = "/admin/proyect" component={ProjectComponent}/>
                 </Switch>
             </Content>

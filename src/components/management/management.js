@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Table, Tabs } from "antd";
+import { Table, Tabs, Col, Row, Button, Modal } from "antd";
+import ManagementApi from '../../api/management/managenmentApi';
+const api = new ManagementApi();
 const columns = [
   {
     title: "Descripción",
@@ -303,38 +305,101 @@ const f3 = [
     resp: "-",
   },
 ];
+
 const { TabPane } = Tabs;
 class management extends Component {
+  state = {
+    visible: false,
+    project: [],
+    idProject: -1,
+    phases: []
+  };
+
+  setVisibleModal = ()=>{
+    this.setState({visible: true});
+  }
+
+  closeModal = () =>{
+    this.setState({visible: false});
+  }
+
+  getProject = async (id) =>{
+    
+    let response  = await api.getProjectById(id);
+      if(response.result.length > 0){
+        const phases = response.result[0].methodologicalPhases.split(",");
+        this.setState({project: response.result, phases: phases });
+      }
+  }
+
+  componentDidUpdate(){
+    if(this.state.idProject != this.props.idProject){
+      this.setState({idProject: this.props.idProject});
+      this.getProject(this.props.idProject);
+    }
+  }
+
   render() {
     return (
-      <>
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="Fase 1" key="1">
-            <Table
-              columns={columns}
-              pagination={false}
-              dataSource={f1}
-              scroll={{ x: 1200 }}
-            />
-          </TabPane>
-          <TabPane tab="Fase 2" key="2">
-            <Table
-              columns={columns}
-              pagination={false}
-              dataSource={f2}
-              scroll={{ x: 1200 }}
-            />
-          </TabPane>
-          <TabPane tab="Fase 3" key="3">
-            <Table
-              columns={columns}
-              pagination={false}
-              dataSource={f3}
-              scroll={{ x: 1200 }}
-            />
-          </TabPane>
-        </Tabs>
-      </>
+      <Row>
+        {
+          this.props.idProject !== undefined ? 
+          (<>
+             
+              <Col>
+                  <Modal visible={this.state.visible}
+                    onCancel = {this.closeModal}>
+                      
+                  </Modal>
+                  <Button type="primary" onClick={this.setVisibleModal}>Crear Actividad</Button>
+                </Col>
+                <Col span={24}>
+                <Tabs defaultActiveKey="1">
+                {
+                  console.log("tam", this.state.phases[0]),
+                  this.state.phases.map((phase, index)=>{
+                    return (<TabPane tab={phase} key={index}>
+                    <Table
+                      columns={columns}
+                      pagination={false}
+                      dataSource={f1}
+                      scroll={{ x: 1200 }}
+                    />
+                  </TabPane>)
+                  })
+
+                }
+
+                  {/* <TabPane tab="Fase 1" key="1">
+                    <Table
+                      columns={columns}
+                      pagination={false}
+                      dataSource={f1}
+                      scroll={{ x: 1200 }}
+                    />
+                  </TabPane>
+                  <TabPane tab="Fase 2" key="2">
+                    <Table
+                      columns={columns}
+                      pagination={false}
+                      dataSource={f2}
+                      scroll={{ x: 1200 }}
+                    />
+                  </TabPane>
+                  <TabPane tab="Fase 3" key="3">
+                    <Table
+                      columns={columns}
+                      pagination={false}
+                      dataSource={f3}
+                      scroll={{ x: 1200 }}
+                    />
+                  </TabPane> */}
+                </Tabs>
+            </Col>
+        </>) : null
+        }
+       
+      </Row>
     );
   }
 }

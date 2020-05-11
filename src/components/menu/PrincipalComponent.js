@@ -34,11 +34,12 @@ class PrincipalComponent extends React.Component {
   }
   render() {
     return (
-      <Sider
+      <Sider className="Principal_Sider"
         trigger={null}
         collapsible
         collapsed={this.state.collapsed}
         style={this.state.style}
+      
       >
         <div className="logo">
           <Profile className="profile" />
