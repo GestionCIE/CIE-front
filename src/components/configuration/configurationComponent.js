@@ -25,6 +25,7 @@ class configurationComponent  extends React.Component{
                
                 this.setState({data: data});
             });
+            
     }
 
     getRole(role){
