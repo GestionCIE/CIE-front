@@ -1,10 +1,10 @@
 import React from 'react';
 import { Input, Button, Layout, Row, Col, DatePicker, Upload, Table, message, 
-    Modal, Form } from 'antd';
-import {UploadOutlined, SaveOutlined , EditOutlined, DeleteOutlined, ShareAltOutlined, 
+    Modal, Form, Space, TimePicker } from 'antd';
+import {UploadOutlined, SaveOutlined , EditOutlined, DeleteOutlined, ShareAltOutlined, PlusOutlined,
     ExclamationCircleOutlined} from '@ant-design/icons';
 import moment from 'moment';
-
+import  './eventComponent.css'; 
 const {Content} = Layout;
 const {TextArea} = Input;
 const {confirm} = Modal;
@@ -21,11 +21,21 @@ class EventComponent extends React.Component {
     state = {
         nameEvent: '',
         description : '',
-        idEdit: '', // olny is used for edit event
         date : moment(new Date(), 'YYYY-MM-DD'),
         data : [],
-        edit: false
+        idEdit: '', // olny is used for edit event
+        edit: false,
+        visibleModal: false
     };
+
+    setVisibleModal = ()=>{
+        this.setState({ visibleModal : true});
+    }
+
+    closeModal =() =>{
+        this.setState({visibleModal: false});
+    }
+
 
 
     handleDelete = recoder =>{
@@ -209,36 +219,57 @@ class EventComponent extends React.Component {
         return(
             <Content>
                 <Row>
-                    <Col span={7} >
-                          <Form>
-                              <Form.Item>
-                                    <Input id="input" placeholder="Nombre del evento" value={this.state.nameEvent} name="nameEvent" onChange = {this.onChangeData}/> 
-                              </Form.Item>
-                        
-                               <Form.Item>
-                                    <DatePicker placeholder="Fecha del evento" defaultValue={moment(this.state.date, 'YYYY-MM-DD')} name="date" onChange={this.onChangeDate}/>
-                               </Form.Item>
-
-                              <Form.Item>
-                                    <TextArea placeholder="Descripción" value={this.state.description} name="description" onChange={this.onChangeData} allowClear/>  
-                              </Form.Item>
-                              <Form.Item>
-                                    <Upload>
-                                        <Button>
-                                        <UploadOutlined/> Subir Archivo
-                                        </Button>
-                                    </Upload>   
-                              </Form.Item>
-
-                              <Form.Item>
-                                   {this.howIsButton()}
-                                   {this.cancelEvent()}
-                              </Form.Item>
-                          </Form>
+                    <Col>
+                        <Button type="primary" onClick={this.setVisibleModal}><PlusOutlined/> Crear Evento</Button>                       
                     </Col>
-                    <Col span={16} push={1}>
+                </Row>
+                <Row>
+                    <Col span={16}>
                         <Table rowKey={recoder => recoder.idEvents } columns={columns} dataSource={this.state.data} ></Table>
                     </Col>
+                    <Modal visible={this.state.visibleModal} onCancel={this.closeModal}>
+                        <Row>
+                            <Col span={24}>
+                                <Form className="Form_Event">
+                                    <Form.Item>
+                                            <Input id="input" placeholder="Nombre del evento" value={this.state.nameEvent} name="nameEvent" onChange = {this.onChangeData}/> 
+                                    </Form.Item>
+                                
+                                    <Form.Item>
+                                            <DatePicker placeholder="Fecha del evento" defaultValue={moment(this.state.date, 'YYYY-MM-DD')} name="date" onChange={this.onChangeDate}/>
+                                    </Form.Item>
+                                    
+                                    <Form.Item>
+                                            <TimePicker placeholder="Hora de inicio" format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                            <TimePicker placeholder="Hora de fin"  format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                            <Input id="input" placeholder="Expositor" value={this.state.nameEvent} name="expositor" onChange = {this.onChangeData}/> 
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                            <TextArea placeholder="Descripción" value={this.state.description} name="description" onChange={this.onChangeData} allowClear/>  
+                                    </Form.Item>
+                                    <Form.Item>
+                                            <Upload>
+                                                <Button>
+                                                <UploadOutlined/> Subir Archivo
+                                                </Button>
+                                            </Upload>   
+                                    </Form.Item>
+
+                                    <Form.Item>
+                                        {this.howIsButton()}
+                                        {this.cancelEvent()}
+                                    </Form.Item>
+                                </Form>
+                            </Col>
+                        </Row>  
+                    </Modal>
                 </Row>
             </Content>
         );
