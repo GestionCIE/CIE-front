@@ -15,12 +15,12 @@ class ProyectComponent extends Component{
 
     state = {
         nameProyect: '',
-        tagsAdvisers: [],
+        tagsmethodologies: [],
         inputVisible: false,
         inputValue: '',
         editInputIndex: -1,
         editInputValue: '',
-        nameAsesor: [],
+        nameAsesor: localStorage.getItem("username"),
         data: [],
         edit: false,
         idEdit: '',
@@ -80,7 +80,7 @@ class ProyectComponent extends Component{
             const jsonProyect = {
                 nameProyect: this.state.nameProyect,
                 nameAsesor: this.state.nameAsesor[0].name,
-                tagsAdvisers: this.state.tagsAdvisers,
+                tagsmethodologies: this.state.tagsmethodologies,
                 tagsEntrepreneurs: this.state.tagsEntrepreneurs,
                 id: this.state.idEdit};
                 
@@ -107,27 +107,14 @@ class ProyectComponent extends Component{
         }
     
         //------------------------------------------------------------
-        getAllUsers(){
-            let nameAsesor = [];
-            fetch('http://localhost:3005/users/admin/getAllUsers')
-                .then(res=> res.json())
-                .then((response)=>{
-                    
-                    for(let i=0; i < response.result.length; i++){
-                        nameAsesor.push(response.result[i]);
-                    }
-                   
-                    this.setState({nameAsesor: nameAsesor});
-                });
-                
-        }
+        
 
         createProyect = ()=>{
 
           const jsonProyect = {
               nameProyect: this.state.nameProyect,
-              tagsAdvisers: this.state.tagsAdvisers,
-              nameAsesor: this.state.nameAsesor[0].name,
+              tagsmethodologies: this.state.tagsmethodologies,
+              nameAsesor: this.state.nameAsesor,
               tagsEntrepreneurs: this.state.tagsEntrepreneurs      
           };
           console.log("json",jsonProyect);    
@@ -163,7 +150,6 @@ class ProyectComponent extends Component{
     }
 
     componentDidMount(){
-        this.getAllUsers();
         this.reloadTable();
      }
 
@@ -175,9 +161,9 @@ class ProyectComponent extends Component{
 
     //---------------------------------------------------------------------------
     handleClose = removedTag => {
-        const tagsAdvisers = this.state.tagsAdvisers.filter(tag => tag !== removedTag);
-        console.log(tagsAdvisers);
-        this.setState({ tagsAdvisers });
+        const tagsmethodologies = this.state.tagsmethodologies.filter(tag => tag !== removedTag);
+        console.log(tagsmethodologies);
+        this.setState({ tagsmethodologies });
       };
 
       //entrepreneurs
@@ -207,13 +193,13 @@ class ProyectComponent extends Component{
     
       handleInputConfirm = () => {
         const { inputValue } = this.state;
-        let { tagsAdvisers } = this.state;
-        if (inputValue && tagsAdvisers.indexOf(inputValue) === -1) {
-          tagsAdvisers = [...tagsAdvisers, inputValue];
+        let { tagsmethodologies } = this.state;
+        if (inputValue && tagsmethodologies.indexOf(inputValue) === -1) {
+            tagsmethodologies = [...tagsmethodologies, inputValue];
         }
-        console.log(tagsAdvisers);
+        console.log(tagsmethodologies);
         this.setState({
-          tagsAdvisers,
+          tagsmethodologies,
           inputVisible: false,
           inputValue: '',
         });
@@ -309,8 +295,8 @@ class ProyectComponent extends Component{
                 dataIndex: 'currentAdvisor'
             },
             {
-                title: 'Asesores anteriores',
-                dataIndex: 'previusAdvisers'
+                title: 'Fases de la metodologia',
+                dataIndex: 'methodologicalPhases'
             },
             {
                 title: 'Emprendedores',
@@ -329,7 +315,7 @@ class ProyectComponent extends Component{
         ];
 
         //------------------------------------------------------------------------
-        const { tagsAdvisers, inputVisible, inputValue, editInputIndex, editInputValue } = this.state;
+        const { tagsmethodologies, inputVisible, inputValue, editInputIndex, editInputValue } = this.state;
         const { tagsEntrepreneurs, inputVisible2, inputValue2, editInputIndex2, editInputValue2 } = this.state;
         return (
             <Content>
@@ -341,7 +327,7 @@ class ProyectComponent extends Component{
                               </Form.Item>
 
                               <Form.Item>
-                                {tagsAdvisers.map((tag, index) => {
+                                {tagsmethodologies.map((tag, index) => {
                                  if (editInputIndex === index) {
                                     return (
                                     <Input ref={this.saveEditInputRef} key={tag} size="small" className="tag-input"
@@ -385,20 +371,14 @@ class ProyectComponent extends Component{
                                     )}
                                     {!inputVisible && (
                                     <Tag className="site-tag-plus" onClick={this.showInput}>
-                                    <PlusOutlined /> asesores anteriores
+                                    <PlusOutlined /> Fases de la metodologia
                                     </Tag>
                                     )}
                               </Form.Item>
 
 
                               <Form.Item>
-                                  {
-                                      this.state.nameAsesor.map(data =>{
-                                          return(
-                                              <Input type="text" key={data.idUsers}  value={data.name}></Input>
-                                          );
-                                      })
-                                  }
+                                    <Input type="text"  value={localStorage.getItem("username")}></Input>
                               </Form.Item>
 
                               <Form.Item>
