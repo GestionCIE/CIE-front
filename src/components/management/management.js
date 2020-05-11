@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Table, Tabs, Col, Row, Button, Modal } from "antd";
+import { Table, Tabs, Col, Row, Button, Modal, Drawer ,Form, Input, Select, Checkbox, Tag } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
+import './management.css'; 
 const api = new ManagementApi();
+
 const columns = [
   {
     title: "Descripción",
@@ -305,22 +307,41 @@ const f3 = [
     resp: "-",
   },
 ];
-
+const {Option} = Select;
 const { TabPane } = Tabs;
 class management extends Component {
   state = {
     visible: false,
     project: [],
     idProject: -1,
-    phases: []
+    phases: [],
+    visibleDrawer: false,
+    nameActivity: '',
+    responsables: '',
+    state: '',
+    phaseSelect: '',
+    week: ''
   };
+
+  constructor(){
+    super();
+    this.showDetailRow = this.showDetailRow.bind(this);
+  }
 
   setVisibleModal = ()=>{
     this.setState({visible: true});
   }
 
+  setVisibleDrawer = ()=>{
+    this.setState({visibleDrawer: true});
+  }
+
   closeModal = () =>{
     this.setState({visible: false});
+  }
+
+  closeDrawer = ()=>{
+    this.setState({visibleDrawer: false});
   }
 
   getProject = async (id) =>{
@@ -336,10 +357,52 @@ class management extends Component {
     if(this.state.idProject != this.props.idProject){
       this.setState({idProject: this.props.idProject});
       this.getProject(this.props.idProject);
+      this.getParticipants(this.props.idProject);
     }
   }
 
+  showDetailRow = (data) =>{
+    console.log(data);
+    this.setVisibleDrawer();
+  }
+  getResponsables = (values)=>{
+    this.setState({responsables: values});
+    this.getParticipants(this.props.idProject);
+  }
+
+  getParticipants = async (id)=>{
+    let options = [];
+    const response = await api.getParticipants(id)
+    options.push(<Option value={response.result.advisor} key={0}>{response.result.advisor}</Option>)
+    for(let i=0; i < response.result.entrepreneurs.length; i++){
+      options.push(<Option value={response.result.entrepreneurs[i].name}
+         key={i+1}>{response.result.entrepreneurs[i].name}</Option>)
+    }
+    console.log(options);
+    this.setState({responsables: options});
+  }
+
+  getStates = (value)=>{
+    this.setState({state: value});
+  }
+  setPhase(phase){
+    localStorage.setItem("phase", phase);
+    if(this.state.phaseSelect == ''){
+      // this.setState({phaseSelect: phase});
+    }
+  }
+
+  changeData = (e) =>{
+    this.setState({[e.target.name]: e.target.value});
+  }
+
+  changeWeek = (e, index) =>{
+    console.log("value", e, " index", index);
+    this.setState({week: e.target.name});
+  }
+
   render() {
+    const states = [<Option key="1">En Ejecucion</Option>,<Option key="2">Cumplidad</Option> ]
     return (
       <Row>
         {
@@ -349,21 +412,83 @@ class management extends Component {
               <Col>
                   <Modal visible={this.state.visible}
                     onCancel = {this.closeModal}>
+                    <Form className="Form_Modal">
+                      <Form.Item>
+                            <h6>Fase Metodologica Actual</h6>
+                            <Tag color="blue">{localStorage.getItem("phase")}</Tag>
+                      </Form.Item>
+                      <Form.Item>
+                        <Input placeholder="Actividad" value={this.nameActivity} onChange={this.changeData}/>
+                      </Form.Item>
+                      <Form.Item>
+                          <Select 
+                           mode="multiple"
+                           style={{ width: '100%' }}
+                           placeholder="Asignar a"
+                           onChange={this.getResponsables}>
+                            {this.state.responsables}
+                          </Select>
+                      </Form.Item>
+                      <Form.Item>
+                          <Select 
+                                mode="multiple"
+                                style={{ width: '100%' }}
+                                placeholder="Progreso"
+                                onChange={this.getStates}>
+                                {states}
+                              </Select>
                       
+                      </Form.Item>
+                            
+                      <Form.Item>
+                          <Checkbox name="1" onChange={this.changeWeek}>
+                            Semana 1
+                          </Checkbox>
+                          <Checkbox name="2" onChange={this.changeWeek}>
+                            Semana 2
+                          </Checkbox>
+                          <Checkbox name="3" onChange={this.changeWeek} >
+                            Semana 3
+                          </Checkbox>
+                          <Checkbox name="4" onChange={this.changeWeek}>
+                            Semana 4
+                          </Checkbox> <br/>
+                          <Checkbox name="5" onChange={this.changeWeek}>
+                            Semana 5
+                          </Checkbox>
+                      </Form.Item>
+                    </Form>
                   </Modal>
                   <Button type="primary" onClick={this.setVisibleModal}>Crear Actividad</Button>
+                  <Drawer
+                      title="Detalle Actividades"
+                      placement="right"
+                      closable={false}
+                      onClose={this.closeDrawer}
+                      visible={this.state.visibleDrawer}
+                  >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                  </Drawer>
                 </Col>
                 <Col span={24}>
                 <Tabs defaultActiveKey="1">
                 {
                   console.log("tam", this.state.phases[0]),
                   this.state.phases.map((phase, index)=>{
-                    return (<TabPane tab={phase} key={index}>
+                    
+                    return this.setPhase(phase), (<TabPane tab={phase} key={index} >
                     <Table
                       columns={columns}
                       pagination={false}
                       dataSource={f1}
                       scroll={{ x: 1200 }}
+                      onRow={(recoder)=>{
+                        return {
+                          onClick: this.showDetailRow.bind(this, recoder)
+                        }
+                      }}
                     />
                   </TabPane>)
                   })

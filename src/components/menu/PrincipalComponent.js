@@ -17,7 +17,7 @@ class PrincipalComponent extends React.Component {
     style: { display: "none" },
   };
   exit = () => {
-    alert(localStorage.getItem("TOKEN"));
+    localStorage.removeItem("TOKEN");
   };
 
   componentWillReceiveProps(nextProps) {
