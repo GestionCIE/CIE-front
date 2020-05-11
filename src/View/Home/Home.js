@@ -12,6 +12,7 @@ class Home extends React.Component {
   state = {
     path: "",
     collapsed: true,
+    idProject: -1
   };
 
   onAlert = () => {
@@ -19,11 +20,16 @@ class Home extends React.Component {
     console.log(this.state.collapsed);
   };
 
-  componentDidMount() {
+  componentDidUpdate() {
     console.log(this.props.location.pathname);
     const path = this.props.location.pathname;
     if (this.state.path !== path)
       this.setState({ path: this.props.location.pathname });
+  }
+
+  getAction = (id) =>{
+    console.log("hiii", id);
+      this.setState({idProject: id });
   }
 
   render() {
@@ -34,9 +40,9 @@ class Home extends React.Component {
           onClick={this.onAlert}
         />
         <Layout className="site-layout">
-          <HeaderComponent onClick={this.onAlert} path={this.state.path} />
+          <HeaderComponent onClick={this.onAlert} setProject ={this.getAction}  path={this.state.path} />
           <Content>
-            <ContentPrivate></ContentPrivate>
+            <ContentPrivate idProject={this.state.idProject}></ContentPrivate>
           </Content>
         </Layout>
       </Layout>
