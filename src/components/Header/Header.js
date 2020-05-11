@@ -34,23 +34,6 @@ class HeaderComponent extends React.Component {
       });
   }
 
-  onChangeGetProfiles = (value) => {
-    if (value > 0) {
-      this.getParticipants(value);
-    }
-  };
-
-  getParticipants(id) {
-    let data = [];
-    fetch(`http://localhost:3005/project/getParticipans?id=${id}`)
-      .then((res) => res.json())
-      .then((response) => {
-        this.setState({
-          names: response.result.entrepreneurs,
-          advisor: response.result.advisor,
-        });
-      });
-  }
 
   optionsHeader() {
     let options = null;
