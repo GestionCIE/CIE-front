@@ -4,6 +4,31 @@ import { BellOutlined, SettingOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 class HeaderManagement extends Component {
+
+  state = {
+    names:[],
+    advisor: ''
+  };
+
+  onChangeGetProfiles = (value) => {
+    console.log("onchange profile", value);
+    if (value > 0) {
+      this.getParticipants(value);
+      this.props.handerProject(value);
+    }
+  };
+
+  getParticipants(id) {
+    fetch(`http://localhost:3005/project/getParticipans?id=${id}`)
+      .then((res) => res.json())
+      .then((response) => {
+        this.setState({
+          names: response.result.entrepreneurs,
+          advisor: response.result.advisor,
+        });
+      });
+  }
+
   render() {
     return (
       <>
@@ -28,18 +53,19 @@ class HeaderManagement extends Component {
 
           <div className="div-avatar">
             <Space size={8}>
-              <span>Emprededores</span>
-              {this.props.names.map((profile, index) => {
+              {this.state.names.map((profile, index) => {
                 return (
                   <Tooltip placement="top" title={profile.name}>
                     <Avatar>{profile.nameshort}</Avatar>
                   </Tooltip>
                 );
               })}
-              <span>Asesor</span>
-              <Tooltip placement="top" title={this.props.advisor}>
-                <Avatar>{this.props.advisor}</Avatar>
-              </Tooltip>
+                {
+                  this.state.advisor != '' ?  <> <span>Asesor</span> 
+                  <Tooltip placement="top" title={this.state.advisor} >
+                      <Avatar >{this.state.advisor}</Avatar>
+                  </Tooltip> </>: null
+                  }
             </Space>
           </div>
         </div>
