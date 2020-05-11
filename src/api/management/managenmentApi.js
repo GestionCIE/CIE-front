@@ -8,6 +8,16 @@ class ManagenmentApi {
             });
         });
     }
+
+    getParticipants(id){
+        return new Promise ((resolve, reject) =>{
+            fetch(`http://localhost:3005/project/getParticipans?id=${id}`)
+            .then((res) => res.json())
+            .then((response) => {
+                resolve(response);
+            });
+        });
+    }
 }
 
 
