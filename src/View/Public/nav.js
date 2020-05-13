@@ -24,6 +24,9 @@ class Nav extends React.Component {
             <Col>
               <Link to="/cie">Perfiles</Link>
             </Col>
+            <Col>
+              <Link to="/inicio/quienessomos">Quienes Somos</Link>
+            </Col>
           </Row>
           <Row>
             <Col>
