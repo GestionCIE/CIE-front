@@ -15,7 +15,9 @@ class PrincipalComponent extends React.Component {
   state = {
     collapsed: this.props.collapsed,
     style: { display: "none" },
+    modules: []
   };
+
   exit = () => {
     localStorage.removeItem("TOKEN");
   };
@@ -32,6 +34,23 @@ class PrincipalComponent extends React.Component {
       }
     }
   }
+
+  getModulesByRole(){
+    fetch('http://localhost:3005/admin/getModules', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers:{
+          'Content-Type': 'application/json'
+    }}).then(res =>res.json())
+    .then((response) =>{
+      console.log(response);
+    });
+  }
+
+  componentDidMount(){
+    
+  }
+
   render() {
     return (
       <Sider className="Principal_Sider"
