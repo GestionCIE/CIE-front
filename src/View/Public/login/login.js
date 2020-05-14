@@ -3,6 +3,7 @@ import {Input, Form, Button, Layout, Row, Col, Avatar} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {Redirect} from 'react-router-dom';
 import history from '../../../routers/history';
+import FacebookLogin from "../../../components/FacebookLogin/FacebookLogin"
 const {Content} = Layout;
 
 class Login extends React.Component{
@@ -30,14 +31,14 @@ class Login extends React.Component{
                     'Content-Type': 'application/json'
             }}).then(res =>res.json())
             .then((response) =>{
-                console.log(response);
+                console.log("respuesta ", response);
                 if(response.login){
                     localStorage.setItem("TOKEN", response.token);
                     const username = response.result[0].username;
                     const role = response.result[0].role;
                     localStorage.setItem("username", username);
                     localStorage.setItem("role", role);
-                    this.props.history.push('/admin');
+                    this.props.history.push('/addmin');
                 }
             });
     }
@@ -67,6 +68,10 @@ class Login extends React.Component{
                         <Form.Item
                         >
                             <Button type="primary" className="login-form-button"  onClick={this.login}> Ingresar </Button>
+                        </Form.Item>
+
+                        <Form.Item>
+                            <FacebookLogin history={this.props.history}/>
                         </Form.Item>
                     </Form>
                 </Col>
