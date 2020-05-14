@@ -377,7 +377,8 @@ class ProyectComponent extends Component{
                               </Form.Item>
 
 
-                              <Form.Item>
+                              <Form.Item >
+                                    <label>Lider del proyecto</label>
                                     <Input type="text"  value={localStorage.getItem("username")}></Input>
                               </Form.Item>
 

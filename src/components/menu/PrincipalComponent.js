@@ -6,6 +6,10 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
   ArrowLeftOutlined,
+  FileDoneOutlined, // service & events 
+  CustomerServiceOutlined, // seguimiento
+  SettingOutlined 
+
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Profile from "./profile";
@@ -36,19 +40,39 @@ class PrincipalComponent extends React.Component {
   }
 
   getModulesByRole(){
-    fetch('http://localhost:3005/admin/getModules', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers:{
-          'Content-Type': 'application/json'
-    }}).then(res =>res.json())
+    fetch(`http://localhost:3005/config/getModulesByRole?role=${localStorage.getItem("role")}`)
+    .then(res =>res.json())
     .then((response) =>{
       console.log(response);
+      this.setState({modules: response.result});
     });
   }
 
   componentDidMount(){
+    this.getModulesByRole();
+  }
+
+  addIcon(icon){
+    let iconComponent = null;
+
+    switch (icon) {
+      case 'FileDoneOutlined':
+        iconComponent =  <FileDoneOutlined/>
+        break;
+      case 'CustomerServiceOutlined':
+        iconComponent =  <CustomerServiceOutlined/>
+      break;
     
+      case 'SettingOutlined':
+        iconComponent = <SettingOutlined/>
+        break;
+
+      default:
+        iconComponent = <UserOutlined/>
+        break;
+    }
+
+    return iconComponent;
   }
 
   render() {
@@ -64,43 +88,16 @@ class PrincipalComponent extends React.Component {
           <Profile className="profile" />
         </div>
         <Menu theme="dark" mode="inline">
-          <Menu.Item key="1">
-            <UserOutlined />
-            <Link to="/admin/events">
-              <span>Eventos</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <VideoCameraOutlined />
-            <Link to="/admin/services">
-              <span>Servicios</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <UploadOutlined />
-            <Link to="/admin/tracing">
-              <span>Seguimiento</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="4">
-            <UploadOutlined />
-            <Link to="/admin/config">
-              <span>Configuracion</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="5">
-            <UploadOutlined />
-            <Link to="/admin/management">
-              <span>Gestion de proyectos</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="6">
-            <UploadOutlined />
-            <Link to="/admin/proyect">
-              <span>Crear Proyecto</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="7">
+          {
+            this.state.modules.map((e) =>{
+              if(e.active)
+                return <Menu.Item key={e.idSystemModules}>
+                  {this.addIcon()}
+                  <Link to={e.route}> <span>{e.nameModule}</span> </Link>
+                </Menu.Item>
+            })
+          }
+          <Menu.Item key="15">
             <ArrowLeftOutlined />
             <Link to="/inicio" onClick={this.exit}>
               <span>Salir</span>

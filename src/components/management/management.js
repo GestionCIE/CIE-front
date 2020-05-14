@@ -307,6 +307,7 @@ const f3 = [
     resp: "-",
   },
 ];
+
 const {Option} = Select;
 const { TabPane } = Tabs;
 class management extends Component {
@@ -386,9 +387,9 @@ class management extends Component {
     this.setState({state: value});
   }
   setPhase(phase){
-    localStorage.setItem("phase", phase);
-    if(this.state.phaseSelect == ''){
-      // this.setState({phaseSelect: phase});
+    console.log(phase, " : ",this.state.phaseSelect);
+    if(this.state.phaseSelect != phase){
+        this.setState({phaseSelect: phase});
     }
   }
 
@@ -401,12 +402,16 @@ class management extends Component {
     this.setState({week: e.target.name});
   }
 
+  componentWillUnmount(){
+    this.setState({idProject: -1});
+  }
+
   render() {
     const states = [<Option key="1">En Ejecucion</Option>,<Option key="2">Cumplidad</Option> ]
     return (
       <Row>
         {
-          this.props.idProject !== undefined ? 
+          this.props.idProject !== -1 ? 
           (<>
              
               <Col>
@@ -415,7 +420,7 @@ class management extends Component {
                     <Form className="Form_Modal">
                       <Form.Item>
                             <h6>Fase Metodologica Actual</h6>
-                            <Tag color="blue">{localStorage.getItem("phase")}</Tag>
+                            <Tag color="blue">{this.state.phaseSelect}</Tag>
                       </Form.Item>
                       <Form.Item>
                         <Input placeholder="Actividad" value={this.nameActivity} onChange={this.changeData}/>
@@ -478,7 +483,7 @@ class management extends Component {
                   console.log("tam", this.state.phases[0]),
                   this.state.phases.map((phase, index)=>{
                     
-                    return this.setPhase(phase), (<TabPane tab={phase} key={index} >
+                    return (<TabPane tab={phase} key={index} >
                     <Table
                       columns={columns}
                       pagination={false}
