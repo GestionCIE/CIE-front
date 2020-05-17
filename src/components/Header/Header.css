@@ -90,6 +90,10 @@
   cursor: pointer;
 }
 
+.Select_Project{
+  width: 40%;
+}
+
 @media (max-width: 570px) {
   .NavContainer {
     justify-content: flex-end;

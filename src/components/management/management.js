@@ -1,33 +1,36 @@
 import React, { Component } from "react";
-import { Table, Tabs, Col, Row, Button, Modal, Drawer ,Form, Input, Select, Checkbox, Tag } from "antd";
+import { Table, Tabs, Col, Row, Button, Modal, Drawer ,Form, Input, Select, Checkbox, Tag, message} from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
+import AvatarComponent from './avatar';
 const api = new ManagementApi();
 
+
+
 const columns = [
-  {
-    title: "Descripción",
-    dataIndex: "description",
-    key: "description",
-    width: 300,
-    /*     fixed: "left", */
-    render: (description) => (
-      <span>
-        {description.map((desc) => {
-          let colore = "grey";
-          let n = desc.includes("Actividad");
-          if (n === true) {
-            colore = 800;
-          }
-          return (
-            <span style={{ fontWeight: colore }} key={desc}>
-              {desc}
-            </span>
-          );
-        })}
-      </span>
-    ),
-  },
+  // {
+  //   title: "Descripción",
+  //   dataIndex: "description",
+  //   key: "description",
+  //   width: 300,
+  //   /*     fixed: "left", */
+  //   render: (description) => (
+  //     <span>
+  //       {description.map((desc) => {
+  //         let colore = "grey";
+  //         let n = desc.includes("Actividad");
+  //         if (n === true) {
+  //           colore = 800;
+  //         }
+  //         return (
+  //           <span style={{ fontWeight: colore }} key={desc}>
+  //             {desc}
+  //           </span>
+  //         );
+  //       })}
+  //     </span>
+  //   ),
+  // },
   {
     title: "Horas",
     dataIndex: "hours",
@@ -307,10 +310,10 @@ const f3 = [
     resp: "-",
   },
 ];
-<<<<<<< HEAD
-=======
 
->>>>>>> feature-dinamic-menu
+
+
+
 const {Option} = Select;
 const { TabPane } = Tabs;
 class management extends Component {
@@ -320,11 +323,13 @@ class management extends Component {
     idProject: -1,
     phases: [],
     visibleDrawer: false,
-    nameActivity: '',
+    activity: '',
     responsables: '',
-    state: '',
+    stateActivity: '',
     phaseSelect: '',
-    week: ''
+    week: '',
+    activities: [],
+    assign: []
   };
 
   constructor(){
@@ -332,8 +337,27 @@ class management extends Component {
     this.showDetailRow = this.showDetailRow.bind(this);
   }
 
-  setVisibleModal = ()=>{
-    this.setState({visible: true});
+  getState(state) {
+    console.log("state ", typeof state);
+    let stateHtml = null;
+    switch (state) {
+      case '1':
+        stateHtml = (<Tag color='processing'>En ejecucion</Tag>)
+        break;
+      case '2':
+        stateHtml =  (<Tag color='success'> Termindo </Tag>)
+        break;
+      default:
+        stateHtml = (<Tag color='default'>Sin estado</Tag>)
+        break;
+    }
+  
+    return stateHtml;
+  }
+
+  setVisibleModalAndSetPhase = (data)=>{
+    console.log("data", data);
+    this.setState({visible: true, phaseSelect: data});
   }
 
   setVisibleDrawer = ()=>{
@@ -367,10 +391,11 @@ class management extends Component {
 
   showDetailRow = (data) =>{
     console.log(data);
+    this.setState({activity: data.nameActivity});
     this.setVisibleDrawer();
   }
   getResponsables = (values)=>{
-    this.setState({responsables: values});
+    this.setState({assign: values});
     this.getParticipants(this.props.idProject);
   }
 
@@ -387,22 +412,17 @@ class management extends Component {
   }
 
   getStates = (value)=>{
-    this.setState({state: value});
+    this.setState({stateActivity: value});
   }
   setPhase(phase){
-<<<<<<< HEAD
-    localStorage.setItem("phase", phase);
-    if(this.state.phaseSelect == ''){
-      // this.setState({phaseSelect: phase});
-=======
     console.log(phase, " : ",this.state.phaseSelect);
     if(this.state.phaseSelect != phase){
         this.setState({phaseSelect: phase});
->>>>>>> feature-dinamic-menu
     }
   }
 
   changeData = (e) =>{
+    console.log(e.target.name, " ", e.target.value );
     this.setState({[e.target.name]: e.target.value});
   }
 
@@ -411,39 +431,104 @@ class management extends Component {
     this.setState({week: e.target.name});
   }
 
-<<<<<<< HEAD
-=======
   componentWillUnmount(){
     this.setState({idProject: -1});
   }
 
->>>>>>> feature-dinamic-menu
+  getActivities = async (id, phase) => {
+
+    console.log("get Activities", id, " ", phase, " ");
+    if(phase != ''){
+      const response = await api.getActivityByProjectAndPhase(id, phase);
+      console.log("Activities :", response);
+      this.setState({ activities: response.result});
+    }
+  }
+
+  getProfiles(_nameshort, _responsables){
+    let htmlProfile = `<div>`;  
+    const responsables =  _responsables.split(',');
+    const nameshort = _nameshort.split(',');
+      if(responsables.length > 0) {
+        for(let i=0; i < responsables.length; i++){
+          htmlProfile = htmlProfile + 
+          `<Tooltip placement="top" title={${responsables[i]}}>
+              <Avatar>{${nameshort[i]}}</Avatar>
+          </Tooltip>`
+        } 
+         htmlProfile = htmlProfile + `</div>`
+      }else{
+        htmlProfile = <span>Error no se puede obtener los responsables</span>
+      }
+      return (htmlProfile);
+  }
+
+  createActivity = async () =>{
+    console.log(this.state.activity);
+    console.log(this.state.phaseSelect);
+    console.log(this.state.assign);
+    console.log(this.state.stateActivity);
+    let assings = '';
+    
+    for(let i=0; i < this.state.assign.length; i++){
+      console.log("...",this.state.assign[i]);
+      assings = ((i + 1) == this.state.assign.length) 
+      ?  assings + this.state.assign[i] : assings + this.state.assign[i] + ","; 
+    }
+    console.log("assings", assings);
+    const data = {
+      nameActivity: this.state.activity ,
+      responsables:assings , 
+      state: this.state.stateActivity[0],
+      phase: this.state.phaseSelect,
+      id: this.props.idProject
+    };
+
+    const response = await api.createActivity(data);
+    
+    if(response.result  == 'created'){
+      message.success('se creo la actividad')
+      this.getActivities(this.props.idProject, this.state.phaseSelect);
+      this.closeModal();
+    }
+  }
+
   render() {
-    const states = [<Option key="1">En Ejecucion</Option>,<Option key="2">Cumplidad</Option> ]
+    const states = [<Option key="1" value="1">En Ejecucion</Option>,<Option key="2" value="2">Cumplidad</Option> ];
+
+    const originColumns  = [{
+      title: "Actividad",
+      dataIndex: "nameActivity",
+      key: "nameActivity",
+    },{
+      title: "Responsables",
+      dataIndex: "responsables",
+      key: "responsables",
+      render: (text, recoder) => <AvatarComponent profiles={recoder.profile} />
+    },
+    {
+      title: "Estado de la actividad",
+      dataIndex: "state",
+      key: "state",
+      render: (text, recoder)=> this.getState(recoder.state)
+    }];
     return (
       <Row>
         {
-<<<<<<< HEAD
-          this.props.idProject !== undefined ? 
-=======
           this.props.idProject !== -1 ? 
->>>>>>> feature-dinamic-menu
           (<>
              
               <Col>
                   <Modal visible={this.state.visible}
-                    onCancel = {this.closeModal}>
+                    onCancel = {this.closeModal}
+                    onOk = {this.createActivity}>
                     <Form className="Form_Modal">
                       <Form.Item>
                             <h6>Fase Metodologica Actual</h6>
-<<<<<<< HEAD
-                            <Tag color="blue">{localStorage.getItem("phase")}</Tag>
-=======
                             <Tag color="blue">{this.state.phaseSelect}</Tag>
->>>>>>> feature-dinamic-menu
                       </Form.Item>
                       <Form.Item>
-                        <Input placeholder="Actividad" value={this.nameActivity} onChange={this.changeData}/>
+                        <Input placeholder="Actividad" name='activity' value={this.state.activity} onChange={this.changeData}/>
                       </Form.Item>
                       <Form.Item>
                           <Select 
@@ -484,30 +569,33 @@ class management extends Component {
                       </Form.Item>
                     </Form>
                   </Modal>
-                  <Button type="primary" onClick={this.setVisibleModal}>Crear Actividad</Button>
                   <Drawer
-                      title="Detalle Actividades"
+                      title="Detalle de la actividad"
                       placement="right"
                       closable={false}
                       onClose={this.closeDrawer}
                       visible={this.state.visibleDrawer}
                   >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                  <Row>
+                    <Col span={24}>
+                        <p>Actividad</p>
+                        <h6>{this.state.activity}</h6>
+                    </Col>
+                  </Row>
                   </Drawer>
                 </Col>
                 <Col span={24}>
-                <Tabs defaultActiveKey="1">
+                <Tabs defaultActiveKey="1" onTabClick={(key, e)=>{this.getActivities(this.props.idProject, key)}}>
                 {
                   console.log("tam", this.state.phases[0]),
                   this.state.phases.map((phase, index)=>{
                     
-                    return (<TabPane tab={phase} key={index} >
+                    return (<TabPane tab={phase} key={phase} >
+                    <Button type="primary" onClick={()=>{this.setVisibleModalAndSetPhase(phase) }}>Crear Actividad</Button>
                     <Table
-                      columns={columns}
+                      columns={originColumns}
                       pagination={false}
-                      dataSource={f1}
+                      dataSource={this.state.activities}
                       scroll={{ x: 1200 }}
                       onRow={(recoder)=>{
                         return {
@@ -515,35 +603,11 @@ class management extends Component {
                         }
                       }}
                     />
+
                   </TabPane>)
                   })
 
                 }
-
-                  {/* <TabPane tab="Fase 1" key="1">
-                    <Table
-                      columns={columns}
-                      pagination={false}
-                      dataSource={f1}
-                      scroll={{ x: 1200 }}
-                    />
-                  </TabPane>
-                  <TabPane tab="Fase 2" key="2">
-                    <Table
-                      columns={columns}
-                      pagination={false}
-                      dataSource={f2}
-                      scroll={{ x: 1200 }}
-                    />
-                  </TabPane>
-                  <TabPane tab="Fase 3" key="3">
-                    <Table
-                      columns={columns}
-                      pagination={false}
-                      dataSource={f3}
-                      scroll={{ x: 1200 }}
-                    />
-                  </TabPane> */}
                 </Tabs>
             </Col>
         </>) : null

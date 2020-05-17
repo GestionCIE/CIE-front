@@ -33,7 +33,7 @@ class HeaderManagement extends Component {
     return (
       <>
         <div className="NavLeft">
-          <Select
+          <Select className="Select_Project"
             defaultValue="Selecione Un Proyecto"
             style={{ marginLeft: "10px" }}
             onChange={this.onChangeGetProfiles}

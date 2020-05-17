@@ -18,6 +18,31 @@ class ManagenmentApi {
             });
         });
     }
+
+    getActivityByProjectAndPhase(id, phase){
+        return new Promise ((resolve, reject) =>{
+            fetch(`http://localhost:3005/project/getActivityByProjectAndPhase?id=${id}&phase=${phase}`)
+            .then((res) => res.json())
+            .then((response) => {
+                resolve(response);
+            });
+        });
+    }
+
+    createActivity(data) {
+        return new Promise ((resolve, reject)=>{
+            fetch('http://localhost:3005/project/createActivity', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers:{
+                    'Content-Type': 'application/json'
+                }})
+                .then(res=> res.json())
+                .then((response)=>{
+                   resolve(response);
+                });
+        });
+    }
 }
 
 
