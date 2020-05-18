@@ -10,8 +10,6 @@ const { Header } = Layout;
 class HeaderComponent extends React.Component {
   state = {
     projects: [],
-    names: [],
-    advisor: "",
     collapsed: true,
   };
 
@@ -34,34 +32,14 @@ class HeaderComponent extends React.Component {
       });
   }
 
-  onChangeGetProfiles = (value) => {
-    if (value > 0) {
-      this.getParticipants(value);
-    }
-  };
-
-  getParticipants(id) {
-    let data = [];
-    fetch(`http://localhost:3005/project/getParticipans?id=${id}`)
-      .then((res) => res.json())
-      .then((response) => {
-        this.setState({
-          names: response.result.entrepreneurs,
-          advisor: response.result.advisor,
-        });
-      });
-  }
-
   optionsHeader() {
     let options = null;
     if (this.props.path === "/admin/management") {
       this.getProjects();
       return (
         <div className="NavContainer">
-          <HeaderManagement
+          <HeaderManagement handerProject = {this.setProject}
             projects={this.state.projects}
-            names={this.state.names}
-            advisor={this.state.advisor}
           />
         </div>
       );
@@ -71,7 +49,13 @@ class HeaderComponent extends React.Component {
 
     return options;
   }
+  setProject = (id)=>{
+    console.log("entre");
+    this.props.setProject(id);
+  }
+
   componentDidMount() {
+    this.setProject();
     this.optionsHeader();
   }
 

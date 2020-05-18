@@ -34,7 +34,7 @@ class Login extends React.Component{
                 console.log("respuesta ", response);
                 if(response.login){
                     localStorage.setItem("TOKEN", response.token);
-                    const username = response.result[0].username;
+                    const username = response.result[0].name;
                     const role = response.result[0].role;
                     localStorage.setItem("username", username);
                     localStorage.setItem("role", role);
