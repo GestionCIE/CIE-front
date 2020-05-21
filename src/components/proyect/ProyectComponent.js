@@ -67,9 +67,11 @@ class ProyectComponent extends Component{
         }
 
         handleEdit = recoder =>{
-            console.log('edit', recoder.projectName);
+            console.log('edit', recoder);
             this.setState({
                 nameProyect : recoder.projectName,
+                tagsmethodologies: [recoder.methodologicalPhases],
+                tagsEntrepreneurs: [recoder.entrepreneurs],
                 idEdit: recoder.idProject,
                 edit: true
             });
@@ -79,12 +81,12 @@ class ProyectComponent extends Component{
         updateProyect = ()=>{
             const jsonProyect = {
                 nameProyect: this.state.nameProyect,
-                nameAsesor: this.state.nameAsesor[0].name,
+                nameAsesor: this.state.nameAsesor,
                 tagsmethodologies: this.state.tagsmethodologies,
                 tagsEntrepreneurs: this.state.tagsEntrepreneurs,
                 id: this.state.idEdit};
                 
-                console.log(this.state.nameProyect);
+                console.log("nombreeee", this.state.nameProyect);
                 
             fetch('http://localhost:3005/project/editProject', {
                 method: 'POST',
