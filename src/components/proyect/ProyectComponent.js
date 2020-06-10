@@ -13,6 +13,7 @@ class ProyectComponent extends Component{
         this.handleDelete =  this.handleDelete.bind(this);
     }
 
+    //estado de del componente
     state = {
         nameProyect: '',
         tagsmethodologies: [],
