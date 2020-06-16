@@ -20,18 +20,6 @@ class Home extends React.Component {
     console.log(this.state.collapsed);
   };
 
-  componentDidUpdate() {
-    console.log(this.props.location.pathname);
-    const path = this.props.location.pathname;
-    if (this.state.path !== path)
-      this.setState({ path: this.props.location.pathname });
-  }
-
-  getAction = (id) =>{
-    console.log("hiii", id);
-      this.setState({idProject: id });
-  }
-
   render() {
     return (
       <Layout>
@@ -40,9 +28,9 @@ class Home extends React.Component {
           onClick={this.onAlert}
         />
         <Layout className="site-layout">
-          <HeaderComponent onClick={this.onAlert} setProject ={this.getAction}  path={this.state.path} />
+          <HeaderComponent onClick={this.onAlert}  />
           <Content>
-            <ContentPrivate idProject={this.state.idProject}></ContentPrivate>
+            <ContentPrivate ></ContentPrivate>
           </Content>
         </Layout>
       </Layout>

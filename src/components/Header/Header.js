@@ -4,60 +4,23 @@ import "./Header.css";
 import { Layout, Button } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import HeaderManagement, { NavRight } from "./HeaderManagement";
-
+import Notification from './nofication';
 const { Header } = Layout;
 
 class HeaderComponent extends React.Component {
   state = {
-    projects: [],
     collapsed: true,
+    openbell: false
   };
+
+  onOpenBell = () => {
+    this.setState({openbell: true});
+  }
 
   onClick = () => {
     this.props.onClick();
   };
 
-  getProjects() {
-    let data = [];
-    fetch("http://localhost:3005/project/getProjects")
-      .then((res) => res.json())
-      .then((response) => {
-        console.log(response);
-        for (let i = 0; i < response.result.length; i++) {
-          data.push(response.result[i]);
-        }
-        if (this.state.projects.length === 0) {
-          this.setState({ projects: data });
-        }
-      });
-  }
-
-  optionsHeader() {
-    let options = null;
-    if (this.props.path === "/admin/management") {
-      this.getProjects();
-      return (
-        <div className="NavContainer">
-          <HeaderManagement handerProject = {this.setProject}
-            projects={this.state.projects}
-          />
-        </div>
-      );
-    } else {
-      options = <NavRight />;
-    }
-
-    return options;
-  }
-  setProject = (id)=>{
-    console.log("entre");
-    this.props.setProject(id);
-  }
-
-  componentDidMount() {
-    this.setProject();
-    this.optionsHeader();
-  }
 
   render() {
     return (
@@ -70,10 +33,12 @@ class HeaderComponent extends React.Component {
               )}
             </Button>
           </div>
-
-          {this.optionsHeader()}
+          <NavRight />
         </div>
+       
+        <Notification></Notification>
       </Header>
+       
     );
   }
 }

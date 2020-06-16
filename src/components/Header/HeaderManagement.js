@@ -32,23 +32,14 @@ class HeaderManagement extends Component {
   render() {
     return (
       <>
+      
         <div className="NavLeft">
           <Select className="Select_Project"
             defaultValue="Selecione Un Proyecto"
             style={{ marginLeft: "10px" }}
-            onChange={this.onChangeGetProfiles}
+            // onChange={this.onChangeGetProfiles}
           >
-            {this.props.projects.length > 0 ? (
-              this.props.projects.map((project, index) => {
-                return (
-                  <Option value={project.idProject}>
-                    {project.projectName}
-                  </Option>
-                );
-              })
-            ) : (
-              <Option value="-1">No hay Projectos</Option>
-            )}
+
           </Select>
 
           <div className="div-avatar">
@@ -70,6 +61,7 @@ class HeaderManagement extends Component {
           </div>
         </div>
         <NavRight></NavRight>
+      
       </>
     );
   }
@@ -78,13 +70,15 @@ export default HeaderManagement;
 
 export const NavRight = () => {
   return (
+   <>
     <div className="NavRight">
       <div className="NavRight__Settings">
         <SettingOutlined className="icon" style={{ fontSize: "20px" }} />
       </div>
       <div className="NavRight__Notif">
-        <BellOutlined className="icon" style={{ fontSize: "20px" }} />
+        <BellOutlined className="icon _BellOutlined" style={{ fontSize: "20px" }} />
       </div>
     </div>
+    </>
   );
 };
