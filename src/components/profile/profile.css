@@ -1,0 +1,23 @@
+.Profile_Data_Contact{
+    /* display: flex; */
+    /* line-height: 10px ; */
+}
+
+.Profile_text {
+    font-weight: bold;
+}
+
+.Profile_Buttons{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 10vh;
+    justify-content: space-between;
+}
+
+.Profile_Content_Col2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60vh;
+}
