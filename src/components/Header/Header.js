@@ -1,26 +1,33 @@
 import React from "react";
-import "./Header.css";
+import "./header.css";
 
 import { Layout, Button } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-import HeaderManagement, { NavRight } from "./HeaderManagement";
+import { MenuUnfoldOutlined, MenuFoldOutlined, BellOutlined, SettingOutlined } from "@ant-design/icons";
 import Notification from './nofication';
 const { Header } = Layout;
 
 class HeaderComponent extends React.Component {
+
+  constructor(props){
+    super(props);
+  }
   state = {
     collapsed: true,
-    openbell: false
+    openbell: 'none'
   };
-
-  onOpenBell = () => {
-    this.setState({openbell: true});
-  }
 
   onClick = () => {
     this.props.onClick();
   };
 
+  settings = ()=> {
+    this.props.history.push('/admin/profile');
+  }
+  
+  bell = () =>{
+    this.state.openbell == 'none' ?  this.setState({openbell: 'block'}) 
+    : this.setState({openbell: 'none'});
+  }
 
   render() {
     return (
@@ -33,10 +40,17 @@ class HeaderComponent extends React.Component {
               )}
             </Button>
           </div>
-          <NavRight />
+          <div className="Items">
+            <div className="NavRight__Notif">
+              <BellOutlined className="icon _BellOutlined" onClick={this.bell}style={{ fontSize: "20px" }} />
+            </div>
+            <div className="NavRight__Settings">
+              <SettingOutlined className="icon"  onClick={this.settings} style={{ fontSize: "20px" }} />
+            </div>
+          </div>
         </div>
        
-        <Notification></Notification>
+        <Notification showbell={this.state.openbell}></Notification>
       </Header>
        
     );
