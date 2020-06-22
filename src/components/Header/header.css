@@ -6,92 +6,34 @@
   width: 100%;
 }
 
-.ul-header {
-  width: 100%;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-}
-
-.ul-div {
-  display: flex;
-  justify-content: space-between;
-  width: 10%;
-  align-items: center;
-}
-
-.ul-header-2 {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.ul-div-2 {
-  display: flex;
-  justify-content: flex-end;
-  width: 5%;
-}
-
-.div-avatar {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  align-items: center;
-}
-
-.ul-header-li-project {
-  list-style: none;
-  text-decoration: none;
-  align-self: center;
-  display: block;
-  margin-left: 50%;
-  margin-right: 20%;
-}
-
-.ul-header-li {
-  list-style: none;
-  text-decoration: none;
-  align-self: center;
-  display: block;
-  margin-right: 20%;
-}
-
-.ul-header-li,
-.ul-header-li-project :hover .icon {
-  color: #1890ff !important;
-}
 .Menu-button {
   margin-left: 16px;
 }
 .Navbar {
   display: flex;
   width: 100%;
-}
-.NavLeft {
-  padding-left: 20px;
-  flex-direction: row;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 450px;
 }
+
+.Items{
+  width:4%;
+  height: 5vh;
+  display: flex;
+  justify-content: space-between; 
+}
+
+.icons{
+  margin-left: auto;
+}
+
 .NavContainer {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.NavRight {
-  display: flex;
-  align-items: center;
-  width: 5%;
-  justify-content: space-around;
-  margin-right: 16px;
-}
+
 .NavRight > * {
   cursor: pointer;
-}
-
-.Select_Project{
-  width: 40%;
 }
 
 @media (max-width: 570px) {
@@ -105,3 +47,53 @@
     width: 20%;
   }
 }
+
+.Notification{
+  background-color:#fff;
+  border: 1px  silver solid ;
+  border-radius: 10px;
+  height: 40vh;
+  width: 20%;
+  z-index: 1;
+  position: relative;
+  left: 80%;
+  overflow: auto;
+}
+
+.Notification_Title_p{
+    margin-top:-10px;
+    margin-left:20px;
+}
+.Notification_Group{
+  margin-top:-30px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.Notification_Content{
+  margin-left:20px;
+  line-height: 1px;
+  display: flex;
+}
+
+.text{
+  margin-top: 15px;
+  margin-left: 5px;
+  display: block;
+  font-size: 12px;
+
+}
+
+.hour{
+  font-size: 9px;
+  color: #D7D7D7;
+}
+
+.Notification_Avatar{
+  width: 15%;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+

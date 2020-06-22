@@ -1,8 +1,6 @@
 import React from 'react';
 import {Input, Form, Button, Layout, Row, Col, Avatar} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {Redirect} from 'react-router-dom';
-import history from '../../../routers/history';
 import FacebookLogin from "../../../components/FacebookLogin/FacebookLogin"
 const {Content} = Layout;
 
@@ -22,7 +20,7 @@ class Login extends React.Component{
 
     login = (e) =>{
         const data = { ...this.state};
-        console.log("data", data);
+        console.log("data", this.props);
 
             fetch('http://localhost:3005/users/login', {
                 method: 'POST',
@@ -36,9 +34,11 @@ class Login extends React.Component{
                     localStorage.setItem("TOKEN", response.token);
                     const username = response.result[0].name;
                     const role = response.result[0].role;
+                    const id = response.result[0].idUsers;
                     localStorage.setItem("username", username);
                     localStorage.setItem("role", role);
-                    this.props.history.push('/addmin');
+                    localStorage.setItem("idUser", id);
+                    this.props.history.push('/admin');
                 }
             });
     }

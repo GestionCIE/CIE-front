@@ -1,5 +1,4 @@
 import React from "react";
-import "./index.css";
 import { Layout, Menu } from "antd";
 import {
   UserOutlined,
@@ -12,6 +11,7 @@ import {
 
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import "./index.css";
 import Profile from "./profile";
 
 const { Sider } = Layout;
@@ -34,7 +34,7 @@ class PrincipalComponent extends React.Component {
       if (this.state.collapsed === false) {
         this.setState({ style: { display: "none" } });
       } else {
-        this.setState({ style: { display: "block", height: "100vh" } });
+        this.setState({ style: { display: "block", minHeight: '100vh', maxHeight: '120vh' } });
       }
     }
   }
@@ -85,11 +85,12 @@ class PrincipalComponent extends React.Component {
       
       >
         <div className="logo">
-          <Profile className="profile" />
+          <Profile className="profile" avatar={this.props.img}/>
         </div>
-        <Menu theme="dark" mode="inline">
+        <Menu theme="dark" mode="inline"defaultSelectedKeys={['1']}>
           {
             this.state.modules.map((e) =>{
+              console.log("item", e)
               if(e.active)
                 return <Menu.Item key={e.idSystemModules}>
                   {this.addIcon()}
@@ -103,6 +104,7 @@ class PrincipalComponent extends React.Component {
               <span>Salir</span>
             </Link>
           </Menu.Item>
+         
         </Menu>
       </Sider>
     );

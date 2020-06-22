@@ -24,3 +24,7 @@
 .Btn_Activity{
   background-color: #13BC75 ;
 }
+.Drawer_Content{
+  display: flex;
+  flex-direction: column;
+}

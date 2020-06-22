@@ -21,3 +21,16 @@
     justify-content: space-between;
     height: 60vh;
 }
+
+.steps-content {
+    margin-top: 0px;
+    border-radius: 2px;
+    min-height: 300px;
+    max-height: 300px;
+    padding-top: 20px;
+    width: 80%;
+}
+  
+  .steps-action {
+    margin-top: 24px;
+  }

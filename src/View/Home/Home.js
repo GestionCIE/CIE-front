@@ -12,7 +12,7 @@ class Home extends React.Component {
   state = {
     path: "",
     collapsed: true,
-    idProject: -1
+    img:""
   };
 
   onAlert = () => {
@@ -20,17 +20,23 @@ class Home extends React.Component {
     console.log(this.state.collapsed);
   };
 
+  handleImage = (img64bits) =>{
+    this.setState({img: img64bits});
+  }
+
   render() {
+    console.log(this.props);
     return (
       <Layout>
         <PrincipalComponent
+          img={this.state.img}
           collapsed={this.state.collapsed}
           onClick={this.onAlert}
         />
         <Layout className="site-layout">
-          <HeaderComponent onClick={this.onAlert}  />
+          <HeaderComponent onClick={this.onAlert} history={this.props.history} />
           <Content>
-            <ContentPrivate ></ContentPrivate>
+            <ContentPrivate handleImage={this.handleImage} ></ContentPrivate>
           </Content>
         </Layout>
       </Layout>
