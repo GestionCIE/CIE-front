@@ -1,0 +1,74 @@
+.Quienes {
+  margin: 30px 20px;
+  padding-top: 20px;
+}
+.Quienes__container-desc {
+  display: flex;
+}
+.container__desc-img {
+  display: flex;
+  justify-content: flex-end;
+}
+.container__desc-img img {
+  width: 100%;
+}
+.strategy__container {
+  display: flex;
+}
+.adviser__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.adviser__container-badge > Div {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding-bottom: 30px;
+}
+
+.adviser__badge-img img {
+  border-radius: 100%;
+  width: 150px;
+}
+.adviser__badge-text {
+  padding-left: 20px;
+}
+.badge__text-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+.badge__text-jobTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #525252;
+}
+.badge__text-description {
+  padding-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #727272;
+}
+@media (max-width: 1228px) {
+  .adviser__container-badge > Div {
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .adviser__container-badge > Div {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
+  .adviser__badge-text {
+    padding: 0;
+  }
+  .badge__text-description {
+    text-align: left;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}
