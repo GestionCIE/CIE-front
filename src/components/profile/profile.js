@@ -180,7 +180,7 @@ class ProfileComponent extends React.Component{
                     </Col>
                     <Col span={12}>
                         <label>Rol</label><br/>
-                        <Tag   color="#108ee9"> {this.state.rol}</Tag>
+                        <Tag  className="Tag_Rol" color="#108ee9"> {this.state.rol}</Tag>
                     </Col>
                 </Row>    
                 </Form.Item>
@@ -267,6 +267,7 @@ class ProfileComponent extends React.Component{
                     title="Edición del Perfil de usuario"
                     visible={this.state.modalEditProfile}
                     onCancel={this.closeModalEditProfile}
+                    onOk={this.closeModalEditProfile}
                 >
                     <Row>
                         <Col span={24}>
