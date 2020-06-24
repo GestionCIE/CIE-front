@@ -1,13 +1,14 @@
 import React from "react";
+import { Layout } from "antd";
 import "antd/dist/antd.css";
-import { Layout /* , Button */ } from "antd";
-/* import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons"; */
-import PrincipalComponent from "../../components/menu/PrincipalComponent";
-import HeaderComponent from "../../components/Header/Header";
-import "./Home.css";
-import ContentPrivate from "../Content/index";
-/* import { useLocation } from "react-router-dom"; */
+import "./page.css";
+
+import PrincipalComponent from "../components/menu/PrincipalComponent";
+import HeaderComponent from "../components/Header/Header";
+import ContentPrivate from "./admin/index";
+
 const { Content } = Layout;
+
 class Home extends React.Component {
   state = {
     path: "",

@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Register from "./login/register";
 import Login from "./login/login";
 import Inicio from "./cie/cie";
-import QuienesSomos from "../landing/QuienesSomos/QuienesSomos";
+import QuienesSomos from "./about/QuienesSomos";
 
 class Content extends React.Component {
   render() {
