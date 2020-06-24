@@ -1,28 +1,109 @@
-.ant-carousel .slick-slide {
-  margin: 0;
-  padding: 0;
-  max-width: 100%;
+
+.Text_Principal, .Text_Secondary, .Text_Tertiary{
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.carousel ul {
-  padding: 0;
-  margin: 0;
+.Text_Principal_H1, .Text_Secondary_H1, .Text_Tertiary_H1 {
+  font-size: 32px;
 }
 
-img {
-  width: 100%;
+.Text_Principal_H3 {
+  font-size: 24px;
+}
+.Text_Secondary_P{
+  font-size: 18px;
+}
+
+.Div_Img {
+  display: flex;
+  justify-content: center;
+}
+
+.Img_Offer{
+    width: 30%;
+    height: 100%;
+}
+
+.Img_Working {
+  width: 50%;
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
-div {
-  margin: 0;
-  padding: 0;
+.Img_Team{
+  width: 100%;
+  height: 100%;
 }
 
-.ant-carousel .slick-slide {
-  color: #fff;
+.Services {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.Services_Content{
+  font-size: 14px;
+  line-height: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25%;
+}
+
+.Button_Info{
+  margin-top: 15px;
+}
+
+.Statistics{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 100px;
+}
+
+.Footer {
+  width: 100%;
+  height: 200px;
+  background-color: #17224D;
+  margin-top: 100px;
+  /* display: flex; */
+  color: #ffffff;
+  line-height: 5px;
+
+  /* flex-direction: column; */
+  /* justify-content: center; */
+
+}
+
+.Footer_Info{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-left: 50px;  
+}
+
+
+ .Footer_Info_1, .Footer_Info_2, .Footer_Info_3{
+  margin-top: 20px;
+}
+
+
+.Img_Footer_Americana{
+  width: 50%;
+  height: 18vh;
+  margin-left: 30%;
+}
+.Footer_Copyright{
+  display: flex;
+  justify-content: center;
+}
+
+.Copyright{
+  margin-top: 25px;
 }
 
 .entrepreneur {
@@ -34,15 +115,6 @@ div {
 .info-h3 {
   text-align: center;
 }
-
-/* .jty {
-  justify-self: center;
-  margin-left: 10%;
-}
-
-.margin-buttom {
-  margin-bottom: 250px;
-} */
 
 .informationContent {
   height: auto;

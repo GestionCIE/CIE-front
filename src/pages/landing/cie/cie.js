@@ -1,58 +1,120 @@
 import React from "react";
-import { Carousel, Row, Col /* , Typography  */ } from "antd";
+import { Row, Col, Button, Statistic } from "antd";
 import Information from "./information";
 import Entrepreneur from "./entrepreneur";
-import cie from "../../../assets/img/cie.jpg";
-import Nav from "../nav";
+
+import working from '../../../assets/working.svg'
+import offer from '../../../assets/offer.svg'
+import team from '../../../assets/team.svg'
+import office from '../../../assets/office.svg'; 
+import conect from '../../../assets/conect.svg'; 
+import footer_americana from '../../../assets/footer_americana.png'
 import "./cie.css";
 
 class Cie extends React.Component {
   render() {
     return (
-      
       <Row>
         <Col span={24}>
-          <Carousel autoplay className="carousel">
-            <div>
-              <img src={cie} alt="cie" />
+          <div className="Text_Principal"> 
+            <h1 className="Text_Principal_H1">Centro de Inovación y Emprendimiento</h1>
+            <h3 className="Text_Principal_H3">Ecosistema de emprendimiento de la Corporacion Universitaria Americana</h3>
+          </div>
+          <div className="Div_Img">
+            <img src={working} className="Img_Working"/>
+          </div>
+          <div className="Text_Secondary">
+            <h1 className="Text_Secondary_H1">Nuestra Plataforma</h1>
+            <p className="Text_Secondary_P">Es un sistema de gestion que permite integrar los procesos y servicios</p>
+            <p className="Text_Secondary_P">Del centro de inovación y emprendimiento</p>
+          </div>
+          <div className="Text_Secondary">
+            <h1 className="Text_Secondary_H1">¿Que ofrecemos?</h1>
+            <div className="Div_Img">
+              <img className="Img_Offer" src={offer} />
             </div>
-            <div>
-              <img
-                src={cie}
-                alt="
-                cie
-              "
-              />
-            </div>
-            <div>
-              <img src={cie} alt="cie" />
-            </div>
-            <div>
-              <img
-                src={cie}
-                alt="
-                cie
-              "
-              />
-            </div>
-            <div>
-              <img src={cie} alt="cie" />
-            </div>
-            <div>
-              <img
-                src={cie}
-                alt="
-                cie
-              "
-              />
-            </div>
-          </Carousel>
+          
+          </div>         
+        </Col>
+  
+         <Col span={24}>
+           <div className="Services">
+              <div className="Services_Content">
+                <p>Asesoria a los proyectos, por los docentes de la </p>
+                <p>Corporacion Universitaria Americana</p>
+                <div className="Div_Img">
+                  <img className="Img_Team" src={team} />
+                </div>
+                <Button className="Button_Info" type="primary"> Conoce mas</Button>
+              </div>
+              <div className="Services_Content">
+                <p>Espacios de co-working, para trabajar en</p>
+                <p>tus proyectos</p>
+                <div className="Div_Img">
+                  <img className="Img_Team" src={office} />
+                </div>
+                <Button className="Button_Info" type="primary"> Conoce mas</Button>
+              </div>
+              <div className="Services_Content">
+                <p>Te preparamos para presentarte en</p>
+                <p> concursos y eventos</p>
+                <div className="Div_Img">
+                  <img className="Img_Team" src={conect} />
+                </div>
+                <Button className="Button_Info" type="primary"> Conoce mas</Button>
+              </div>
+           </div>
+          {/* <Entrepreneur /> */}
         </Col>
         <Col span={24}>
-          <Entrepreneur />
+          <div className="Text_Tertiary">
+              <h1 className="Text_Tertiary_H1">Con la plataforma Gestion CIE</h1>
+              <p>Ayudamos a nuestros estudiantes a llevar a cabo sus emprendimientos</p>
+              <p>gestionamos los servicios y eventos ofrecidos para la formación de</p>
+              <p>nuestros emprendedores</p>
+          </div>
+          <div className="Text_Tertiary">
+          <h1 className="Text_Tertiary_H1">Unete hoy, nuestro equipo de docentes te ayudara</h1>
+          <Button type="primary" style={{width: '11%'}}>Unete</Button>
+          </div>
+          {/* <Information></Information> */}
         </Col>
         <Col span={24}>
-          <Information></Information>
+          <div class="Statistics">
+            <Statistic title="Proyectos Atendidos" value={30} />
+            <Statistic title="Proyectos Culminados" value={30} />
+          </div>
+        </Col>
+        <Col span={24}>
+          <div className="Footer">
+            <div className="Footer_Info">
+            <Row>
+                <Col className="Footer_Info_1" span={8}>
+                  <p>Edificios</p>
+                  <p>Cosmo: calle 72 No. 41c - 64</p>
+                  <p>Barranquilla - Atlantico</p>
+                </Col>
+                <Col className="Footer_Info_2" span={8} >
+                  <p>Contactos</p>
+                  <p>Telefono: 3827745</p>
+                  <p>Celular: 3017591492</p>
+                  <p>Correo Electronico:</p>
+                  <p>gestioncie@americana.edu.co</p>
+                </Col>
+                <Col className="Footer_Info_3" span={8}>
+                  <img className="Img_Footer_Americana"src={footer_americana} />
+                </Col>
+              </Row>
+            </div>
+             <div className="Footer_Copyright"> 
+             <Row>
+                <Col className="Copyright" span={24}>
+                  <p>Corporación Universitaria Americana - Todos los derechos reservados</p>
+                </Col>
+              </Row>
+             </div>
+             
+          </div>
         </Col>
       </Row>
     );
