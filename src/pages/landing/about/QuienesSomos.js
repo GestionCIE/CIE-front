@@ -146,7 +146,7 @@ function QuienesSomos() {
                     Dedicación del Asesor
                   </div>
                   <div className="badge__text-description">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.rgt
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Nihil, aspernatur vitae? Rem, non libero eos accusantium
                     deserunt sed. Officia repellendus placeat sunt eveniet
                     corporis provident inventore voluptatibus dolores temporibussss
