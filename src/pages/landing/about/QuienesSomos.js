@@ -149,7 +149,7 @@ function QuienesSomos() {
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Nihil, aspernatur vitae? Rem, non libero eos accusantium
                     deserunt sed. Officia repellendus placeat sunt eveniet
-                    corporis provident inventore voluptatibus dolores temporibus
+                    corporis provident inventore voluptatibus dolores temporibussss
                     obcaecati.
                   </div>
                 </div>
@@ -161,5 +161,7 @@ function QuienesSomos() {
     </Row>
   );
 }
+
+
 
 export default QuienesSomos;

@@ -2,8 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import history from "./history";
 
-import Public from "../view/Public/public";
-import Home from "../view/Home/Home";
+import Public from "../pages/landing/public";
+import Home from "../pages/page";
 
 function RouterMain() {
   return (

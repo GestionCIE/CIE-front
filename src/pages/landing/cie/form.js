@@ -1,5 +1,8 @@
 import React from "react";
 import { Form, Input, Button, Select, message } from "antd";
+import eventStatisticsApi  from '../../../api/common/eventStatistics';
+const apiEventS =  new eventStatisticsApi();
+
 const { Option } = Select;
 const layout = {
   labelCol: {
@@ -35,10 +38,21 @@ class Attendance extends React.Component {
             headers:{
                 'Content-Type': 'application/json'
         }}).then(res =>res.json())
-        .then((response) =>{
+        .then(async (response) =>{
             console.log(response);
             if(response.result == 'created'){
-               message.success("Te has inscrito al evento");
+              
+               const data_id = {
+                 type: 1,
+                 count: 1,
+                 id :  this.props.idEvent
+               };
+
+               const response_update =  await apiEventS.updateStatistics(data_id);
+               if(response_update.result == 'edited'){
+                  message.success("Te has inscrito al evento");
+                  this.props.closeModal();
+               }
             } 
         });
   }

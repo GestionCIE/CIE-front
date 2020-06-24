@@ -1,0 +1,151 @@
+
+.Text_Principal, .Text_Secondary, .Text_Tertiary{
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.Text_Principal_H1, .Text_Secondary_H1, .Text_Tertiary_H1 {
+  font-size: 32px;
+}
+
+.Text_Principal_H3 {
+  font-size: 24px;
+}
+.Text_Secondary_P{
+  font-size: 18px;
+}
+
+.Div_Img {
+  display: flex;
+  justify-content: center;
+}
+
+.Img_Offer{
+    width: 30%;
+    height: 100%;
+}
+
+.Img_Working {
+  width: 50%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.Img_Team{
+  width: 100%;
+  height: 100%;
+}
+
+.Services {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.Services_Content{
+  font-size: 14px;
+  line-height: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 25%;
+}
+
+.Button_Info{
+  margin-top: 15px;
+}
+
+.Statistics{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 100px;
+}
+
+.Footer {
+  width: 100%;
+  height: 200px;
+  background-color: #17224D;
+  margin-top: 100px;
+  /* display: flex; */
+  color: #ffffff;
+  line-height: 5px;
+
+  /* flex-direction: column; */
+  /* justify-content: center; */
+
+}
+
+.Footer_Info{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-left: 50px;  
+}
+
+
+ .Footer_Info_1, .Footer_Info_2, .Footer_Info_3{
+  margin-top: 20px;
+}
+
+
+.Img_Footer_Americana{
+  width: 50%;
+  height: 18vh;
+  margin-left: 30%;
+}
+.Footer_Copyright{
+  display: flex;
+  justify-content: center;
+}
+
+.Copyright{
+  margin-top: 25px;
+}
+
+.entrepreneur {
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.info-h3 {
+  text-align: center;
+}
+
+.informationContent {
+  height: auto;
+}
+.information__container--row {
+  padding: 0 50px;
+  justify-content: center;
+}
+.information__container--row > div {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+.ant-card {
+  width: 300px;
+}
+.card__name,
+.card__date,
+.card__value,
+.card__ponent,
+.card__serviceName,
+.card__serviceDesc {
+  font-weight: 700;
+}
+.form {
+  margin-top: 40px;
+}
+.ant-btn {
+  /* display: none; */
+}
+.Form_button {
+  display: inline-block;
+  margin-right: 20px;
+}

@@ -1,0 +1,99 @@
+/* .header {
+  height: 30px;
+  background-color: #1890ff;
+  position: fixed;
+  z-index: 30;
+  width: 100%;
+} */
+
+.Menu-button {
+  margin-left: 16px;
+}
+.Navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.Items{
+  width:4%;
+  height: 5vh;
+  display: flex;
+  justify-content: space-between; 
+}
+
+.icons{
+  margin-left: auto;
+}
+
+.NavContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.NavRight > * {
+  cursor: pointer;
+}
+
+@media (max-width: 570px) {
+  .NavContainer {
+    justify-content: flex-end;
+  }
+  .NavLeft {
+    display: none;
+  }
+  .NavRight {
+    width: 20%;
+  }
+}
+
+.Notification{
+  background-color:#fff;
+  border: 1px  silver solid ;
+  border-radius: 10px;
+  height: 40vh;
+  width: 20%;
+  z-index: 1;
+  position: relative;
+  left: 80%;
+  overflow: auto;
+}
+
+.Notification_Title_p{
+    margin-top:-10px;
+    margin-left:20px;
+}
+.Notification_Group{
+  margin-top:-30px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.Notification_Content{
+  margin-left:20px;
+  line-height: 1px;
+  display: flex;
+}
+
+.text{
+  margin-top: 15px;
+  margin-left: 5px;
+  display: block;
+  font-size: 12px;
+
+}
+
+.hour{
+  font-size: 9px;
+  color: #D7D7D7;
+}
+
+.Notification_Avatar{
+  width: 15%;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+

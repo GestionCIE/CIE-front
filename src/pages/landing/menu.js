@@ -1,20 +1,15 @@
 import React from "react";
-import { /* Menu, */ Row, Col /* Button  */ } from "antd";
-import {
-  /*  BrowserRouter as Router, Switch, Route,  */ Link,
-} from "react-router-dom";
+import { Row, Col } from "antd";
+import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./public.css";
 
-class Nav extends React.Component {
+class Menu extends React.Component {
   render() {
     return (
       <Row className="row">
-        <Col className="navbar">
+        <Col span={24} className="Menu">
           <Row>
-            <Col>
-              <div className="logo"></div>
-            </Col>
             <Col>
               <Link to="/inicio/">CIE</Link>
             </Col>
@@ -42,4 +37,4 @@ class Nav extends React.Component {
   }
 }
 
-export default Nav;
+export default Menu;

@@ -15,3 +15,16 @@
 .Form_Button{
   width: 100%;
 }
+
+.Select_Project{
+  min-width: 200px;
+}
+
+
+.Btn_Activity{
+  background-color: #13BC75 ;
+}
+.Drawer_Content{
+  display: flex;
+  flex-direction: column;
+}

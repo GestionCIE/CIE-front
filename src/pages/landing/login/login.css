@@ -13,3 +13,16 @@
     display: block;
     width: 100%;
 }
+
+.Div_Content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.Img_Login{
+    width: 10%;
+    
+}
+

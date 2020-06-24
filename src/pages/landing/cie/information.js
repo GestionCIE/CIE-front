@@ -22,6 +22,11 @@ class Events extends React.Component {
   handleModal = ()=>{
     this.setState({visible: true});
   }
+
+  closeModal = () =>{
+    this.setState({visible: false});
+  }
+
   render(){
     return(  
     <Col xs={24} sm={16} md={12} lg={8} xl={8}>
@@ -39,7 +44,7 @@ class Events extends React.Component {
       </Card>
       <Modal centered visible={this.state.visible}
         onOk={this.handleOk} onCancel={this.handleCancel}>
-        <Formulario key={this.props.idEvent} idEvent={this.props.idEvent} />
+        <Formulario key={this.props.idEvent} idEvent={this.props.idEvent} closeModal = {this.closeModal}/>
       </Modal>
     </Col>);
   }

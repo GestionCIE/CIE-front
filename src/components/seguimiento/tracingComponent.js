@@ -16,7 +16,7 @@ class TracingComponent extends React.Component {
         data: []
     };
 
-        
+  
     reloadTable(id){  
         let tracing = [];
         const jsonid = {id: id};

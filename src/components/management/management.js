@@ -1,335 +1,47 @@
 import React, { Component } from "react";
-import { Table, Tabs, Col, Row, Button, Modal, Drawer ,Form, Input, Select, Checkbox, Tag, message} from "antd";
+import { Table, Tabs, Col, Row, Button, Modal, Drawer, 
+  Form, Input, Select, Checkbox, Tag, message,
+  Avatar, Tooltip, Space, Divider, Steps } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
+import DetailActivity from './detailActivity';
+
+import img_management from '../../assets/management.svg';
 const api = new ManagementApi();
 
-
-
-const columns = [
-  // {
-  //   title: "Descripción",
-  //   dataIndex: "description",
-  //   key: "description",
-  //   width: 300,
-  //   /*     fixed: "left", */
-  //   render: (description) => (
-  //     <span>
-  //       {description.map((desc) => {
-  //         let colore = "grey";
-  //         let n = desc.includes("Actividad");
-  //         if (n === true) {
-  //           colore = 800;
-  //         }
-  //         return (
-  //           <span style={{ fontWeight: colore }} key={desc}>
-  //             {desc}
-  //           </span>
-  //         );
-  //       })}
-  //     </span>
-  //   ),
-  // },
-  {
-    title: "Horas",
-    dataIndex: "hours",
-    key: "hours",
-  },
-  {
-    title: "Valor/H",
-    dataIndex: "valuehs",
-    key: "valuehs",
-  },
-  {
-    title: "Valor",
-    dataIndex: "value",
-    key: "value",
-  },
-  {
-    title: "Semana 1",
-    dataIndex: "sem1",
-    key: "sem1",
-  },
-  {
-    title: "Semana 2",
-    dataIndex: "sem2",
-    key: "sem2",
-  },
-  {
-    title: "Semana 3",
-    dataIndex: "sem3",
-    key: "sem3",
-  },
-  {
-    title: "Semana 4",
-    dataIndex: "sem4",
-    key: "sem4",
-  },
-  {
-    title: "Semana 5",
-    dataIndex: "sem5",
-    key: "sem5",
-  },
-  {
-    title: "Responsables",
-    dataIndex: "resp",
-    key: "resp",
-  },
-];
-const f1 = [
-  {
-    key: "1",
-    description: ["Actividad 1 - Evaluación de la organización"],
-    hours: "",
-    valuehs: "",
-    value: "",
-    sem1: "",
-    sem2: "",
-    sem3: "",
-    sem4: "",
-    sem5: "",
-    resp: "",
-  },
-  {
-    key: "2",
-    description: [
-      "Aplicación instrumento  para recopilar información  de la empresa",
-    ],
-    hours: 3,
-    valuehs: "$50,000",
-    value: "$150,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Carlos Fabregas",
-  },
-  {
-    key: "3",
-    description: ["Evaluación estado actual de la organización"],
-    hours: 2,
-    valuehs: "$50,000",
-    value: "$100,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Carlos Fabregas",
-  },
-  {
-    key: "4",
-    description: ["Actividad 2 - Evaluación del Modelo de Negocios"],
-    hours: "",
-    valuehs: "",
-    value: "",
-    sem1: "",
-    sem2: "",
-    sem3: "",
-    sem4: "",
-    sem5: "",
-    resp: "",
-  },
-  {
-    key: "4",
-    description: ["Taller : Modelo de Negocios"],
-    hours: 3,
-    valuehs: "$60,000",
-    value: "$180,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Ivonne Alcendra",
-  },
-  {
-    key: "4",
-    description: ["Análisis de aspectos a revisar por empresario"],
-    hours: 3,
-    valuehs: "$60,000",
-    value: "$180,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Ivonne Alcendra",
-  },
-];
-const f2 = [
-  {
-    key: "1",
-    description: ["Actividad 1-  Diseño de la propuesta de valor"],
-    hours: "",
-    valuehs: "",
-    value: "",
-    sem1: "",
-    sem2: "",
-    sem3: "",
-    sem4: "",
-    sem5: "",
-    resp: "",
-  },
-  {
-    key: "2",
-    description: ["Taller:  validación  de necesidad y perfil del cliente"],
-    hours: 3,
-    valuehs: "$70,000",
-    value: "$210,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Ilma Bonilla",
-  },
-  {
-    key: "3",
-    description: [
-      "Taller  :  plantear  los  productos/servicios  que  ayudarán  a solucionar  el  problema/necesidad  para  ese  segmento  de clientes.  ",
-    ],
-    hours: 3,
-    valuehs: "$70,000",
-    value: "$210,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Ilma Bonilla",
-  },
-  {
-    key: "4",
-    description: ["Actividad 2 - Validación de la propuesta de valor"],
-    hours: "",
-    valuehs: "",
-    value: "",
-    sem1: "",
-    sem2: "",
-    sem3: "",
-    sem4: "",
-    sem5: "",
-    resp: "",
-  },
-  {
-    key: "5",
-    description: ["Taller:  Diseño de prototipo  a validar"],
-    hours: 3,
-    valuehs: "$70,000",
-    value: "$210,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Equipo CEI",
-  },
-  {
-    key: "6",
-    description: ["Diseño de Herramientas para validación"],
-    hours: 2,
-    valuehs: "$70,000",
-    value: "$140,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "London No. 1 Lake Park",
-  },
-  {
-    key: "7",
-    description: ["Análisis de validación."],
-    hours: 2,
-    valuehs: "$70,000",
-    value: "$140,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "London No. 1 Lake Park",
-  },
-];
-const f3 = [
-  {
-    key: "1",
-    description: ["Taller: Definición de lineamientos estrategicos"],
-    hours: 3,
-    valuehs: "$70,000",
-    value: "$210,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Yesid Ariza",
-  },
-  {
-    key: "2",
-    description: ["Análisis de Factores críticos de éxito"],
-    hours: 3,
-    valuehs: "$50,000",
-    value: "$150,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Yesid Ariza",
-  },
-  {
-    key: "2",
-    description: ["Taller: Modelo de comunicación Intregradas del Marketing"],
-    hours: 3,
-    valuehs: "$60,000",
-    value: "$180,000",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "Ivonne Alcendra",
-  },
-  {
-    key: "2",
-    description: [
-      "Desarrollo  de  etrategias  de    comunicaciones  Integradas  del marketing",
-    ],
-    hours: "-",
-    valuehs: "$ ",
-    value: "$ ",
-    sem1: "testing",
-    sem2: "testing",
-    sem3: "testing",
-    sem4: "testing",
-    sem5: "testing",
-    resp: "-",
-  },
-];
-
-
-
-
+const {Step}  = Steps;
 const {Option} = Select;
 const { TabPane } = Tabs;
+
+const steps_titles = [
+  {
+    title: '1'
+  },
+  {
+    title: '2'
+  }
+];
 class management extends Component {
   state = {
+    visibleBtn: 'none',
     visible: false,
+    visibleTab: 'none',
     project: [],
+    projects:[],
     idProject: -1,
     phases: [],
     visibleDrawer: false,
-    activity: '',
+    detailtActivity: [],
     responsables: '',
     stateActivity: '',
     phaseSelect: '',
     week: '',
     activities: [],
-    assign: []
+    assign: [],
+    names:[],
+    advisor: '',
+    showComponent: false
   };
 
   constructor(){
@@ -377,21 +89,23 @@ class management extends Component {
     let response  = await api.getProjectById(id);
       if(response.result.length > 0){
         const phases = response.result[0].methodologicalPhases.split(",");
-        this.setState({project: response.result, phases: phases });
+        return {phases: phases, project: response.result};
       }
   }
 
-  componentDidUpdate(){
-    if(this.state.idProject != this.props.idProject){
-      this.setState({idProject: this.props.idProject});
-      this.getProject(this.props.idProject);
-      this.getParticipants(this.props.idProject);
-    }
+
+  async getAllProjects() {
+    const response = await api.getProjects();
+    this.setState({projects: response.result});
+  }
+
+  componentDidMount(){
+    this.getAllProjects();
   }
 
   showDetailRow = (data) =>{
     console.log(data);
-    this.setState({activity: data.nameActivity});
+    this.setState({ detailtActivity: data, showComponent:true});
     this.setVisibleDrawer();
   }
   getResponsables = (values)=>{
@@ -408,7 +122,7 @@ class management extends Component {
          key={i+1}>{response.result.entrepreneurs[i].name}</Option>)
     }
     console.log(options);
-    this.setState({responsables: options});
+    return options;
   }
 
   getStates = (value)=>{
@@ -437,12 +151,9 @@ class management extends Component {
 
   getActivities = async (id, phase) => {
 
-    console.log("get Activities", id, " ", phase, " ");
-    if(phase != ''){
       const response = await api.getActivityByProjectAndPhase(id, phase);
       console.log("Activities :", response);
-      this.setState({ activities: response.result});
-    }
+      return response.result;
   }
 
   getProfiles(_nameshort, _responsables){
@@ -488,9 +199,31 @@ class management extends Component {
     
     if(response.result  == 'created'){
       message.success('se creo la actividad')
-      this.getActivities(this.props.idProject, this.state.phaseSelect);
+      this.callgetActivities(this.state.idProject, this.state.phaseSelect);
       this.closeModal();
     }
+  }
+
+  callgetActivities = async (id, phase) => {
+    const activities = await this.getActivities(id, phase);
+    this.setState({activities: activities});
+  }
+
+  onChangeGetProfiles = async (id)=>{
+    const response = await api.getParticipants(id);
+    const {phases, project} = await this.getProject(id);
+    const options  = await this.getParticipants(id);
+    const activities = await this.getActivities(this.state.idProject, phases[0])
+    this.setState({
+      names: response.result.entrepreneurs,
+      advisor: response.result.advisor,
+      visibleBtn: 'block',
+      visibleTab: 'block',
+      idProject: id,
+      project: project, phases: phases,
+      responsables: options,
+      activities: activities
+    });
   }
 
   render() {
@@ -514,105 +247,134 @@ class management extends Component {
     }];
     return (
       <Row>
-        {
-          this.props.idProject !== -1 ? 
-          (<>
-             
-              <Col>
-                  <Modal visible={this.state.visible}
-                    onCancel = {this.closeModal}
-                    onOk = {this.createActivity}>
-                    <Form className="Form_Modal">
-                      <Form.Item>
-                            <h6>Fase Metodologica Actual</h6>
-                            <Tag color="blue">{this.state.phaseSelect}</Tag>
-                      </Form.Item>
-                      <Form.Item>
-                        <Input placeholder="Actividad" name='activity' value={this.state.activity} onChange={this.changeData}/>
-                      </Form.Item>
-                      <Form.Item>
-                          <Select 
-                           mode="multiple"
-                           style={{ width: '100%' }}
-                           placeholder="Asignar a"
-                           onChange={this.getResponsables}>
-                            {this.state.responsables}
-                          </Select>
-                      </Form.Item>
-                      <Form.Item>
-                          <Select 
-                                mode="multiple"
-                                style={{ width: '100%' }}
-                                placeholder="Progreso"
-                                onChange={this.getStates}>
-                                {states}
-                              </Select>
-                      
-                      </Form.Item>
-                            
-                      <Form.Item>
-                          <Checkbox name="1" onChange={this.changeWeek}>
-                            Semana 1
-                          </Checkbox>
-                          <Checkbox name="2" onChange={this.changeWeek}>
-                            Semana 2
-                          </Checkbox>
-                          <Checkbox name="3" onChange={this.changeWeek} >
-                            Semana 3
-                          </Checkbox>
-                          <Checkbox name="4" onChange={this.changeWeek}>
-                            Semana 4
-                          </Checkbox> <br/>
-                          <Checkbox name="5" onChange={this.changeWeek}>
-                            Semana 5
-                          </Checkbox>
-                      </Form.Item>
-                    </Form>
-                  </Modal>
-                  <Drawer
-                      title="Detalle de la actividad"
-                      placement="right"
-                      closable={false}
-                      onClose={this.closeDrawer}
-                      visible={this.state.visibleDrawer}
-                  >
-                  <Row>
-                    <Col span={24}>
-                        <p>Actividad</p>
-                        <h6>{this.state.activity}</h6>
-                    </Col>
-                  </Row>
-                  </Drawer>
-                </Col>
-                <Col span={24}>
-                <Tabs defaultActiveKey="1" onTabClick={(key, e)=>{this.getActivities(this.props.idProject, key)}}>
+        <Col>
+          <h3>Gestion de proyectos</h3>
+        </Col>
+        <Col span={20}>
+        <Space size={8}>
+        <Select className="Select_Project"
+            defaultValue="Selecione Un Proyecto"
+            style={{ marginLeft: "10px" }}
+             onChange={this.onChangeGetProfiles}
+          >
+          {this.state.projects.length > 0 ? (
+              this.state.projects.map((project, index) => {
+                return (
+                  <Option value={project.idProject}>
+                    {project.projectName}
+                  </Option>
+                );
+              })
+            ) : (
+              <Option value="-1">No hay Projectos</Option>
+            )}
+            
+          </Select>
+        
+          <div className="div-avatar">
+            <Space size={8}>
+              {this.state.names.map((profile, index) => {
+                return (
+                  <Tooltip placement="top" title={profile.name}>
+                    <Avatar>{profile.nameshort}</Avatar>
+                  </Tooltip>
+                );
+              })}
                 {
-                  console.log("tam", this.state.phases[0]),
-                  this.state.phases.map((phase, index)=>{
+                  this.state.advisor != '' ?  <> <span>Asesor</span> 
+                  <Tooltip placement="top" title={this.state.advisor} >
+                      <Avatar >{this.state.advisor}</Avatar>
+                  </Tooltip> </>: null
+                  }
+            </Space>
+          </div>
+          </Space>
+          <Modal visible={this.state.visible}
+            title="Crear Actividad"
+            onCancel = {this.closeModal}
+            onOk = {this.createActivity}>
+            <Form className="Form_Modal">
+              <Form.Item>
+                    <h6>Fase Metodologica Actual</h6>
+                    <Tag color="blue">{this.state.phaseSelect}</Tag>
+              </Form.Item>
+              <Form.Item>
+                <Input placeholder="Actividad" name='activity' value={this.state.activity} onChange={this.changeData}/>
+              </Form.Item>
+              <Form.Item>
+                  <Select 
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    placeholder="Asignar a"
+                    onChange={this.getResponsables}>
+                    {this.state.responsables}
+                  </Select>
+              </Form.Item>
+              <Form.Item>
+                  <Select 
+                        mode="multiple"
+                        style={{ width: '100%' }}
+                        placeholder="Progreso"
+                        onChange={this.getStates}>
+                        {states}
+                      </Select>
+              
+              </Form.Item>
                     
-                    return (<TabPane tab={phase} key={phase} >
-                    <Button type="primary" onClick={()=>{this.setVisibleModalAndSetPhase(phase) }}>Crear Actividad</Button>
-                    <Table
-                      columns={originColumns}
-                      pagination={false}
-                      dataSource={this.state.activities}
-                      scroll={{ x: 1200 }}
-                      onRow={(recoder)=>{
-                        return {
-                          onClick: this.showDetailRow.bind(this, recoder)
-                        }
-                      }}
-                    />
-
-                  </TabPane>)
-                  })
-
-                }
-                </Tabs>
-            </Col>
-        </>) : null
-        }
+              <Form.Item>
+                  <Checkbox name="1" onChange={this.changeWeek}>
+                    Semana 1
+                  </Checkbox>
+                  <Checkbox name="2" onChange={this.changeWeek}>
+                    Semana 2
+                  </Checkbox>
+                  <Checkbox name="3" onChange={this.changeWeek} >
+                    Semana 3
+                  </Checkbox>
+                  <Checkbox name="4" onChange={this.changeWeek}>
+                    Semana 4
+                  </Checkbox> <br/>
+                  <Checkbox name="5" onChange={this.changeWeek}>
+                    Semana 5
+                  </Checkbox>
+              </Form.Item>
+            </Form>
+          </Modal>
+          {
+            this.state.showComponent ? <DetailActivity visibleDrawer={this.state.visibleDrawer}
+            closeDrawer={this.closeDrawer} detailtActivity={this.state.detailtActivity}  /> : null
+          }
        
+          <Divider /> 
+        </Col>
+        <Col span={24}>
+
+          <Tabs  onChange={(key)=> this.callgetActivities(this.state.idProject, key)}
+            style={{display: this.state.visibleTab}}>
+          {
+            console.log("tam", this.state.phases[0]),
+            this.state.phases.map((phase, index)=>{
+              
+              return (<TabPane tab={phase} key={phase} >
+              <Button type="primary" className="Btn_Activity" onClick={()=>{this.setVisibleModalAndSetPhase(phase) }}>Crear Actividad</Button>
+              <Table
+                columns={originColumns}
+                pagination={false}
+                dataSource={this.state.activities}
+                scroll={{ x: 1200 }}
+                onRow={(recoder)=>{
+                  return {
+                    onClick: this.showDetailRow.bind(this, recoder)
+                  }
+                }}
+              />
+
+            </TabPane>)
+            })
+
+          }
+          </Tabs>
+        </Col>
       </Row>
     );
   }

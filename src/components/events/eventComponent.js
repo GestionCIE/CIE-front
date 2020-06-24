@@ -4,7 +4,14 @@ import { Input, Button, Layout, Row, Col, DatePicker, Upload, Table, message,
 import {UploadOutlined, SaveOutlined , EditOutlined, DeleteOutlined, ShareAltOutlined, PlusOutlined,
     ExclamationCircleOutlined} from '@ant-design/icons';
 import moment from 'moment';
-import  './eventComponent.css'; 
+import  './eventComponent.css';
+import eventStatisticsApi from '../../api/common/eventStatistics';
+import lasActivitySystemApi from '../../api/common/lastActivitySystem';
+
+
+const eventS = new eventStatisticsApi();
+const lastActivity = new lasActivitySystemApi();
+
 const {Content} = Layout;
 const {TextArea} = Input;
 const {confirm} = Modal;
@@ -37,6 +44,12 @@ class EventComponent extends React.Component {
     }
 
 
+    createLastActivitySystem = async (activity) =>{
+        lastActivity.createActivitySystem({
+            idUser: localStorage.getItem('idUser'),
+            activity: activity
+        })
+    }
 
     handleDelete = recoder =>{
         this.showConfirmDeleteEvent(recoder);
@@ -84,7 +97,7 @@ class EventComponent extends React.Component {
             });   
     }
 
-    createEvent = ()=>{
+    createEvent = async ()=>{
         const jsonEvent = {
             nameEvent: this.state.nameEvent,
             description: this.state.description,
@@ -98,9 +111,14 @@ class EventComponent extends React.Component {
                 'Content-Type': 'application/json'
             }})
             .then(res=> res.json())
-            .then((response)=>{
+            .then(  async (response) => {
                 if(response.result === 'created'){
-                    message.success('se ha creado un evento');
+                    console.log("Response -> ", response);
+                   const response_statistics = await eventS.createEventStatistics({idEvent: response.id});
+                   if(response_statistics == 'created')
+                        message.success('se ha creado un evento');
+                        // await this.createLastActivitySystem("creo un nuevo evento");
+                        this.closeModal();
                 }
                 this.reloadTable();
             });
@@ -183,6 +201,8 @@ class EventComponent extends React.Component {
         }
         return button;
     }
+
+
 
     render(){
         const columns = [
