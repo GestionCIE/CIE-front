@@ -9,8 +9,6 @@ class FacebookLogin extends Component{
         }
     }
 
-
-
     componentDidMount(){
 
   window.fbAsyncInit = () => {
