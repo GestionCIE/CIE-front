@@ -6,6 +6,8 @@ import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
 import DetailActivity from './detailActivity';
+
+import img_management from '../../assets/management.svg';
 const api = new ManagementApi();
 
 const {Step}  = Steps;
@@ -348,8 +350,7 @@ class management extends Component {
         <Col span={24}>
 
           <Tabs  onChange={(key)=> this.callgetActivities(this.state.idProject, key)}
-            style={{display: this.state.visibleTab}}
-          >
+            style={{display: this.state.visibleTab}}>
           {
             console.log("tam", this.state.phases[0]),
             this.state.phases.map((phase, index)=>{

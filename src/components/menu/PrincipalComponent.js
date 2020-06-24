@@ -87,21 +87,21 @@ class PrincipalComponent extends React.Component {
         <div className="logo">
           <Profile className="profile" avatar={this.props.img}/>
         </div>
-        <Menu theme="dark" mode="inline"defaultSelectedKeys={['1']}>
+        <Menu className="Menu_Content" mode="inline"defaultSelectedKeys={['1']}>
           {
             this.state.modules.map((e) =>{
               console.log("item", e)
               if(e.active)
-                return <Menu.Item key={e.idSystemModules}>
+                return <Menu.Item className="Menu_Item" key={e.idSystemModules}>
                   {this.addIcon()}
-                  <Link to={e.route}> <span>{e.nameModule}</span> </Link>
+                  <Link to={e.route}> <span className="Menu_Item_Span">{e.nameModule}</span> </Link>
                 </Menu.Item>
             })
           }
-          <Menu.Item key="15">
+          <Menu.Item key="15"  className="Menu_Item">
             <ArrowLeftOutlined />
             <Link to="/inicio" onClick={this.exit}>
-              <span>Salir</span>
+              <span className="Menu_Item_Span" >Salir</span>
             </Link>
           </Menu.Item>
          
