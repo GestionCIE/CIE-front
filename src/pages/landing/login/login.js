@@ -73,13 +73,12 @@ class Login extends React.Component{
                              onChange = {this.onChangeData} value={this.state.password} />
                         </Form.Item> 
 
-                        <Form.Item
-                        >
+                        <Form.Item>
                             <Button type="primary" className="login-form-button"  onClick={this.login}> Ingresar </Button>
                         </Form.Item>
 
                         <Form.Item>
-                            <FacebookLogin history={this.props.history}/>
+                            <FacebookLogin history={this.props.history}></FacebookLogin>
                         </Form.Item>
                     </Form>
                 </Col>

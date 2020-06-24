@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Button, Tag, Input, Tooltip, Layout, Row, Col, Form, message, Table, Modal} from 'antd';
+import { Button, Tag, Input, Tooltip, Layout, Row, Col, Form, message, Table, Modal, TreeSelect} from 'antd';
 import { PlusOutlined, SaveOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
     const {Content} = Layout;
     const {confirm} = Modal;
+    const { TreeNode } = TreeSelect;
 
 class ProyectComponent extends Component{
 
@@ -13,6 +14,7 @@ class ProyectComponent extends Component{
         this.handleDelete =  this.handleDelete.bind(this);
     }
 
+    //estado de del componente
     state = {
         nameProyect: '',
         tagsmethodologies: [],
@@ -24,17 +26,31 @@ class ProyectComponent extends Component{
         data: [],
         edit: false,
         idEdit: '',
-        //-------------------
-        tagsEntrepreneurs: [],
-        inputVisible2: false,
-        inputValue2: '',
-        editInputIndex2: -1,
-        editInputValue2: '',
+        //--------------------
+        value: undefined,
+        Entre: [],
         };
 
 
         handleDelete = recoder =>{
             this.showConfirmDeleteProyect(recoder);
+        }
+
+
+        getEntre(){
+            let Entre = [];
+            fetch('http://localhost:3005/project/getEntrepreneurs')
+                .then(res=> res.json())
+                .then((response)=>{
+                    console.log(response);
+                    for(let i=0; i < response.result.length; i++){
+                        Entre.push(response.result[i]);
+                    }
+                    this.setState({Entre: Entre});
+                    
+                });
+
+                
         }
 
         showConfirmDeleteProyect(recoder){
@@ -67,9 +83,11 @@ class ProyectComponent extends Component{
         }
 
         handleEdit = recoder =>{
-            console.log('edit', recoder.projectName);
+            console.log('edit', recoder);
             this.setState({
                 nameProyect : recoder.projectName,
+                tagsmethodologies: [recoder.methodologicalPhases],
+                tagsEntrepreneurs: [recoder.entrepreneurs],
                 idEdit: recoder.idProject,
                 edit: true
             });
@@ -79,12 +97,12 @@ class ProyectComponent extends Component{
         updateProyect = ()=>{
             const jsonProyect = {
                 nameProyect: this.state.nameProyect,
-                nameAsesor: this.state.nameAsesor[0].name,
+                nameAsesor: this.state.nameAsesor,
                 tagsmethodologies: this.state.tagsmethodologies,
                 tagsEntrepreneurs: this.state.tagsEntrepreneurs,
                 id: this.state.idEdit};
                 
-                console.log(this.state.nameProyect);
+                console.log("nombreeee", this.state.nameProyect);
                 
             fetch('http://localhost:3005/project/editProject', {
                 method: 'POST',
@@ -115,7 +133,7 @@ class ProyectComponent extends Component{
               nameProyect: this.state.nameProyect,
               tagsmethodologies: this.state.tagsmethodologies,
               nameAsesor: this.state.nameAsesor,
-              tagsEntrepreneurs: this.state.tagsEntrepreneurs      
+              value: this.state.value      
           };
           console.log("json",jsonProyect);    
           fetch('http://localhost:3005/project/createProject', {
@@ -145,12 +163,13 @@ class ProyectComponent extends Component{
                 this.setState({data: data});
                 
             });
-            console.log("datos table", this.state.data);
+            console.log("datos table");
             
     }
 
     componentDidMount(){
         this.reloadTable();
+        this.getEntre();
      }
 
 
@@ -159,36 +178,24 @@ class ProyectComponent extends Component{
         this.setState({[e.target.name] : e.target.value})
     }
 
+    onChange = value => {
+        console.log("onchangeeeeee", value);
+        this.setState({ value });
+      };
+
     //---------------------------------------------------------------------------
     handleClose = removedTag => {
         const tagsmethodologies = this.state.tagsmethodologies.filter(tag => tag !== removedTag);
         console.log(tagsmethodologies);
         this.setState({ tagsmethodologies });
       };
-
-      //entrepreneurs
-      handleClose2 = removedEntrepreneurs => {
-        const tagsEntrepreneurs = this.state.tagsEntrepreneurs.filter(tag => tag !== removedEntrepreneurs);
-        console.log(tagsEntrepreneurs);
-        this.setState({ tagsEntrepreneurs });
-      };
     
       showInput = () => {
         this.setState({ inputVisible: true }, () => this.input.focus());
       };
-
-      //entrepreneurs
-      showInput2 = () => {
-        this.setState({ inputVisible2: true }, () => this.input.focus());
-      };
-
     
       handleInputChange = e => {
         this.setState({ inputValue: e.target.value });
-      };
-
-      handleInputChange2 = e => {
-        this.setState({ inputValue2: e.target.value });
       };
     
       handleInputConfirm = () => {
@@ -208,30 +215,9 @@ class ProyectComponent extends Component{
         
       };
 
-      handleInputConfirm2 = () => {
-        const { inputValue2 } = this.state;
-        let { tagsEntrepreneurs } = this.state;
-        if (inputValue2 && tagsEntrepreneurs.indexOf(inputValue2) === -1) {
-          tagsEntrepreneurs = [...tagsEntrepreneurs, inputValue2];
-        }
-        console.log(tagsEntrepreneurs);
-        this.setState({
-          tagsEntrepreneurs,
-          inputVisible2: false,
-          inputValue2: '',
-        });
-
-        console.log(this.state.data);
-        
-      };
-
 
       handleEditInputChange = e => {
         this.setState({ editInputValue: e.target.value });
-      };
-
-      handleEditInputChange2 = e => {
-        this.setState({ editInputValue2: e.target.value });
       };
     
       handleEditInputConfirm = () => {
@@ -248,27 +234,10 @@ class ProyectComponent extends Component{
         });
       };
 
-      handleEditInputConfirm2 = () => {
-        this.setState(({ tagsEntrepreneurs, editInputIndex2, editInputValue2 }) => {
-          const newTagsEntre = [...tagsEntrepreneurs];
-          newTagsEntre[editInputIndex2] = editInputValue2;
-
-          return {
-            tagsEntrepreneurs: newTagsEntre,
-            editInputIndex2: -1,
-            editInputValue2: '',
-          };
-        });
-      };
     
       saveInputRef = input => (this.input = input);
     
       saveEditInputRef = input => (this.editInput = input);
-
-      saveInputRef2 = input => (this.input = input);
-    
-      saveEditInputRef2 = input => (this.editInput = input);
-
 
       //---------------------------------------------------------
       howIsButton(){
@@ -316,14 +285,19 @@ class ProyectComponent extends Component{
 
         //------------------------------------------------------------------------
         const { tagsmethodologies, inputVisible, inputValue, editInputIndex, editInputValue } = this.state;
-        const { tagsEntrepreneurs, inputVisible2, inputValue2, editInputIndex2, editInputValue2 } = this.state;
         return (
             <Content>
                 <Row>
                     <Col span={7}>
                         <Form>
+                        <Form.Item >
+                                    <label>Lider del proyecto</label><br/>
+                                    <label>{localStorage.getItem("username")}</label>
+                              </Form.Item>
+
                               <Form.Item>
-                                    <Input id="input" placeholder="Nombre del proyecto" value={this.state.nameProyect} name="nameProyect" onChange = {this.onChangeData.bind(this)}/> 
+                                    <label>Nombre del proyecto</label><br/>
+                                    <Input id="input" placeholder="Nombre" value={this.state.nameProyect} name="nameProyect" onChange = {this.onChangeData.bind(this)}/> 
                               </Form.Item>
 
                               <Form.Item>
@@ -375,63 +349,29 @@ class ProyectComponent extends Component{
                                     </Tag>
                                     )}
                               </Form.Item>
-
-
-                              <Form.Item >
-                                    <label>Lider del proyecto</label>
-                                    <Input type="text"  value={localStorage.getItem("username")}></Input>
-                              </Form.Item>
-
+                            
                               <Form.Item>
-                                {tagsEntrepreneurs.map((tag, index) => {
-                                 if (editInputIndex2 === index) {
-                                    return (
-                                    <Input ref={this.saveEditInputRef2} key={tag} size="small" className="tag-input"
-                                    value={editInputValue2} onChange={this.handleEditInputChange2} onBlur={this.handleEditInputConfirm2}
-                                    onPressEnter={this.handleEditInputConfirm2} /> );}
-
-                                    const isLongTag = tag.length > 20;
-
-                                    const tagElem = (
-                                    <Tag className="edit-tag" key={tag} closable={index !== 0} onClose={() => this.handleClose2(tag)}>
-                                    <span onDoubleClick={e => {
-                                    if (index !== 0) {
-                                    this.setState({ editInputIndex2: index, editInputValue2: tag }, () => {
-                                    this.editInput.focus();
-                                    });
-                                    e.preventDefault();
-                                    }}}>
-                                    {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-                                    </span>
-                                    </Tag>
-                                    );
-                                    return isLongTag ? (
-                                    <Tooltip title={tag} key={tag}>
-                                    {tagElem}
-                                    </Tooltip>
-                                    ) : (
-                                    tagElem
-                                    );
-                                    })}
-                                    {inputVisible2 && (
-                                    <Input
-                                    ref={this.saveInputRef2}
-                                    type="text"
-                                    size="small"
-                                    className="tag-input"
-                                    value={inputValue2}
-                                    onChange={this.handleInputChange2}
-                                    onBlur={this.handleInputConfirm2}
-                                    onPressEnter={this.handleInputConfirm2}
-                                    />
-                                    )}
-                                    {!inputVisible2 && (
-                                    <Tag className="site-tag-plus" onClick={this.showInput2}>
-                                    <PlusOutlined /> Emprendedores
-                                    </Tag>
-                                    )}
+                              <TreeSelect
+                                showSearch
+                                style={{ width: '100%' }}
+                                value={this.state.value}
+                                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                placeholder="Please select"
+                                allowClear
+                                multiple
+                                treeDefaultExpandAll
+                                onChange={this.onChange}
+                                >
+                                    {
+                                         this.state.Entre.map(Entrepreneurs =>{
+                                             return(
+                                            <TreeNode value={Entrepreneurs.name} title={Entrepreneurs.name} />
+                                             );
+                                        })
+                                    }
+                            </TreeSelect>
                               </Form.Item>
-
+                        
                               <Form.Item>
                                    {this.howIsButton()}
                               </Form.Item>
