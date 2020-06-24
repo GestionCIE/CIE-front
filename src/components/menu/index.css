@@ -5,10 +5,23 @@
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
+  
 }
 
 .trigger:hover {
-  color: #1890ff;
+  color: #007FFF;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+  background-color: #007FFF;
+}
+.Principal_Sider, .Menu_Content{
+  background-color: #17224D;
+  color: #F5FAFA;
+}
+
+.Menu_Item_Span{
+  color: #F5FAFA;
 }
 
 .logo {
