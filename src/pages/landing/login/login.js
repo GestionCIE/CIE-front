@@ -2,6 +2,7 @@ import React from 'react';
 import {Input, Form, Button, Layout, Row, Col, Avatar} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import FacebookLogin from "../../../components/FacebookLogin/FacebookLogin"
+import login from '../../../assets/login.svg';
 const {Content} = Layout;
 
 class Login extends React.Component{
@@ -40,7 +41,6 @@ class Login extends React.Component{
                     localStorage.setItem("role", role);
                     localStorage.setItem("idUser", id);
                     localStorage.setItem("imageUrl", img);
-                    console.log("image0", localStorage.getItem('imageUrl'))
                     this.props.history.push('/admin');
                 }
             });
@@ -49,8 +49,13 @@ class Login extends React.Component{
         return(
         <Content>
             <Row className="parent">
+                <Col span={24}>
+                    <div className="Div_Content">
+                        <h3>Gestion CIE Dashboard</h3>
+                        <img  className="Img_Login" src={login} />
+                    </div>
+                </Col>
                 <Col span={6}>
-                    <Avatar className="child" size={64} icon={<UserOutlined/>} />
                     <Form>
                         <Form.Item 
                            
