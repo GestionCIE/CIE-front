@@ -6,6 +6,7 @@ import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
 import DetailActivity from './detailActivity';
+import ContentTabs from './contentTabs';
 
 import img_management from '../../assets/management.svg';
 const api = new ManagementApi();
@@ -41,7 +42,8 @@ class management extends Component {
     assign: [],
     names:[],
     advisor: '',
-    showComponent: false
+    showComponent: false,
+    key:''
   };
 
   constructor(){
@@ -214,6 +216,7 @@ class management extends Component {
     const {phases, project} = await this.getProject(id);
     const options  = await this.getParticipants(id);
     const activities = await this.getActivities(this.state.idProject, phases[0])
+    console.log("Phase[0]", phases[0]);
     this.setState({
       names: response.result.entrepreneurs,
       advisor: response.result.advisor,
@@ -222,7 +225,8 @@ class management extends Component {
       idProject: id,
       project: project, phases: phases,
       responsables: options,
-      activities: activities
+      activities: activities,
+      key: phases[0]
     });
   }
 
@@ -349,15 +353,15 @@ class management extends Component {
         </Col>
         <Col span={24}>
 
-          <Tabs  onChange={(key)=> this.callgetActivities(this.state.idProject, key)}
+          <Tabs   onTabClick={(key)=> this.callgetActivities(this.state.idProject, key)}
             style={{display: this.state.visibleTab}}>
           {
             console.log("tam", this.state.phases[0]),
             this.state.phases.map((phase, index)=>{
-              
               return (<TabPane tab={phase} key={phase} >
+                
               <Button type="primary" className="Btn_Activity" onClick={()=>{this.setVisibleModalAndSetPhase(phase) }}>Crear Actividad</Button>
-              <Table
+              {/* <Table
                 columns={originColumns}
                 pagination={false}
                 dataSource={this.state.activities}
@@ -367,7 +371,8 @@ class management extends Component {
                     onClick: this.showDetailRow.bind(this, recoder)
                   }
                 }}
-              />
+              /> */}
+              <ContentTabs columns={originColumns} showDrawel={this.showDetailRow}dataSource={this.state.activities} getActivities={()=>{this.callgetActivities(this.state.idProject, phase)}}/>
 
             </TabPane>)
             })
