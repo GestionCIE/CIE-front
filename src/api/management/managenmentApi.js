@@ -54,9 +54,9 @@ class ManagenmentApi {
         });
     }
 
-    getProjects() {
+    getProjects(type, name) {
         return new Promise((resolve, reject)=>{
-            fetch("http://localhost:3005/project/getProjects")
+            fetch(`http://localhost:3005/project/getProjects?type=${type}&name=${name}`)
               .then((res) => res.json())
                 .then((response) => {
                     resolve(response);
