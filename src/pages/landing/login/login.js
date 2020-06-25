@@ -37,6 +37,7 @@ class Login extends React.Component{
                     const role = response.result[0].role;
                     const id = response.result[0].idUsers;
                     const img = response.result[0].image;
+                    
                     localStorage.setItem("username", username);
                     localStorage.setItem("role", role);
                     localStorage.setItem("idUser", id);

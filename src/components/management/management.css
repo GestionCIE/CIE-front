@@ -16,6 +16,14 @@
   width: 100%;
 }
 
+.Content_Select, .Div-Avatar{
+  display: flex;
+  flex-direction: column;
+}
+.Div-Avatar{
+  margin-top: 35px;
+}
+
 .Select_Project{
   min-width: 200px;
 }
@@ -27,4 +35,14 @@
 .Drawer_Content{
   display: flex;
   flex-direction: column;
+}
+
+.Img_Management{
+  width: 50%;
+}
+
+.Content_Methodologies{
+  width: 30%;
+
+
 }
