@@ -1,18 +1,21 @@
 import React, { Component } from "react";
-import { Table, Tabs, Col, Row, Button, Modal, Drawer, 
+import { List, Tabs, Col, Row, Button, Modal, 
   Form, Input, Select, Checkbox, Tag, message,
   Avatar, Tooltip, Space, Divider, Steps } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
 import DetailActivity from './detailActivity';
+import ContentTabs from './contentTabs';
 
 import img_management from '../../assets/management.svg';
+import { BorderOutlined } from "@ant-design/icons";
 const api = new ManagementApi();
 
 const {Step}  = Steps;
 const {Option} = Select;
 const { TabPane } = Tabs;
+const { info } = Modal;
 
 const steps_titles = [
   {
@@ -26,7 +29,7 @@ class management extends Component {
   state = {
     visibleBtn: 'none',
     visible: false,
-    visibleTab: 'none',
+    visibleImg: 'block',
     project: [],
     projects:[],
     idProject: -1,
@@ -41,7 +44,8 @@ class management extends Component {
     assign: [],
     names:[],
     advisor: '',
-    showComponent: false
+    showComponent: false,
+    key:''
   };
 
   constructor(){
@@ -95,7 +99,7 @@ class management extends Component {
 
 
   async getAllProjects() {
-    const response = await api.getProjects();
+    const response = await api.getProjects(localStorage.getItem('role'), localStorage.getItem('username'));
     this.setState({projects: response.result});
   }
 
@@ -143,10 +147,6 @@ class management extends Component {
   changeWeek = (e, index) =>{
     console.log("value", e, " index", index);
     this.setState({week: e.target.name});
-  }
-
-  componentWillUnmount(){
-    this.setState({idProject: -1});
   }
 
   getActivities = async (id, phase) => {
@@ -210,25 +210,33 @@ class management extends Component {
   }
 
   onChangeGetProfiles = async (id)=>{
-    const response = await api.getParticipants(id);
-    const {phases, project} = await this.getProject(id);
-    const options  = await this.getParticipants(id);
-    const activities = await this.getActivities(this.state.idProject, phases[0])
-    this.setState({
-      names: response.result.entrepreneurs,
-      advisor: response.result.advisor,
-      visibleBtn: 'block',
-      visibleTab: 'block',
-      idProject: id,
-      project: project, phases: phases,
-      responsables: options,
-      activities: activities
-    });
+    if(id != '-1'){
+      const response = await api.getParticipants(id);
+      const {phases, project} = await this.getProject(id);
+      const options  = await this.getParticipants(id);
+      const activities = await this.getActivities(this.state.idProject, phases[0])
+      console.log("Phase[0]", phases[0]);
+      this.setState({
+        names: response.result.entrepreneurs,
+        advisor: response.result.advisor,
+        visibleBtn: 'block',
+        visibleImg: 'none',
+        idProject: id,
+        project: project,
+        phases: phases,
+        responsables: options,
+        activities: activities,
+        key: phases[0]
+      });
+    }else {
+      info({content: "Usted no tiene ningun proyecto asociado"});
+    }
+    
   }
 
   render() {
     const states = [<Option key="1" value="1">En Ejecucion</Option>,<Option key="2" value="2">Cumplidad</Option> ];
-
+    const data = [ 'preincuvacíon', 'incuvación', 'aceleración'];
     const originColumns  = [{
       title: "Actividad",
       dataIndex: "nameActivity",
@@ -249,29 +257,32 @@ class management extends Component {
       <Row>
         <Col>
           <h3>Gestion de proyectos</h3>
+         
         </Col>
         <Col span={20}>
         <Space size={8}>
-        <Select className="Select_Project"
-            defaultValue="Selecione Un Proyecto"
-            style={{ marginLeft: "10px" }}
-             onChange={this.onChangeGetProfiles}
-          >
-          {this.state.projects.length > 0 ? (
-              this.state.projects.map((project, index) => {
-                return (
-                  <Option value={project.idProject}>
-                    {project.projectName}
-                  </Option>
-                );
-              })
-            ) : (
-              <Option value="-1">No hay Projectos</Option>
-            )}
-            
-          </Select>
+        <div className="Content_Select">
+          <p>Seleciona un proyecto</p>
+          <Select className="Select_Project"
+              defaultValue="Selecione Un Proyecto"
+              onChange={this.onChangeGetProfiles}
+            >
+            {this.state.projects.length > 0 ? (
+                this.state.projects.map((project, index) => {
+                  return (
+                    <Option value={project.idProject}>
+                      {project.projectName}
+                    </Option>
+                  );
+                })
+              ) : (
+                <Option value="-1">No hay Projectos</Option>
+              )}
+              
+            </Select>
         
-          <div className="div-avatar">
+        </div>
+        <div className="Div-Avatar">
             <Space size={8}>
               {this.state.names.map((profile, index) => {
                 return (
@@ -348,32 +359,28 @@ class management extends Component {
           <Divider /> 
         </Col>
         <Col span={24}>
+              <Row>
+                <Col span={24}>
+                  <div className="Content_Img" style={{display: this.state.visibleImg}}>
+                    <img className="Img_Management"src={img_management}/>
+                  </div>
+                  <div className="Content_Methodologies">
+                      <List header={<h5>Fases Metodologicas</h5>}
+                        bordered
+                        dataSource={this.state.phases}
+                        renderItem={ 
+                          item => (
+                            <List.Item>
+                              <span>{item}</span>
+                            </List.Item>
+                          )
+                        }
+                      >
 
-          <Tabs  onChange={(key)=> this.callgetActivities(this.state.idProject, key)}
-            style={{display: this.state.visibleTab}}>
-          {
-            console.log("tam", this.state.phases[0]),
-            this.state.phases.map((phase, index)=>{
-              
-              return (<TabPane tab={phase} key={phase} >
-              <Button type="primary" className="Btn_Activity" onClick={()=>{this.setVisibleModalAndSetPhase(phase) }}>Crear Actividad</Button>
-              <Table
-                columns={originColumns}
-                pagination={false}
-                dataSource={this.state.activities}
-                scroll={{ x: 1200 }}
-                onRow={(recoder)=>{
-                  return {
-                    onClick: this.showDetailRow.bind(this, recoder)
-                  }
-                }}
-              />
-
-            </TabPane>)
-            })
-
-          }
-          </Tabs>
+                      </List>
+                  </div>
+                </Col>
+              </Row>
         </Col>
       </Row>
     );

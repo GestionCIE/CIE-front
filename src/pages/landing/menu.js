@@ -20,7 +20,7 @@ class Menu extends React.Component {
               <Link to="/cie">Perfiles</Link>
             </Col>
             <Col>
-              <Link to="/inicio/quienessomos">Quienes Somos</Link>
+              <Link to="/inicio/projects">Proyectos</Link>
             </Col>
           </Row>
           <Row>
