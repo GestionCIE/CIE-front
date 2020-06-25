@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row } from "antd";
 
-import "./QuienesSomos.css";
+import "./projects.css";
 
 function QuienesSomos() {
   return (
@@ -162,6 +162,13 @@ function QuienesSomos() {
   );
 }
 
+class Projects extends React.Component {
+
+  render(){
+    return(<h1 style={{marginTop: '300px'}}>Hola</h1>)
+  }
+}
 
 
-export default QuienesSomos;
+
+export default Projects;

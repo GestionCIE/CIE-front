@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Register from "./login/register";
 import Login from "./login/login";
 import Inicio from "./cie/cie";
-import QuienesSomos from "./about/QuienesSomos";
+import Projects from "./projects/projects.js";
 
 class Content extends React.Component {
   render() {
@@ -14,12 +14,15 @@ class Content extends React.Component {
         <Route exact path="/inicio/signin" component={Register}></Route>
         <Route
           exact
-          path="/inicio/quienessomos"
-          component={QuienesSomos}
+          path="/inicio/projects"
+          component={Projects}
         ></Route>
       </Switch>
     );
   }
 }
-
+ 
+// Router path="/inicio" component = {Pblic}
+// switch 
+// Route <Inicio>
 export default Content;
