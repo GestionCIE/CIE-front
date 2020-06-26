@@ -33,7 +33,7 @@ class Events extends React.Component {
       <Card
       onClick={this.handleModal}
       hoverable
-      cover={<img src={tutor} alt="tutor" />}
+      cover={<img src={(this.props.eventImage !== undefined) ? this.props.eventImage : tutor} alt="tutor" />}
     >
       <span className="card__name"> Nombre del evento: </span>
       {this.props.eventName}<br />
@@ -118,7 +118,8 @@ function Information() {
            idEvent={event.idEvents}
            eventName={event.eventName}
            eventDescription={event.eventDescription}
-           eventDate={event.eventDate.split("T")[0]}></Events>
+           eventDate={event.eventDate.split("T")[0]}
+           eventImage={event.eventImage}></Events>
           })
         }
 

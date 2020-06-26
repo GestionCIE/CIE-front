@@ -32,7 +32,7 @@ class Register extends React.Component{
             console.log(response);
             if(response.result == 'created'){
                 message.success("Se ha registrado correctamente");
-                this.props.history.push('/signup')
+                this.props.history.push('/inicio/signup')
             }
         });
     }
@@ -86,7 +86,7 @@ class Register extends React.Component{
                         <Select defaultValue={this.state.relationship}  onChange={this.onChangeSelect}>
                             <Option value="graduate">Egresado de la U</Option>
                             <Option value="student">Estudiante</Option>
-                            <Option value="other">Otro</Option>
+                            <Option value="other">Personal de la institución</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item>
@@ -97,7 +97,6 @@ class Register extends React.Component{
             </Row>
         </Content>
         );
-
     }
 }
 
