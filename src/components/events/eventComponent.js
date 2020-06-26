@@ -7,6 +7,7 @@ import moment from 'moment';
 import  './eventComponent.css';
 import eventStatisticsApi from '../../api/common/eventStatistics';
 import lasActivitySystemApi from '../../api/common/lastActivitySystem';
+import eventImg from '../../assets/event.svg';
 
 
 const eventS = new eventStatisticsApi();
@@ -14,7 +15,7 @@ const lastActivity = new lasActivitySystemApi();
 
 const {Content} = Layout;
 const {TextArea} = Input;
-const {confirm} = Modal;
+const {confirm, success} = Modal;
  
 
 class EventComponent extends React.Component {
@@ -32,11 +33,23 @@ class EventComponent extends React.Component {
         data : [],
         idEdit: '', // olny is used for edit event
         edit: false,
-        visibleModal: false
+        visibleModal: false,
+        image: ''
     };
 
     setVisibleModal = ()=>{
         this.setState({ visibleModal : true});
+    }
+
+    onChangeFile = (info) => {
+        if(info.file.status == 'done'){
+            console.log(info.file.name);
+            this.setState({
+                image: info.file.name
+            })
+        }
+      
+
     }
 
     closeModal =() =>{
@@ -91,7 +104,7 @@ class EventComponent extends React.Component {
             .then(res=> res.json())
             .then((response)=>{
                 if(response.result === 'erased'){
-                    message.error('se ha eliminado el evento');
+                    success({content: 'se ha eliminado el evento'});
                 }
                 this.reloadTable();
             });   
@@ -101,7 +114,8 @@ class EventComponent extends React.Component {
         const jsonEvent = {
             nameEvent: this.state.nameEvent,
             description: this.state.description,
-            date: this.state.date
+            date: this.state.date,
+            eventImage: this.state.image
         };
         console.log(jsonEvent);    
         fetch('http://localhost:3005/event/createEvent', {
@@ -116,7 +130,7 @@ class EventComponent extends React.Component {
                     console.log("Response -> ", response);
                    const response_statistics = await eventS.createEventStatistics({idEvent: response.id});
                    if(response_statistics == 'created')
-                        message.success('se ha creado un evento');
+                        success({content :'se ha creado un evento'});
                         // await this.createLastActivitySystem("creo un nuevo evento");
                         this.closeModal();
                 }
@@ -147,7 +161,7 @@ class EventComponent extends React.Component {
     }
 
     onChangeDate = (e, value)=>{
-        this.setState({date: value});
+        this.setState({date: moment(value,'YYYY-MM-DD')});
     }
 
     updateEvent = ()=>{
@@ -228,54 +242,74 @@ class EventComponent extends React.Component {
                 dataIndex: 'delete',
                 render: (text, recoder)=>( <Button type="danger" onClick={() => this.handleDelete(recoder)}> <DeleteOutlined>/</DeleteOutlined> Eliminar</Button>)
             }, 
-            {
-                title: 'Publicar',
-                dataIndex: 'publish',
-                render: (text, recoder)=> <Button type="primary" > <ShareAltOutlined /> Publicar</Button>
-            }
+            // {
+            //     title: 'Publicar',
+            //     dataIndex: 'publish',
+            //     render: (text, recoder)=> <Button type="primary" > <ShareAltOutlined /> Publicar</Button>
+            // }
 
 
         ];
         return(
             <Content>
                 <Row>
-                    <Col>
-                        <Button type="primary" onClick={this.setVisibleModal}><PlusOutlined/> Crear Evento</Button>                       
+                    <Col span={24} style={{marginTop: 0}}>
+                        <Row>
+                            <Col span={6}>
+                                <div className="Div_Content_Event">
+                                    <h6>Eventos</h6>
+                                    <img className="Img_Event" src={eventImg} />
+                                </div>
+                            </Col>
+                            <Col>
+                                <div className="Div_Position">
+                                    <Button type="primary" onClick={this.setVisibleModal}><PlusOutlined/> Crear Evento</Button>                       
+                                </div>
+                            </Col>
+                        </Row>
                     </Col>
-                </Row>
-                <Row>
-                    <Col span={16}>
-                        <Table rowKey={recoder => recoder.idEvents } columns={columns} dataSource={this.state.data} ></Table>
+            
+             
+                    <Col span={24}>
+                        <Table  style={{width: '80%'}} size="small" rowKey={recoder => recoder.idEvents } columns={columns} dataSource={this.state.data} ></Table>
                     </Col>
-                    <Modal visible={this.state.visibleModal} onCancel={this.closeModal}>
+                    <Modal visible={this.state.visibleModal} title="Eventos" onCancel={this.closeModal}>
                         <Row>
                             <Col span={24}>
                                 <Form className="Form_Event">
                                     <Form.Item>
+                                            <label>Nombre del evento</label>
                                             <Input id="input" placeholder="Nombre del evento" value={this.state.nameEvent} name="nameEvent" onChange = {this.onChangeData}/> 
                                     </Form.Item>
                                 
                                     <Form.Item>
+                                            <label>Fecha del evento</label> <br/>
                                             <DatePicker placeholder="Fecha del evento" defaultValue={moment(this.state.date, 'YYYY-MM-DD')} name="date" onChange={this.onChangeDate}/>
                                     </Form.Item>
                                     
                                     <Form.Item>
+                                        <   label>Hora de inicio</label> <br/>
                                             <TimePicker placeholder="Hora de inicio" format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
                                     </Form.Item>
 
                                     <Form.Item>
+                                            <label>Hora de fin</label> <br/>
                                             <TimePicker placeholder="Hora de fin"  format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
                                     </Form.Item>
 
                                     <Form.Item>
+                                            <label>Expositor</label> <br/>
                                             <Input id="input" placeholder="Expositor" value={this.state.nameEvent} name="expositor" onChange = {this.onChangeData}/> 
                                     </Form.Item>
 
                                     <Form.Item>
+                                            <label>Descripcion</label> <br/>
                                             <TextArea placeholder="Descripción" value={this.state.description} name="description" onChange={this.onChangeData} allowClear/>  
                                     </Form.Item>
                                     <Form.Item>
-                                            <Upload>
+                                            <Upload onChange={this.onChangeFile}
+                                            name="eventFile"
+                                            action="http://localhost:3005/event/uploadFile">
                                                 <Button>
                                                 <UploadOutlined/> Subir Archivo
                                                 </Button>

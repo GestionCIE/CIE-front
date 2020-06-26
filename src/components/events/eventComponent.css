@@ -1,3 +1,17 @@
 .Form_Event{
     margin-top: 20px;
 }
+
+.Div_Content_Event{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+}
+.Div_Position {
+    margin-top: 50%;
+}
+
+.Img_Event{
+    width: 50%;
+}
