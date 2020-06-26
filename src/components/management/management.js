@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { List, Tabs, Col, Row, Button, Modal, 
-  Form, Input, Select, Checkbox, Tag, message,
-  Avatar, Tooltip, Space, Divider, Steps } from "antd";
+import { List, Col, Row, Button, Modal, 
+  Form, Input, Select, Tag,
+  Avatar, Tooltip, Space, Divider, Steps, DatePicker } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
@@ -9,14 +9,20 @@ import DetailActivity from './detailActivity';
 import ContentTabs from './contentTabs';
 
 import img_management from '../../assets/management.svg';
-import { BorderOutlined } from "@ant-design/icons";
+import { BorderOutlined , MessageOutlined, FileOutlined} from "@ant-design/icons";
+import SocketIOClient  from 'socket.io-client';
+import moment from 'moment';
+import Http from "../../api/http";
 const api = new ManagementApi();
+const http = new Http();
+const END_POINT_SOCKET =  'http://localhost:4000';
 
 const {Step}  = Steps;
 const {Option} = Select;
-const { TabPane } = Tabs;
 const { info } = Modal;
-
+const {RangePicker} = DatePicker;
+const {success, error} = Modal;
+ 
 const steps_titles = [
   {
     title: '1'
@@ -30,6 +36,8 @@ class management extends Component {
     visibleBtn: 'none',
     visible: false,
     visibleImg: 'block',
+    visibleList: 'none',
+    visibleContent: false,
     project: [],
     projects:[],
     idProject: -1,
@@ -45,12 +53,19 @@ class management extends Component {
     names:[],
     advisor: '',
     showComponent: false,
-    key:''
+
   };
 
   constructor(){
     super();
     this.showDetailRow = this.showDetailRow.bind(this);
+  }
+
+  connectSocket(){
+   const io = SocketIOClient(END_POINT_SOCKET);
+   io.emit('/users', "Hi");
+    console.log("socket happy :)");
+
   }
 
   getState(state) {
@@ -71,9 +86,17 @@ class management extends Component {
     return stateHtml;
   }
 
-  setVisibleModalAndSetPhase = (data)=>{
-    console.log("data", data);
-    this.setState({visible: true, phaseSelect: data});
+  onChangeWeek = (week) =>{
+    
+    const week_result = `${moment(new Date(week[0])).format('YYYY-MM-DD')} ${moment(new Date(week[1])).format('YYYY-MM-DD')}`
+    this.setState({
+      week: week_result
+    });
+    console.log("Moment ", week_result );
+  }
+
+  setVisibleModal = ()=>{
+    this.setState({visible: true});
   }
 
   setVisibleDrawer = ()=>{
@@ -105,6 +128,7 @@ class management extends Component {
 
   componentDidMount(){
     this.getAllProjects();
+    this.connectSocket();
   }
 
   showDetailRow = (data) =>{
@@ -175,10 +199,7 @@ class management extends Component {
   }
 
   createActivity = async () =>{
-    console.log(this.state.activity);
-    console.log(this.state.phaseSelect);
-    console.log(this.state.assign);
-    console.log(this.state.stateActivity);
+
     let assings = '';
     
     for(let i=0; i < this.state.assign.length; i++){
@@ -192,21 +213,30 @@ class management extends Component {
       responsables:assings , 
       state: this.state.stateActivity[0],
       phase: this.state.phaseSelect,
-      id: this.props.idProject
+      id: this.state.idProject,
+      week: this.state.week
     };
 
     const response = await api.createActivity(data);
     
     if(response.result  == 'created'){
-      message.success('se creo la actividad')
+      success({content: 'se creo la actividad correctamente'});
       this.callgetActivities(this.state.idProject, this.state.phaseSelect);
       this.closeModal();
+    }else {
+      error({content: 'ha habido un error al crear la actividad'});
     }
   }
 
   callgetActivities = async (id, phase) => {
     const activities = await this.getActivities(id, phase);
-    this.setState({activities: activities});
+    this.setState({activities: activities, visibleContent: true, phaseSelect: phase});
+  }
+
+  getAmountActivities(phases){
+
+    // http.get(`/projects/getAmountActivities`);
+    // [{phase: 'analisis', amountActivitys: 10, comment: }]
   }
 
   onChangeGetProfiles = async (id)=>{
@@ -214,13 +244,15 @@ class management extends Component {
       const response = await api.getParticipants(id);
       const {phases, project} = await this.getProject(id);
       const options  = await this.getParticipants(id);
-      const activities = await this.getActivities(this.state.idProject, phases[0])
+      const activities = await this.getActivities(this.state.idProject, phases[0]);
+      const amount = await this.getAmountActivities(phases);
       console.log("Phase[0]", phases[0]);
       this.setState({
         names: response.result.entrepreneurs,
         advisor: response.result.advisor,
         visibleBtn: 'block',
         visibleImg: 'none',
+        visibleList: 'block',
         idProject: id,
         project: project,
         phases: phases,
@@ -331,23 +363,10 @@ class management extends Component {
                       </Select>
               
               </Form.Item>
-                    
+                   
               <Form.Item>
-                  <Checkbox name="1" onChange={this.changeWeek}>
-                    Semana 1
-                  </Checkbox>
-                  <Checkbox name="2" onChange={this.changeWeek}>
-                    Semana 2
-                  </Checkbox>
-                  <Checkbox name="3" onChange={this.changeWeek} >
-                    Semana 3
-                  </Checkbox>
-                  <Checkbox name="4" onChange={this.changeWeek}>
-                    Semana 4
-                  </Checkbox> <br/>
-                  <Checkbox name="5" onChange={this.changeWeek}>
-                    Semana 5
-                  </Checkbox>
+                <label>Añadir semana de la actividad</label><br/>
+                <RangePicker onChange={this.onChangeWeek}/>
               </Form.Item>
             </Form>
           </Modal>
@@ -360,26 +379,47 @@ class management extends Component {
         </Col>
         <Col span={24}>
               <Row>
-                <Col span={24}>
+                <Col span={10}>
                   <div className="Content_Img" style={{display: this.state.visibleImg}}>
                     <img className="Img_Management"src={img_management}/>
                   </div>
-                  <div className="Content_Methodologies">
-                      <List header={<h5>Fases Metodologicas</h5>}
+                  <div className="Content_Methodologies" style={{display: this.state.visibleList}} >
+                      <List  header={<h5>Fases Metodologicas</h5>}
                         bordered
                         dataSource={this.state.phases}
                         renderItem={ 
                           item => (
-                            <List.Item>
-                              <span>{item}</span>
+                            <List.Item key={item}  className="List_Item" actions={[<a onClick={()=> this.callgetActivities(this.state.idProject, item)}>ver mas</a>]}>
+                              <div className="Content_List">
+                               <p>{item}</p>
+                               <Space size={8}> 
+                                  <Tooltip title="Cantidad de mensajes" placement="top">
+                                      <MessageOutlined /> <span> 10 </span>
+                                  </Tooltip>
+                                  <Tooltip title="Cantidad de actividades" placement="top">
+                                      <FileOutlined /> <span> 8 </span>
+                                  </Tooltip>
+                               </Space>  
+                              </div>
                             </List.Item>
                           )
                         }
                       >
-
                       </List>
                   </div>
                 </Col>
+                <Col span={14}>
+                  <Space size={8}>
+                    <Button onClick={this.setVisibleModal}>Crear actividad</Button>
+                    <Button onClick={this.setVisibleModal}>Editar actividad</Button>
+                  </Space>
+               
+
+                  {this.state.visibleContent ? <ContentTabs columns={originColumns} 
+                  dataSource={this.state.activities} showDetail={this.showDetailRow}/>  : null}
+  
+                </Col>
+
               </Row>
         </Col>
       </Row>

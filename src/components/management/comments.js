@@ -31,6 +31,10 @@ class Comments extends React.Component {
         value: ''
     };
 
+    componentDidMount() {
+        
+    }
+
     handleSubmit = () => {
         if(!this.state.value){
                 return;
