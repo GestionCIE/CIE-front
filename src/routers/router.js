@@ -8,7 +8,7 @@ import Home from "../pages/page";
 function RouterMain() {
   return (
     <Router history={history}>
-      <Route path="/inicio" component={Public}></Route>
+      <Route path="/" component={Public}></Route>
       <Route path="/admin" component={Home}></Route>
     </Router>
   );
