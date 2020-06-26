@@ -1,17 +1,20 @@
 import React from "react";
 import { Row, Col, Button, Statistic } from "antd";
-import Information from "./information";
-import Entrepreneur from "./entrepreneur";
+import Footer from '../footer';
 
 import working from '../../../assets/working.svg'
 import offer from '../../../assets/offer.svg'
 import team from '../../../assets/team.svg'
 import office from '../../../assets/office.svg'; 
 import conect from '../../../assets/conect.svg'; 
-import footer_americana from '../../../assets/footer_americana.png'
+
 import "./cie.css";
 
 class Cie extends React.Component {
+
+  onClickEvents = () =>{
+    this.props.history.push("/inicio/events");
+  }
   render() {
     return (
       <Row>
@@ -61,7 +64,7 @@ class Cie extends React.Component {
                 <div className="Div_Img">
                   <img className="Img_Team" src={conect} />
                 </div>
-                <Button className="Button_Info" type="primary"> Conoce mas</Button>
+                <Button className="Button_Info" type="primary" onClick={this.onClickEvents}> Conoce mas</Button>
               </div>
            </div>
           {/* <Entrepreneur /> */}
@@ -86,35 +89,7 @@ class Cie extends React.Component {
           </div>
         </Col>
         <Col span={24}>
-          <div className="Footer">
-            <div className="Footer_Info">
-            <Row>
-                <Col className="Footer_Info_1" span={8}>
-                  <p>Edificios</p>
-                  <p>Cosmo: calle 72 No. 41c - 64</p>
-                  <p>Barranquilla - Atlantico</p>
-                </Col>
-                <Col className="Footer_Info_2" span={8} >
-                  <p>Contactos</p>
-                  <p>Telefono: 3827745</p>
-                  <p>Celular: 3017591492</p>
-                  <p>Correo Electronico:</p>
-                  <p>gestioncie@americana.edu.co</p>
-                </Col>
-                <Col className="Footer_Info_3" span={8}>
-                  <img className="Img_Footer_Americana"src={footer_americana} />
-                </Col>
-              </Row>
-            </div>
-             <div className="Footer_Copyright"> 
-             <Row>
-                <Col className="Copyright" span={24}>
-                  <p>Corporación Universitaria Americana - Todos los derechos reservados</p>
-                </Col>
-              </Row>
-             </div>
-             
-          </div>
+          <Footer />
         </Col>
       </Row>
     );
