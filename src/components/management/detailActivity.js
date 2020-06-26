@@ -4,7 +4,8 @@ import Comments from './comments';
 class detailActivity extends React.Component {
     state = {
         visibleDrawer: false,
-        activity:[]
+        activity:[],
+        commentary: ''
         
     };
 
@@ -14,7 +15,6 @@ class detailActivity extends React.Component {
 
 
     render(){
-        console.log(this.props.detailtActivity.length);
         return( <Drawer
         title="Detalle de la actividad"
         placement="right"

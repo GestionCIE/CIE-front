@@ -4,6 +4,7 @@ import Register from "./login/register";
 import Login from "./login/login";
 import Inicio from "./cie/cie";
 import Projects from "./projects/projects.js";
+import newEvents from './newEvents.js';
 
 class Content extends React.Component {
   render() {
@@ -17,6 +18,7 @@ class Content extends React.Component {
           path="/inicio/projects"
           component={Projects}
         ></Route>
+        <Route exact path="/inicio/events" component={newEvents}></Route>
       </Switch>
     );
   }

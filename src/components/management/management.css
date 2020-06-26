@@ -38,11 +38,14 @@
 }
 
 .Img_Management{
-  width: 50%;
+  width: 100%;
 }
 
 .Content_Methodologies{
-  width: 30%;
+  width: 70%;
+}
 
-
+.List_Item :hover{
+  color: #007FFF;
+  cursor: pointer;
 }

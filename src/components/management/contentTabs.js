@@ -9,20 +9,20 @@ class ContentTabs extends React.Component{
     }
 
     showDetailRow = (recoder) =>{
-        this.props.showDrawel(recoder);
+        this.props.showDetail(recoder);
     }
 
     componentDidMount(){
-        console.log("ContentTabs");
-        this.props.getActivities();
+        console.log("ContentTabs datasource", this.props.dataSource);
     }
+
     render(){
         return(    
         <Table
             columns={this.props.columns}
             pagination={false}
             dataSource={this.props.dataSource}
-            // scroll={{ x: 1200 }}
+            
             onRow={(recoder)=>{
               return {
                 onClick: this.showDetailRow.bind(this, recoder)
