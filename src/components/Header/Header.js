@@ -1,62 +1,32 @@
 import React from "react";
-import "./Header.css";
+import "./header.css";
 
 import { Layout, Button } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
-import HeaderManagement, { NavRight } from "./HeaderManagement";
-
+import { MenuUnfoldOutlined, MenuFoldOutlined, BellOutlined, SettingOutlined } from "@ant-design/icons";
+import Notification from './nofication';
 const { Header } = Layout;
 
 class HeaderComponent extends React.Component {
+
+  constructor(props){
+    super(props);
+  }
   state = {
-    projects: [],
     collapsed: true,
+    openbell: 'none'
   };
 
   onClick = () => {
     this.props.onClick();
   };
 
-  getProjects() {
-    let data = [];
-    fetch("http://localhost:3005/project/getProjects")
-      .then((res) => res.json())
-      .then((response) => {
-        console.log(response);
-        for (let i = 0; i < response.result.length; i++) {
-          data.push(response.result[i]);
-        }
-        if (this.state.projects.length === 0) {
-          this.setState({ projects: data });
-        }
-      });
+  settings = ()=> {
+    this.props.history.push('/admin/profile');
   }
-
-  optionsHeader() {
-    let options = null;
-    if (this.props.path === "/admin/management") {
-      this.getProjects();
-      return (
-        <div className="NavContainer">
-          <HeaderManagement handerProject = {this.setProject}
-            projects={this.state.projects}
-          />
-        </div>
-      );
-    } else {
-      options = <NavRight />;
-    }
-
-    return options;
-  }
-  setProject = (id)=>{
-    console.log("entre");
-    this.props.setProject(id);
-  }
-
-  componentDidMount() {
-    this.setProject();
-    this.optionsHeader();
+  
+  bell = () =>{
+    this.state.openbell == 'none' ?  this.setState({openbell: 'block'}) 
+    : this.setState({openbell: 'none'});
   }
 
   render() {
@@ -70,10 +40,19 @@ class HeaderComponent extends React.Component {
               )}
             </Button>
           </div>
-
-          {this.optionsHeader()}
+          <div className="Items">
+            <div className="NavRight__Notif">
+              <BellOutlined className="icon _BellOutlined" onClick={this.bell}style={{ fontSize: "20px" }} />
+            </div>
+            <div className="NavRight__Settings">
+              <SettingOutlined className="icon"  onClick={this.settings} style={{ fontSize: "20px" }} />
+            </div>
+          </div>
         </div>
+       
+        <Notification showbell={this.state.openbell}></Notification>
       </Header>
+       
     );
   }
 }

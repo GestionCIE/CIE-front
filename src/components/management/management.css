@@ -15,3 +15,37 @@
 .Form_Button{
   width: 100%;
 }
+
+.Content_Select, .Div-Avatar{
+  display: flex;
+  flex-direction: column;
+}
+.Div-Avatar{
+  margin-top: 35px;
+}
+
+.Select_Project{
+  min-width: 200px;
+}
+
+
+.Btn_Activity{
+  background-color: #13BC75 ;
+}
+.Drawer_Content{
+  display: flex;
+  flex-direction: column;
+}
+
+.Img_Management{
+  width: 100%;
+}
+
+.Content_Methodologies{
+  width: 70%;
+}
+
+.List_Item :hover{
+  color: #007FFF;
+  cursor: pointer;
+}

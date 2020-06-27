@@ -43,7 +43,29 @@ class ManagenmentApi {
                 });
         });
     }
+
+    getParticipants(id) {
+        return new Promise((resolve, reject) =>{
+            fetch(`http://localhost:3005/project/getParticipans?id=${id}`)
+            .then((res) => res.json())
+            .then((response) => {
+                resolve(response);
+            });
+        });
+    }
+
+    getProjects(type, name) {
+        return new Promise((resolve, reject)=>{
+            fetch(`http://localhost:3005/project/getProjects?type=${type}&name=${name}`)
+              .then((res) => res.json())
+                .then((response) => {
+                    resolve(response);
+              });
+        });
+    }
 }
+
+
 
 
 export default ManagenmentApi;
