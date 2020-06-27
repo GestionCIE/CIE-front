@@ -38,6 +38,7 @@ class Login extends React.Component{
                     const role = response.result[0].role;
                     localStorage.setItem("username", username);
                     localStorage.setItem("role", role);
+                     this.props.history.push('/addmin');
                     this.props.history.push('/admin');
                 }
             });
