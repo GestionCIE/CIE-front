@@ -152,7 +152,7 @@ class ProyectComponent extends Component{
       }
 
       reloadTable(){
-          //correccion 
+    
         let data = [];
         const jsonasesor = {
             nameAsesor: this.state.nameAsesor
