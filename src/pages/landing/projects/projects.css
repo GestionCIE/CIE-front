@@ -71,4 +71,80 @@
   h1 {
     font-size: 2rem;
   }
+
+}
+
+.componenteTitulo{
+  height: 70px;
+  width: 100%;
+  background-color: #86328C;
+  margin-top:51px;
+  text-align: center;
+  padding-top: 14px;
+}
+
+.componenteTitulo span{
+  color:white;
+  font-size: 25px;
+
+}
+
+.txtemprendimientos{
+  height: 50px;
+  margin-top: 30px;
+  font-size: 2em;
+  /*padding: 10%;*/
+  /*Acumin variable concept - ExtraCondensedBold*/
+}
+
+.txtvalores{
+  height: 280px;
+  /*background-color:red;*/
+  text-align: center;
+  padding-top: 20%;
+}
+.circulo{
+  max-width: 132px;
+  min-width: 132px;
+  min-height: 135px;
+  max-height: 135px;
+  background-color: green;
+  border-radius: 580px;
+  margin-left: 32%;
+  padding-top: 30px;
+    font-size: 40px;
+    color: white;
+  margin-top: 10%;
+}
+
+
+.txtvalores span{
+  font-size: 100%;
+  font-weight: bold;
+  margin-top: 10%;
+}
+
+.contenidoEmprendimientos{
+/*padding-top: 30px;*/
+margin-top: 30px;
+}
+
+.seccionNuestrosEmprendedores{
+  height: 220px;
+  
+  /*background-color: red;*/
+}
+
+.circuloEmprendimientos{
+  max-width: 172px;
+  min-width: 172px;
+  min-height: 175px;
+  max-height: 175px;
+  background-color: green;
+  border-radius: 580px;
+  margin-left: 32%;
+  padding-top: 30px;
+    font-size: 40px;
+    color: white;
+  margin-top: 4%;
 }
