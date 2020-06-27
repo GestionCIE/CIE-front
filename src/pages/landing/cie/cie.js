@@ -15,6 +15,10 @@ class Cie extends React.Component {
   onClickEvents = () =>{
     this.props.history.push("/inicio/events");
   }
+  onClickJoin = () =>{ 
+    this.props.history.push("/inicio/signin");
+  }
+
   render() {
     return (
       <Row>
@@ -78,13 +82,14 @@ class Cie extends React.Component {
           </div>
           <div className="Text_Tertiary">
           <h1 className="Text_Tertiary_H1">Unete hoy, nuestro equipo de docentes te ayudara</h1>
-          <Button type="primary" style={{width: '11%'}}>Unete</Button>
+          <Button type="primary" onClick={this.onClickJoin} style={{width: '11%'}}>Unete</Button>
           </div>
           {/* <Information></Information> */}
         </Col>
         <Col span={24}>
           <div class="Statistics">
             <Statistic title="Proyectos Atendidos" value={30} />
+            {/* <Statistic title="Eventos Realizados" value={30} /> */}
             <Statistic title="Proyectos Culminados" value={30} />
           </div>
         </Col>
