@@ -153,7 +153,15 @@ class ProyectComponent extends Component{
 
       reloadTable(){
         let data = [];
-        fetch('http://localhost:3005/project/getProjects')
+        const jsonasesor = {
+            nameAsesor: this.state.nameAsesor
+        }
+        fetch('http://localhost:3005/project/getProjects', {
+            method: 'POST',
+            body: JSON.stringify(jsonasesor),
+            headers:{
+                'Content-Type': 'application/json'
+            }})
             .then(res=> res.json())
             .then((response)=>{
                 console.log(response);
