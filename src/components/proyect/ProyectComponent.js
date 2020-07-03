@@ -157,7 +157,7 @@ class ProyectComponent extends Component{
         const jsonasesor = {
             nameAsesor: this.state.nameAsesor
         }
-        fetch('http://localhost:3005/project/getProjects', {
+        fetch('http://localhost:3005/project/getProjects2', {
             method: 'POST',
             body: JSON.stringify(jsonasesor),
             headers:{
