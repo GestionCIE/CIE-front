@@ -15,7 +15,7 @@ class detailActivity extends React.Component {
 
 
     render(){
-        return( <Drawer
+        return( <Drawer width="40%"
         title="Detalle de la actividad"
         placement="right"
         closable={false}
@@ -54,7 +54,7 @@ class detailActivity extends React.Component {
                              <a href="/falsy"> Investigacion 1</a>
                              <a href="/falsy"> Investigacion 1</a>
                         <div>
-                             <Comments/>
+                             <Comments idActivity={this.props.detailtActivity.id}/>
                         </div>
                     </div>
                 </Col>

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Comment, Avatar, Form, Button, List, Input} from 'antd';
 import moment from 'moment';
+import Http from './../../api/http';
+const http = new Http();
 
 const {TextArea} = Input;
 
@@ -28,11 +30,46 @@ class Comments extends React.Component {
     state = {
         comments: [],
         submitting: false,
-        value: ''
+        value: '',
+        idActivity: 0
     };
 
+    async callGetComments(){
+         const res_comments = await this.getComments();
+        this.setState({
+            idActivity: this.props.idActivity,
+            comments: res_comments
+        });
+    }
+
+    componentDidUpdate() {
+        if(this.state.idActivity != this.props.idActivity) {
+            this.callGetComments();
+        }
+    }
+
     componentDidMount() {
-        
+        this.callGetComments();
+        console.log("hora ", moment(new Date(), 'YYYY-MM-DD hh:mm:ss').format());
+    }
+
+    async saveComment(){
+        try {
+        await http.post('project/comment/add', {
+            idUsers: localStorage.getItem('idUser'),
+            idActivity: this.props.idActivity,
+            commentary: `${this.state.value}`
+            }); 
+        } catch (error) {
+            console.log("saveComment() ", error);
+        } 
+
+    }
+
+    async getComments(){
+        const response = await http.get(`project/getComments?idActivity=${this.props.idActivity}`)
+        console.log(response);
+        return response.result;
     }
 
     handleSubmit = () => {
@@ -45,13 +82,14 @@ class Comments extends React.Component {
         });
 
         setTimeout(()=>{
+            this.saveComment();
             this.setState({
                 submitting: false,
                 value: '',
                 comments : [
                     {
                         author: 'Cristian Vargas',
-                        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                        avatar: localStorage.getItem('imageUrl'),
                         content: <p> {this.state.value} </p>,
                         datetime: moment().fromNow()
                     },
@@ -75,8 +113,8 @@ class Comments extends React.Component {
             {this.state.comments.length > 0 && <CommentList comments={this.state.comments} />}
             <Comment
                 avatar={
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                    alt="Cristian vargas"
+                    <Avatar src= {localStorage.getItem("imageUrl")}
+                    alt={localStorage.getItem("username")}
                     />
                 }
                 content={
