@@ -13,7 +13,7 @@ import ProjectComponent from "../../components/proyect/ProyectComponent";
 import Assistance from '../../components/assistance/assistance';
 import GeneralComponent from '../../components/general/general';
 import ProfileComponent from '../../components/profile/profile';
-
+import ProjectTrace from '../../components/projectTrace/projectTrace';
 import { Layout } from 'antd';
 const {  Content } = Layout;
 
@@ -106,6 +106,7 @@ class ContentPrivate extends React.Component {
                     <Route path = "/admin/proyect" component={ProjectComponent}/>
                     <Route path= "/admin/assistance" component={Assistance}/>
                     <Route path="/admin/profile" render={()=><ProfileComponent handle={this.props.handleImage}/>}/>
+                    <Route path="/admin/trazproject" component={ProjectTrace} />
                     <Route path="/admin" component={GeneralComponent}/>
                   
                 </Switch>
