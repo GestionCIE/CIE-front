@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { List, Col, Row, Button, Modal, 
   Form, Input, Select, Tag,
-  Avatar, Tooltip, Space, Divider, Steps, DatePicker } from "antd";
+  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Checkbox } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
 import DetailActivity from './detailActivity';
 import ContentTabs from './contentTabs';
+import AssigmentAdviser from './assigmentAdvisers';
 
 import img_management from '../../assets/management.svg';
 import { BorderOutlined , MessageOutlined, FileOutlined} from "@ant-design/icons";
@@ -38,6 +39,7 @@ class management extends Component {
     visibleImg: 'block',
     visibleList: 'none',
     visibleContent: false,
+    showModalAssigment: false,
     project: [],
     projects:[],
     idProject: -1,
@@ -114,9 +116,9 @@ class management extends Component {
   getProject = async (id) =>{
     
     let response  = await api.getProjectById(id);
+    console.log("projects: ", response);
       if(response.result.length > 0){
-        const phases = response.result[0].methodologicalPhases.split(",");
-        return {phases: phases, project: response.result};
+        return {phases: response.phases , project: response.result};
       }
   }
 
@@ -239,14 +241,15 @@ class management extends Component {
     // [{phase: 'analisis', amountActivitys: 10, comment: }]
   }
 
+
   onChangeGetProfiles = async (id)=>{
     if(id != '-1'){
       const response = await api.getParticipants(id);
       const {phases, project} = await this.getProject(id);
       const options  = await this.getParticipants(id);
-      const activities = await this.getActivities(this.state.idProject, phases[0]);
+      const activities = await this.getActivities(this.state.idProject, phases[0].phase);
       const amount = await this.getAmountActivities(phases);
-      console.log("Phase[0]", phases[0]);
+      console.log("Phase[0]", phases[0].phase);
       this.setState({
         names: response.result.entrepreneurs,
         advisor: response.result.advisor,
@@ -266,10 +269,31 @@ class management extends Component {
     
   }
 
+  showModalAssigment = () => {
+    this.setState(
+      {showModalAssigment: true}
+    )
+  }
+
+  closeModalAssigment = () =>{
+    this.setState({
+      showModalAssigment: false
+    })
+  }
+
   render() {
-    const states = [<Option key="1" value="1">En Ejecucion</Option>,<Option key="2" value="2">Cumplidad</Option> ];
-    const data = [ 'preincuvacíon', 'incuvación', 'aceleración'];
-    const originColumns  = [{
+    const states = [<Option key="1" value="1">En Ejecucion</Option>,
+      <Option key="2" value="2">Cumplidad</Option>,
+      <Option key="3" value="3">Suspendida</Option> ];
+    
+    const originColumns  = [
+    {
+      title: "Id",
+      dataIndex: 'id',
+      key: 'id',
+
+    },  
+    {
       title: "Actividad",
       dataIndex: "nameActivity",
       key: "nameActivity",
@@ -370,11 +394,14 @@ class management extends Component {
               </Form.Item>
             </Form>
           </Modal>
+          <AssigmentAdviser  showModalAssigment={this.state.showModalAssigment} 
+            closeModalAssigment={this.closeModalAssigment}
+            phases={this.state.phases} idProject={this.state.idProject}/>
           {
             this.state.showComponent ? <DetailActivity visibleDrawer={this.state.visibleDrawer}
             closeDrawer={this.closeDrawer} detailtActivity={this.state.detailtActivity}  /> : null
           }
-       
+
           <Divider /> 
         </Col>
         <Col span={24}>
@@ -389,16 +416,23 @@ class management extends Component {
                         dataSource={this.state.phases}
                         renderItem={ 
                           item => (
-                            <List.Item key={item}  className="List_Item" actions={[<a onClick={()=> this.callgetActivities(this.state.idProject, item)}>ver mas</a>]}>
+                            <List.Item key={item.phase}  className="List_Item" actions={[<a onClick={()=> this.callgetActivities(this.state.idProject, item.phase)}>ver mas</a>]}>
                               <div className="Content_List">
-                               <p>{item}</p>
+                               <p>{item.phase}</p>
                                <Space size={8}> 
                                   <Tooltip title="Cantidad de mensajes" placement="top">
-                                      <MessageOutlined /> <span> 10 </span>
+                                      <MessageOutlined /> <span> {item.amountComments} </span>
                                   </Tooltip>
                                   <Tooltip title="Cantidad de actividades" placement="top">
-                                      <FileOutlined /> <span> 8 </span>
+                                      <FileOutlined /> <span> {item.amountActivities} </span>
                                   </Tooltip>
+                                  {item.nameAssigned.length > 0 ? (
+                                  <>
+                                  <label>Asesor de fase: </label>
+                                  <Tooltip title={item.nameAssigned} placement="top">
+                                      <Avatar src={item.image} />
+                                  </Tooltip>
+                                  </>) : null}
                                </Space>  
                               </div>
                             </List.Item>
@@ -409,14 +443,17 @@ class management extends Component {
                   </div>
                 </Col>
                 <Col span={14}>
+                  {this.state.visibleContent ? 
+                 ( <>
+
                   <Space size={8}>
                     <Button onClick={this.setVisibleModal}>Crear actividad</Button>
                     <Button onClick={this.setVisibleModal}>Editar actividad</Button>
+                    <Button onClick={this.showModalAssigment}> Asig. Asesor a una fase</Button>
                   </Space>
-               
-
-                  {this.state.visibleContent ? <ContentTabs columns={originColumns} 
-                  dataSource={this.state.activities} showDetail={this.showDetailRow}/>  : null}
+                  <ContentTabs columns={originColumns} 
+                      dataSource={this.state.activities} showDetail={this.showDetailRow}/>
+                  </>) : null}
   
                 </Col>
 
