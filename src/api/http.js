@@ -8,12 +8,24 @@ class Http {
     get(uri){
         return new Promise((resolve, reject )=>{
             fetch(`${this.URL}/${uri}`)
-            .then((res) => res.json())
-            .then((response) => {
-                resolve(response);
-            });
+            .then( res => res.json())
+            .then(res => resolve(res))
+            .catch(error => reject(error));
         });
     }
+
+    post(uri, data){
+        return new Promise ((resolve , reject)=>{
+            fetch(`${this.URL}/${uri}`, {
+                body: JSON.stringify(data),
+                method: 'POST',
+               headers: { 'Content-Type' : 'application/json' } 
+            }).then( res => res.json())
+            .then(res => resolve(res))
+            .catch(error => reject(error));
+        })
+    }
+    
 }
 
 export default Http;
