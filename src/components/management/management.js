@@ -116,7 +116,7 @@ class management extends Component {
   getProject = async (id) =>{
     
     let response  = await api.getProjectById(id);
-    console.log("projects: ", response);
+    console.log("projectsssssss: ", response);
       if(response.result.length > 0){
         return {phases: response.phases , project: response.result};
       }
@@ -310,7 +310,9 @@ class management extends Component {
       render: (text, recoder)=> this.getState(recoder.state)
     }];
     return (
+      
       <Row>
+
         <Col>
           <h3>Gestion de proyectos</h3>
          
