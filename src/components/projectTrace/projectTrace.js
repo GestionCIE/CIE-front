@@ -1,5 +1,4 @@
 import React from 'react';
-import {Row, Col} from 'antd';
 import StateOfActivivities  from './chartsx';
 import { List, Col, Row, Button, Modal, 
     Form, Input, Select, Tag,
