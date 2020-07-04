@@ -1,5 +1,4 @@
 import React from 'react';
-import StateOfActivivities  from './chartsx';
 import { List, Col, Row, Button, Modal, 
     Form, Input, Select, Tag,
     Avatar, Tooltip, Space, Divider, Steps, DatePicker, Checkbox } from "antd";
@@ -82,6 +81,7 @@ class ProjectTrace extends React.Component {
 
 
     render() {
+
         const data = {
             labels: this.state.phases,
             datasets:[
