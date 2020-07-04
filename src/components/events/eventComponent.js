@@ -42,6 +42,7 @@ class EventComponent extends React.Component {
     }
 
     onChangeFile = (info) => {
+
         if(info.file.status == 'done'){
             console.log(info.file.name);
             this.setState({
