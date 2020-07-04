@@ -1,8 +1,6 @@
 import React from 'react';
-<<<<<<< HEAD
 import {Row, Col} from 'antd';
 import StateOfActivivities  from './chartsx';
-=======
 import { List, Col, Row, Button, Modal, 
     Form, Input, Select, Tag,
     Avatar, Tooltip, Space, Divider, Steps, DatePicker, Checkbox } from "antd";
@@ -13,7 +11,6 @@ const api = new ManagementApi();
 const {Option} = Select;
 
 
->>>>>>> 8e6ccb4... grafica
 class ProjectTrace extends React.Component {
     constructor(props){
         super(props);
@@ -86,18 +83,7 @@ class ProjectTrace extends React.Component {
 
 
     render() {
-<<<<<<< HEAD
-        return(
-            <Row>
-                <Col span={24}>
-                    <StateOfActivivities/>
-                </Col>
-            </Row>
-        )
-=======
-
-        
-
+    
         const data = {
             labels: this.state.phases,
             datasets:[
@@ -161,7 +147,6 @@ class ProjectTrace extends React.Component {
        </Row> 
     
         );
->>>>>>> 8e6ccb4... grafica
     }
 
 }
