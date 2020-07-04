@@ -83,7 +83,6 @@ class ProjectTrace extends React.Component {
 
 
     render() {
-    
         const data = {
             labels: this.state.phases,
             datasets:[
