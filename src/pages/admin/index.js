@@ -108,7 +108,6 @@ class ContentPrivate extends React.Component {
                     <Route path="/admin/profile" render={()=><ProfileComponent handle={this.props.handleImage}/>}/>
                     <Route path="/admin/trazproject" component={ProjectTrace} />
                     <Route path="/admin" component={GeneralComponent}/>
-                  
                 </Switch>
             </Content>
         )

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { List, Col, Row, Button, Modal, 
   Form, Input, Select, Tag,
-  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Checkbox } from "antd";
+  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Upload } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
@@ -23,6 +23,7 @@ const {Option} = Select;
 const { info } = Modal;
 const {RangePicker} = DatePicker;
 const {success, error} = Modal;
+const { TextArea } = Input;
  
 const steps_titles = [
   {
@@ -55,6 +56,10 @@ class management extends Component {
     names:[],
     advisor: '',
     showComponent: false,
+    nameAssigned: '',
+    image: '',
+    urlresource: '',
+    description: ''
 
   };
 
@@ -209,36 +214,42 @@ class management extends Component {
       assings = ((i + 1) == this.state.assign.length) 
       ?  assings + this.state.assign[i] : assings + this.state.assign[i] + ","; 
     }
-    console.log("assings", assings);
+   
     const data = {
       nameActivity: this.state.activity ,
       responsables:assings , 
       state: this.state.stateActivity[0],
       phase: this.state.phaseSelect,
       id: this.state.idProject,
-      week: this.state.week
+      week: this.state.week,
+      description: this.state.description,
+      resources :  this.state.urlresource
     };
-
+    console.log("data >> ", data);
     const response = await api.createActivity(data);
     
     if(response.result  == 'created'){
       success({content: 'se creo la actividad correctamente'});
-      this.callgetActivities(this.state.idProject, this.state.phaseSelect);
+      this.callgetActivities(this.state.idProject, this.state.phaseSelect, 0);
       this.closeModal();
     }else {
       error({content: 'ha habido un error al crear la actividad'});
     }
   }
 
-  callgetActivities = async (id, phase) => {
+  callgetActivities = async (id, phase, type_execution) => {
     const activities = await this.getActivities(id, phase);
+    
     this.setState({activities: activities, visibleContent: true, phaseSelect: phase});
+    if(type_execution == 1) {
+      this.getAssignment();
+    }
   }
 
-  getAmountActivities(phases){
-
-    // http.get(`/projects/getAmountActivities`);
-    // [{phase: 'analisis', amountActivitys: 10, comment: }]
+  getAssignment = async () =>{
+    const response = await http.get(`project/getAssignment?id=${this.state.idProject}&phase=${this.state.phaseSelect}`);
+    console.log("adviser assigned ", response.result.nameAssigned);
+    this.setState({nameAssigned: response.result.nameAssigned, image: response.result.image});
   }
 
 
@@ -248,7 +259,6 @@ class management extends Component {
       const {phases, project} = await this.getProject(id);
       const options  = await this.getParticipants(id);
       const activities = await this.getActivities(this.state.idProject, phases[0].phase);
-      const amount = await this.getAmountActivities(phases);
       console.log("Phase[0]", phases[0].phase);
       this.setState({
         names: response.result.entrepreneurs,
@@ -279,6 +289,16 @@ class management extends Component {
     this.setState({
       showModalAssigment: false
     })
+  }
+
+  onChangeFile = (info) =>{
+    if(info.file.status == 'done'){
+      console.log(info.file.response.image.replace(/\\/g, "//"));
+      this.setState({
+          urlresource: info.file.name
+      });
+      
+  }
   }
 
   render() {
@@ -366,9 +386,17 @@ class management extends Component {
                     <Tag color="blue">{this.state.phaseSelect}</Tag>
               </Form.Item>
               <Form.Item>
+                <label>Nombre de la actividad</label> <br />
                 <Input placeholder="Actividad" name='activity' value={this.state.activity} onChange={this.changeData}/>
               </Form.Item>
+
               <Form.Item>
+                  <label>Descripcion de la actividad</label>
+                  <TextArea name="description" value={this.state.description} onChange={this.changeData}/>
+              </Form.Item>
+
+              <Form.Item>
+                  <label>Asignar Actividad</label> <br />
                   <Select 
                     mode="multiple"
                     style={{ width: '100%' }}
@@ -378,6 +406,7 @@ class management extends Component {
                   </Select>
               </Form.Item>
               <Form.Item>
+                  <label>Progreso</label>
                   <Select 
                         mode="multiple"
                         style={{ width: '100%' }}
@@ -392,6 +421,17 @@ class management extends Component {
                 <label>Añadir semana de la actividad</label><br/>
                 <RangePicker onChange={this.onChangeWeek}/>
               </Form.Item>
+
+              <Form.Item>
+                <label>Agregar Recursos</label> <br/>
+                <Upload
+                  action="http://localhost:3005/project/uploadFile"
+                  onChange={this.onChangeFile}
+                  name="uploadFile">
+                    <Button>Subir Recurso</Button>
+                </Upload>
+              </Form.Item>
+
             </Form>
           </Modal>
           <AssigmentAdviser  showModalAssigment={this.state.showModalAssigment} 
@@ -416,7 +456,7 @@ class management extends Component {
                         dataSource={this.state.phases}
                         renderItem={ 
                           item => (
-                            <List.Item key={item.phase}  className="List_Item" actions={[<a onClick={()=> this.callgetActivities(this.state.idProject, item.phase)}>ver mas</a>]}>
+                            <List.Item key={item.phase}  className="List_Item" actions={[<a onClick={()=> this.callgetActivities(this.state.idProject, item.phase, 1)}>ver mas</a>]}>
                               <div className="Content_List">
                                <p>{item.phase}</p>
                                <Space size={8}> 
@@ -426,13 +466,6 @@ class management extends Component {
                                   <Tooltip title="Cantidad de actividades" placement="top">
                                       <FileOutlined /> <span> {item.amountActivities} </span>
                                   </Tooltip>
-                                  {item.nameAssigned.length > 0 ? (
-                                  <>
-                                  <label>Asesor de fase: </label>
-                                  <Tooltip title={item.nameAssigned} placement="top">
-                                      <Avatar src={item.image} />
-                                  </Tooltip>
-                                  </>) : null}
                                </Space>  
                               </div>
                             </List.Item>
@@ -450,6 +483,13 @@ class management extends Component {
                     <Button onClick={this.setVisibleModal}>Crear actividad</Button>
                     <Button onClick={this.setVisibleModal}>Editar actividad</Button>
                     <Button onClick={this.showModalAssigment}> Asig. Asesor a una fase</Button>
+                    {this.state.nameAssigned != '' ? (
+                    <>
+                      <label>Asesor de la fase: </label>
+                      <Tooltip title={this.state.nameAssigned}> 
+                        <Avatar src={this.state.image} />
+                      </Tooltip>
+                    </>) : null}
                   </Space>
                   <ContentTabs columns={originColumns} 
                       dataSource={this.state.activities} showDetail={this.showDetailRow}/>

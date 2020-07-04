@@ -1,12 +1,16 @@
-
 import React from 'react';
-
+import {Row, Col} from 'antd';
+import StateOfActivivities  from './chartsx';
 class ProjectTrace extends React.Component {
 
     render() {
-        return(<h1>
-            Hola
-        </h1>)
+        return(
+            <Row>
+                <Col span={24}>
+                    <StateOfActivivities/>
+                </Col>
+            </Row>
+        )
     }
 
 }

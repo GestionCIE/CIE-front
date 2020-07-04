@@ -1,16 +1,48 @@
 import React from 'react';
-import {Drawer, Row, Col, Avatar, Tooltip, Button } from  'antd';
+import {Drawer, Row, Col, Avatar, Tooltip } from  'antd';
 import Comments from './comments';
+import Http from './../../api/http';
+
+const http = new Http();
+
 class detailActivity extends React.Component {
     state = {
         visibleDrawer: false,
         activity:[],
-        commentary: ''
-        
+        commentary: '',
+        idActivity: 0,
+        description: '',
+        resource: '',
+        executionWeek: ''
     };
 
+    async getActivity(){
+        const response = await http.get(`project/getActivity?id=${this.props.detailtActivity.id}`)
+        const data = response.result[0];
+
+        this.setState({
+            description: data.description,
+            resource: data.resource,
+            executionWeek: data.executionWeek
+        })
+        
+        console.log("response >>>" , response);
+
+    }
+
     componentDidUpdate(){
-        console.log(this.props.detailtActivity);
+
+        if(this.props.detailtActivity.id != this.state.idActivity) {
+            console.log(this.props.detailtActivity);
+            this.getActivity();
+            this.setState({
+                idActivity: this.props.detailtActivity.id
+            });
+        }   
+    }
+
+    componentDidMount() {
+        this.getActivity();
     }
 
 
@@ -30,9 +62,7 @@ class detailActivity extends React.Component {
                         </div>
                         <div>
                             <span>Description: </span>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
-                            Proin.</p>
+                            <p>{this.state.description}</p>
                         </div>
                         <div>
                             <span>Integrantes: </span>
@@ -49,10 +79,14 @@ class detailActivity extends React.Component {
                              }
 
                         </div>
-                             <span>Recursos: </span>
-                             <a href="/falsy"> Investigacion 1</a>
-                             <a href="/falsy"> Investigacion 1</a>
-                             <a href="/falsy"> Investigacion 1</a>
+                        <div>
+                            <label>Semana de ejecucion:</label><br />
+                            <p>{this.state.executionWeek}</p>
+
+                        </div>
+                        <span>Recursos: </span>
+                        <a href={this.state.resource}> Recurso</a>
+                            
                         <div>
                              <Comments idActivity={this.props.detailtActivity.id}/>
                         </div>
