@@ -1,5 +1,5 @@
 import React from 'react';
-import {Drawer, Row, Col, Avatar, Tooltip } from  'antd';
+import {Drawer, Row, Col, Avatar, Tooltip, Rate } from  'antd';
 import Comments from './comments';
 import Http from './../../api/http';
 
@@ -45,6 +45,10 @@ class detailActivity extends React.Component {
         this.getActivity();
     }
 
+    onChangeRate = (number) => {
+        console.log("rate >>> ", number);
+    }
+
 
     render(){
         return( <Drawer width="40%"
@@ -86,6 +90,11 @@ class detailActivity extends React.Component {
                         </div>
                         <span>Recursos: </span>
                         <a href={this.state.resource}> Recurso</a>
+
+                        <div>
+                             <label>Calificar Actividad</label><br/>
+                             <Rate value={2} onChange={this.onChangeRate}/>
+                        </div>
                             
                         <div>
                              <Comments idActivity={this.props.detailtActivity.id}/>

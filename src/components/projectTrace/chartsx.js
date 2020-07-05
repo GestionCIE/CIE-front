@@ -1,21 +1,65 @@
 
 import React from 'react';
 import Http from './../../api/http';
-import {Bar} from 'react-chartjs-2'
+import {Bar, Line, Pie} from 'react-chartjs-2'
+import {Row, Col} from 'antd';
 const http = new Http();
 
 class stateOfActivivities extends React.Component {
     state = {
         data: [],
-        labels : []
+        labels : [],
+        idProject: 0,
+        typeGraph:0
     };
+
+
+    async getAmountActivities() {
+      const response = await http.get(`project/getAmountActivities/graphs?idProject=${this.props.idProject}`)
+      console.log("response >>> ", response);
+      this.setState({
+        data: response.data,
+        labels :  response.labels
+      }); 
+    }
+
+    async getAmountStateActivitities() {
+      const response = await http.get(`project/getAmountStateActivities?idProject=${this.props.idProject}`)
+      this.setState({
+        data: response.data,
+        labels: response.labels
+      });
+    }
+
+    componentDidMount() {
+     this.getTypeGraph();
+
+    }
+
+    getTypeGraph(){
+      const typeGraph = this.props.typeGraph;
+      if(typeGraph == '1') {
+        this.getAmountActivities();
+      }else if (typeGraph == '2') {
+        this.getAmountStateActivitities();
+      }
+    }
+
+    componentDidUpdate(){
+      if(this.props.typeGraph != this.state.typeGraph){
+        this.getTypeGraph();
+        this.setState({
+          typeGraph: this.props.typeGraph
+        })
+      }
+    }
 
     render(){
         const data = {
             labels: this.state.labels,
             datasets: [
               {
-                label: 'Personal Registrado por evento',
+                label: this.props.titleGraph,
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -38,8 +82,18 @@ class stateOfActivivities extends React.Component {
             ]
           };
         return(
-            <Bar />
-        )
+          <Row>
+            <Col span={12}>
+                <Bar data={data} />
+            </Col>
+            <Col span={12}>
+                <Line data={data}/>
+            </Col>
+            <Col span={12}>
+              <Pie data={data}/>
+            </Col>
+          </Row>
+          )
     }
 }
 
