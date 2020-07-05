@@ -1,5 +1,5 @@
 import React from 'react';
-import {Drawer, Row, Col, Avatar, Tooltip } from  'antd';
+import {Drawer, Row, Col, Avatar, Tooltip, Rate } from  'antd';
 import Comments from './comments';
 import Http from './../../api/http';
 
@@ -13,7 +13,8 @@ class detailActivity extends React.Component {
         idActivity: 0,
         description: '',
         resource: '',
-        executionWeek: ''
+        executionWeek: '',
+        rate: 1
     };
 
     async getActivity(){
@@ -43,6 +44,26 @@ class detailActivity extends React.Component {
 
     componentDidMount() {
         this.getActivity();
+    }
+
+    onChangeRate = (number) => {
+
+        console.log("rate >>> ", number);
+        
+        this.addRate(number);
+    }
+
+    async addRate(number) {
+        const data = {
+            rate: number,
+            id: this.props.detailtActivity.id
+        }
+        const response = await http.post('project/updateRate', data);
+        this.setState({
+            rate: number
+        });
+        console.log("rate update >>>" , response);
+
     }
 
 
@@ -86,6 +107,11 @@ class detailActivity extends React.Component {
                         </div>
                         <span>Recursos: </span>
                         <a href={this.state.resource}> Recurso</a>
+
+                        <div>
+                             <label>Calificar Actividad</label><br/>
+                             <Rate value={this.state.rate} count={4} onChange={this.onChangeRate}/>
+                        </div>
                             
                         <div>
                              <Comments idActivity={this.props.detailtActivity.id}/>

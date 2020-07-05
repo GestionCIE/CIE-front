@@ -2,12 +2,27 @@ import React from 'react';
 import { List, Col, Row, Button, Modal, 
     Form, Input, Select, Tag,
     Avatar, Tooltip, Space, Divider, Steps, DatePicker, Checkbox } from "antd";
-import {Bar, Line, Pie} from "react-chartjs-2";
+import StateOfActivivities from './chartsx';
+import charImg from './../../assets/graph.svg';
 import ManagementApi from '../../api/management/managenmentApi';
+import './projectTrace.css';
 const api = new ManagementApi();
 
 const {Option} = Select;
 
+const typegraphs = [
+  {
+     id: 1,
+     content: 'cantidad de actividades'
+  },
+  {
+    id: 2,
+    content: 'estado de las actividades'
+ }, 
+{
+  id: 3,
+  content: 'Calificacion de las actividades'
+}];
 
 class ProjectTrace extends React.Component {
     constructor(props){
@@ -17,6 +32,10 @@ class ProjectTrace extends React.Component {
             project:[],
             phases:[],
             nameAsesor: localStorage.getItem("username"),
+            idProject: 0,
+            typegraph: 0,
+            visibleGraph: false,
+            titleGraph: ''
             
         }
 
@@ -43,26 +62,20 @@ class ProjectTrace extends React.Component {
                 
             });
             console.log("datos table");
-            
     }
 
-
-    onChangeGetProfiles = async (id)=>{
-        if(id != '-1'){
-          const {phases, project} = await this.getProject(id);
-          const fases = phases.map((phases, i) =>{
-            return(
-            phases.phase   
-            );
-        })
-          //console.log("Phase[0]", phases[0].phase);
-          this.setState({
-            project: project,
-            phases: fases,
-          });
-
-          
+    findTitleById(id) {
+      for(let i=0; i < typegraphs.length; i++){
+        if(typegraphs[i].id == id) {
+          return typegraphs[i].content;
         }
+      }
+    }
+    onChangeGetProfiles = async (id)=>{
+       
+        this.setState({
+          idProject: id
+        });
       }
 
       getProject = async (id) =>{
@@ -74,6 +87,21 @@ class ProjectTrace extends React.Component {
           }
       }
 
+      onChangeGraph = (id) =>{
+        const title = this.findTitleById(id);
+        console.log("title >>> ", title);
+        this.setState({
+          typegraph: id,
+          titleGraph: title
+        })
+      }
+
+
+      getGraph = () =>{
+        this.setState(
+          {visibleGraph: true}
+        )
+      }
 
     componentDidMount(){
         this.getProjecs();
@@ -81,6 +109,7 @@ class ProjectTrace extends React.Component {
 
 
     render() {
+       
 
         const data = {
             labels: this.state.phases,
@@ -106,9 +135,12 @@ class ProjectTrace extends React.Component {
         }
         return(
        <Row>
+          <Col span={24}>
+            <h3>Trazabilidad de proyectos</h3>
+          </Col>
            <Col span={24}>
             <Space size={15}>
-           <Select defaultValue="seleccione un proyecto" className="select_project"
+           <Select defaultValue="seleccione un proyecto" className="Select_Inputs"
             onChange={this.onChangeGetProfiles} >
                
            {this.state.projects.length > 0 ? (
@@ -126,21 +158,24 @@ class ProjectTrace extends React.Component {
            </Select>
            
 
-           <Select defaultValue="seleccione un Repote" className="select_Reporte" >
-               <Option value="1"> cantidad de actividades </Option>
-               <Option value="2"> opcion 2 </Option>
-               <Option value="3"> opcion 3 </Option>
+           <Select defaultValue="seleccione un Repote" className="Select_Inputs" onChange={this.onChangeGraph} >
+              ( 
+               {typegraphs.map(item =>{
+                 return (<Option value={item.id}>{item.content}</Option>)
+               })}
            </Select>
 
-           <button>Graficar</button>
+           <Button type="primary" onClick={this.getGraph}>Graficar</Button>
            </Space>
-
-
            </Col>
 
-           <Col span={10}>
-               <Bar data={data}
-               options={{}}></Bar>
+           <Col span={24}>
+             {
+               this.state.visibleGraph ? (
+                <StateOfActivivities idProject={this.state.idProject} typeGraph={this.state.typegraph}
+                titleGraph={this.state.titleGraph}/>) :  <img className="Img_Char"src={charImg} />
+             }
+               
            </Col>
        </Row> 
     
