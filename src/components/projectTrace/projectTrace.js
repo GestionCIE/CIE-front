@@ -6,7 +6,11 @@ import StateOfActivivities from './chartsx';
 import charImg from './../../assets/graph.svg';
 import ManagementApi from '../../api/management/managenmentApi';
 import './projectTrace.css';
+import Http from './../../api/http';
+
+const http = new Http();
 const api = new ManagementApi();
+
 
 const {Option} = Select;
 
@@ -64,6 +68,16 @@ class ProjectTrace extends React.Component {
             console.log("datos table");
     }
 
+    async getAllProjects(){
+      
+      const response = await http.get(`project/getProjects?type=${localStorage.getItem('role')}`);
+      this.setState({
+        projects: response.result
+      })
+    }
+
+
+
     findTitleById(id) {
       for(let i=0; i < typegraphs.length; i++){
         if(typegraphs[i].id == id) {
@@ -71,7 +85,7 @@ class ProjectTrace extends React.Component {
         }
       }
     }
-    onChangeGetProfiles = async (id)=>{
+    onChangeGetProfiles = (id)=>{
        
         this.setState({
           idProject: id
@@ -104,7 +118,12 @@ class ProjectTrace extends React.Component {
       }
 
     componentDidMount(){
-        this.getProjecs();
+        if(localStorage.getItem('role') === 'adviser'){
+          this.getProjecs();
+        }else if (localStorage.getItem('role') === 'administrator'){
+          this.getAllProjects();
+        }
+        
      }
 
 
@@ -140,8 +159,9 @@ class ProjectTrace extends React.Component {
           </Col>
            <Col span={24}>
             <Space size={15}>
+       
            <Select defaultValue="seleccione un proyecto" className="Select_Inputs"
-            onChange={this.onChangeGetProfiles} >
+            onChange={ this.onChangeGetProfiles } >
                
            {this.state.projects.length > 0 ? (
                 this.state.projects.map((project, index) => {
