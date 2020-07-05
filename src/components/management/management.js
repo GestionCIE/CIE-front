@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { List, Col, Row, Button, Modal, 
   Form, Input, Select, Tag,
-  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Upload } from "antd";
+  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Upload, Checkbox } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
@@ -41,12 +41,14 @@ class management extends Component {
     visibleList: 'none',
     visibleContent: false,
     showModalAssigment: false,
+    titleModal: '',
     project: [],
     projects:[],
     idProject: -1,
     phases: [],
     visibleDrawer: false,
     detailtActivity: [],
+    idActivityEdit: '',
     responsables: '',
     stateActivity: '',
     phaseSelect: '',
@@ -59,7 +61,9 @@ class management extends Component {
     nameAssigned: '',
     image: '',
     urlresource: '',
-    description: ''
+    description: '',
+    progress: 1,
+    activity: ''
 
   };
 
@@ -102,8 +106,14 @@ class management extends Component {
     console.log("Moment ", week_result );
   }
 
-  setVisibleModal = ()=>{
-    this.setState({visible: true});
+  setVisibleModal = (e)=>{
+    let title = '';
+    if(e.target.name == 'add') {
+      title = 'Crear Evento';
+    }else {
+      title = 'Editar Evento';
+    }
+    this.setState({visible: true, titleModal: title});
   }
 
   setVisibleDrawer = ()=>{
@@ -133,8 +143,20 @@ class management extends Component {
     this.setState({projects: response.result});
   }
 
+  async getProjectEntrepreneur() {
+    const response = await http.get(`project/getProjects?type=${localStorage.getItem('role')}&name=${localStorage.getItem('username')}`);
+    
+    this.setState({projects: response.result})
+  }
+
   componentDidMount(){
-    this.getAllProjects();
+    if(localStorage.getItem('role') === 'adviser'){
+      this.getAllProjects();
+    }else if (localStorage.getItem('role') === 'entrepreneur'){
+      console.log("getProjectEntrepreneur >>>>");
+      this.getProjectEntrepreneur();
+    }
+   
     this.connectSocket();
   }
 
@@ -145,7 +167,7 @@ class management extends Component {
   }
   getResponsables = (values)=>{
     this.setState({assign: values});
-    this.getParticipants(this.props.idProject);
+    this.getParticipants(this.state.idProject);
   }
 
   getParticipants = async (id)=>{
@@ -237,6 +259,25 @@ class management extends Component {
     }
   }
 
+  EditActivity =  () =>{
+    this.getActivityById()
+    
+  }
+
+  async getActivityById (){
+    const response = await http.get(`project/getActivity?id=${this.state.idActivityEdit}`)
+    console.log("edit activity >>> ", response);
+    const activity = response.result[0];
+    this.setState({
+      activity : activity.nameActivity,
+      description: activity.description,
+      // responsables: activity.responsables.split(","),
+      progress :  activity.state
+    });
+
+    console.log(this.state);
+  }
+
   callgetActivities = async (id, phase, type_execution) => {
     const activities = await this.getActivities(id, phase);
     
@@ -298,7 +339,13 @@ class management extends Component {
           urlresource: info.file.name
       });
       
+    }
   }
+
+  getIdActivity = (recoder) => {
+    this.setState({
+      idActivityEdit: recoder.id
+    })
   }
 
   render() {
@@ -311,6 +358,7 @@ class management extends Component {
       title: "Id",
       dataIndex: 'id',
       key: 'id',
+      render: (text, recoder) => <Checkbox onClick={() => this.getIdActivity(recoder)} />
 
     },  
     {
@@ -379,7 +427,7 @@ class management extends Component {
           </div>
           </Space>
           <Modal visible={this.state.visible}
-            title="Crear Actividad"
+            title={this.state.titleModal}
             onCancel = {this.closeModal}
             onOk = {this.createActivity}>
             <Form className="Form_Modal">
@@ -410,10 +458,11 @@ class management extends Component {
               <Form.Item>
                   <label>Progreso</label>
                   <Select 
+                        defaultValue={this.state.progress}
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Progreso"
-                        onChange={this.getStates}>
+                        onChange={this.getStates}>                        
                         {states}
                       </Select>
               
@@ -421,7 +470,7 @@ class management extends Component {
                    
               <Form.Item>
                 <label>Añadir semana de la actividad</label><br/>
-                <RangePicker onChange={this.onChangeWeek}/>
+                <RangePicker defaultValue={moment(new RangePicker())} onChange={this.onChangeWeek}/>
               </Form.Item>
 
               <Form.Item>
@@ -429,9 +478,17 @@ class management extends Component {
                 <Upload
                   action="http://localhost:3005/project/uploadFile"
                   onChange={this.onChangeFile}
+
                   name="uploadFile">
                     <Button>Subir Recurso</Button>
                 </Upload>
+              </Form.Item>
+
+              <Form.Item>
+                <Button onClick={()=>{ this.state.titleModal == 'Crear Evento' ? 
+                this.createActivity() : this.EditActivity() }} className="Btn_Activity">
+                  {this.state.titleModal}
+                </Button>
               </Form.Item>
 
             </Form>
@@ -482,8 +539,8 @@ class management extends Component {
                  ( <>
 
                   <Space size={8}>
-                    <Button onClick={this.setVisibleModal}>Crear actividad</Button>
-                    <Button onClick={this.setVisibleModal}>Editar actividad</Button>
+                    <Button onClick={this.setVisibleModal} name="add" >Crear actividad</Button>
+                    <Button onClick={this.setVisibleModal} name="edit" >Editar actividad</Button>
                     <Button onClick={this.showModalAssigment}> Asig. Asesor a una fase</Button>
                     {this.state.nameAssigned != '' ? (
                     <>
