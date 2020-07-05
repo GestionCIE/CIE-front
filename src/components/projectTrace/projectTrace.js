@@ -18,7 +18,11 @@ const typegraphs = [
   {
     id: 2,
     content: 'estado de las actividades'
- }];
+ }, 
+{
+  id: 3,
+  content: 'Calificacion de las actividades'
+}];
 
 class ProjectTrace extends React.Component {
     constructor(props){

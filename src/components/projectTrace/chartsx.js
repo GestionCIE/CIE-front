@@ -31,6 +31,14 @@ class stateOfActivivities extends React.Component {
       });
     }
 
+    async getAmountRate(){
+      const response = await http.get(`project/getAmountRate?idProject=${this.props.idProject}`)
+      this.setState({
+        data: response.data,
+        labels: response.labels
+      });
+    }
+
     componentDidMount() {
      this.getTypeGraph();
 
@@ -42,6 +50,8 @@ class stateOfActivivities extends React.Component {
         this.getAmountActivities();
       }else if (typeGraph == '2') {
         this.getAmountStateActivitities();
+      }else if (typeGraph == '3') {
+        this.getAmountRate();
       }
     }
 

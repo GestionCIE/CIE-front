@@ -13,7 +13,8 @@ class detailActivity extends React.Component {
         idActivity: 0,
         description: '',
         resource: '',
-        executionWeek: ''
+        executionWeek: '',
+        rate: 1
     };
 
     async getActivity(){
@@ -46,7 +47,23 @@ class detailActivity extends React.Component {
     }
 
     onChangeRate = (number) => {
+
         console.log("rate >>> ", number);
+        
+        this.addRate(number);
+    }
+
+    async addRate(number) {
+        const data = {
+            rate: number,
+            id: this.props.detailtActivity.id
+        }
+        const response = await http.post('project/updateRate', data);
+        this.setState({
+            rate: number
+        });
+        console.log("rate update >>>" , response);
+
     }
 
 
@@ -93,7 +110,7 @@ class detailActivity extends React.Component {
 
                         <div>
                              <label>Calificar Actividad</label><br/>
-                             <Rate value={2} onChange={this.onChangeRate}/>
+                             <Rate value={this.state.rate} count={4} onChange={this.onChangeRate}/>
                         </div>
                             
                         <div>
