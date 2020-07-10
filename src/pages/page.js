@@ -6,7 +6,7 @@ import "./page.css";
 import PrincipalComponent from "../components/menu/PrincipalComponent";
 import HeaderComponent from "../components/Header/Header";
 import ContentPrivate from "./admin/index";
-
+import SocketContextProvider from './../routers/context';
 const { Content } = Layout;
 
 class Home extends React.Component {
@@ -28,6 +28,7 @@ class Home extends React.Component {
   render() {
     console.log(this.props);
     return (
+      <SocketContextProvider>
       <Layout>
         <PrincipalComponent
           img={this.state.img}
@@ -41,6 +42,7 @@ class Home extends React.Component {
           </Content>
         </Layout>
       </Layout>
+      </SocketContextProvider>
     );
   }
 }

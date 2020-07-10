@@ -2,11 +2,16 @@ import React, { Component } from "react";
 import { Button, Tag, Input, Tooltip, Layout, Row, Col, Form, message, Table, Modal, TreeSelect} from 'antd';
 import { PlusOutlined, SaveOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import SocketClient from  './../../socket/socketClient';
+
+
 
     const {Content} = Layout;
     const {confirm} = Modal;
     const { TreeNode } = TreeSelect;
 
+const socket = new SocketClient();
+socket.createSocket();
 class ProyectComponent extends Component{
 
     constructor(){
@@ -127,7 +132,7 @@ class ProyectComponent extends Component{
         //------------------------------------------------------------
         
 
-        createProyect = ()=>{
+        createProyect = async ()=> {
 
           const jsonProyect = {
               nameProyect: this.state.nameProyect,
@@ -146,6 +151,17 @@ class ProyectComponent extends Component{
               .then((response)=>{
                   if(response.result === 'created'){
                       message.success('se ha creado un proyecto');
+                      const notification = {
+                        to: this.state.value,
+                        message: `El asesor ${localStorage.getItem('username')} te ha invitado a trabajar`,
+                        from: localStorage.getItem('username'),
+                        image: localStorage.getItem('imageUrl')
+                      };
+
+                      socket.emit('/invite', notification);
+                      socket.on('/invited', (data) => {
+                            message.success("se han invitado a los emprededores con exito");
+                       });
                   }
                   this.reloadTable();
               });
