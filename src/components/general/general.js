@@ -1,11 +1,11 @@
 import React from 'react';
 import {Row, Col, Timeline, Card, Statistic, Button} from 'antd';
 import './general.css';
-import eventStatisticsApi from './../../api/common/eventStatistics';
-import lastActivitySystemApi from './../../api/common/lastActivitySystem';
+import Http from './../../api/http';
 
-const eventSta =  new eventStatisticsApi();
-const lastActivity = new lastActivitySystemApi();
+
+const http = new Http();
+
 
 class GeneralComponent extends React.Component {
 
@@ -15,7 +15,7 @@ class GeneralComponent extends React.Component {
     };
 
     getUpcomingEvents = async () =>{
-        const response = await  eventSta.getEventStatistics();
+        const response = await http.get('event/getEventStatistics');  //eventSta.getEventStatistics();
         console.log(response);
         this.setState({
             eventStatistics: response.result
@@ -23,12 +23,9 @@ class GeneralComponent extends React.Component {
     } 
 
     getLastActivitySystem = async () =>{
-        const response = await lastActivity.getActivitySystemByUser({
-            idUser: localStorage.getItem('idUser')
-        });
-        
+        const response = await  
+            http.get(`event/getEventStatistics?id=${localStorage.getItem('idUser')}`)
         this.setState({lastActivitySystem: response.result});
-
     }
 
     componentDidMount(){
