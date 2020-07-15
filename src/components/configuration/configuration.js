@@ -1,11 +1,14 @@
 import React from 'react';
 import {Layout, Row, Col, Table, Button, Select, message, Collapse, List, Switch} from 'antd';
-import configurationApi from './../../api/configuration/configurationApi';
+import Http from './../../api/http';
+
 const {Option} = Select; 
 const {Content} = Layout;
 const {Panel} = Collapse;
-const api = new configurationApi(); 
-class configurationComponent  extends React.Component{
+
+const http = new Http();
+
+class Configuration  extends React.Component{
 
     state = {
         data: [],
@@ -20,18 +23,13 @@ class configurationComponent  extends React.Component{
         this.getSystemModules();
     }
 
-    getAllUsers(){
-        let data = [];
-        fetch('http://localhost:3005/users/admin/getAllUsers')
-            .then(res=> res.json())
-            .then((response)=>{
-                
-                for(let i=0; i < response.result.length; i++){
-                    data.push(response.result[i]);
-                }
-               
-                this.setState({data: data});
-            });
+    async getAllUsers(){
+        let data = [];  
+        const response = await http.get('users/admin/getAllUsers');
+        for(let i=0; i < response.result.length; i++){
+            data.push(response.result[i]);
+        }
+        this.setState({data: data});
             
     }
 
@@ -55,25 +53,16 @@ class configurationComponent  extends React.Component{
         return span;
     }
 
-    setNewRole = (value)=>{
+    setNewRole = async (value)=>{
         
         const data = {role: value.split(' ')[0], id: value.split(' ')[1] };
-        fetch('http://localhost:3005/users/admin/updateRole', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers:{
-                'Content-Type': 'application/json'
-            }})
-            .then(res=> res.json())
-            .then((response)=>{
-                console.log(response);
-                if(response.result == 'edited'){
-                    message.success('Ha cambiado correctamente el rol del usuario');
-                    this.getAllUsers();
-                }
-
-            });
+        const response = await http.post('users/admin/updateRole', data);
+        if(response.result === 'edited') {
+            message.success('Ha cambiado correctamente el rol del usuario');
+            this.getAllUsers();
+        }
     }
+
     createSelectOption(id){
         console.log(id);
         let select = <Select defaultValue="Selecionar Rol" onChange={this.setNewRole}> 
@@ -85,7 +74,7 @@ class configurationComponent  extends React.Component{
     }
 
     async getSystemModules(){
-       const response = await api.getAllSystemModules();
+       const response = await http.get('config/getSystemModules');
 
        this.setState({moduleAdviser : response.result.adviser, 
         moduleAssistant: response.result.assistant,
@@ -93,8 +82,8 @@ class configurationComponent  extends React.Component{
     }
 
      deactivate = async (state, id)=> {
-
-        const response = await api.updateVisibleModule({visible: state, id: id });
+        const data = {visible: state, id: id };
+        const response = await http.post('config/updateVisible', data);
         if(response.result == 'edited') {
             message.success("Se cambio el estado del modulo");
             this.getSystemModules();
@@ -176,4 +165,4 @@ class configurationComponent  extends React.Component{
 }
 
 
-export default configurationComponent;
+export default Configuration;

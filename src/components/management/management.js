@@ -11,12 +11,12 @@ import AssigmentAdviser from './assigmentAdvisers';
 
 import img_management from '../../assets/management.svg';
 import { BorderOutlined , MessageOutlined, FileOutlined} from "@ant-design/icons";
-import SocketIOClient  from 'socket.io-client';
+import {SocketContext}  from './../../routers/context';
+
 import moment from 'moment';
 import Http from "../../api/http";
 const api = new ManagementApi();
 const http = new Http();
-const END_POINT_SOCKET =  'http://localhost:4000';
 
 const {Step}  = Steps;
 const {Option} = Select;
@@ -34,6 +34,9 @@ const steps_titles = [
   }
 ];
 class management extends Component {
+
+ static contextType = SocketContext;
+
   state = {
     visibleBtn: 'none',
     visible: false,
@@ -72,12 +75,21 @@ class management extends Component {
     this.showDetailRow = this.showDetailRow.bind(this);
   }
 
-  connectSocket(){
-   const io = SocketIOClient(END_POINT_SOCKET);
-   io.emit('/users', "Hi");
-    console.log("socket happy :)");
+  notificationCreateActivity() {
 
+    if(localStorage.getItem('role') == 'adviser') {
+      const noti = {
+        from: localStorage.getItem('username'),
+        message:`Te asignaron la actividad ${this.state.activity}`,
+        to: this.state.assign,
+        image: localStorage.getItem('imageUrl')
+      };
+
+      this.context.socket.emit('/createActivity', noti);
+    }
+    
   }
+
 
   getState(state) {
     console.log("state ", typeof state);
@@ -157,7 +169,7 @@ class management extends Component {
       this.getProjectEntrepreneur();
     }
    
-    this.connectSocket();
+   
   }
 
   showDetailRow = (data) =>{
@@ -254,6 +266,8 @@ class management extends Component {
       success({content: 'se creo la actividad correctamente'});
       this.callgetActivities(this.state.idProject, this.state.phaseSelect, 0);
       this.closeModal();
+      this.notificationCreateActivity();
+
     }else {
       error({content: 'ha habido un error al crear la actividad'});
     }
@@ -344,7 +358,10 @@ class management extends Component {
 
   getIdActivity = (recoder) => {
     this.setState({
-      idActivityEdit: recoder.id
+      idActivityEdit: recoder.id,
+      activity: recoder.nameActivity,
+      description: recoder.description
+
     })
   }
 
@@ -365,7 +382,14 @@ class management extends Component {
       title: "Actividad",
       dataIndex: "nameActivity",
       key: "nameActivity",
-    },{
+    },
+    {
+      title: "Descripcion",
+      dataIndex: "description",
+      key: "description",
+    }
+    
+    ,{
       title: "Responsables",
       dataIndex: "responsables",
       key: "responsables",
@@ -378,6 +402,8 @@ class management extends Component {
       render: (text, recoder)=> this.getState(recoder.state)
     }];
     return (
+      <SocketContext.Consumer>
+      {(context) => (
       
       <Row>
 
@@ -448,6 +474,7 @@ class management extends Component {
               <Form.Item>
                   <label>Asignar Actividad</label> <br />
                   <Select 
+                    
                     mode="multiple"
                     style={{ width: '100%' }}
                     placeholder="Asignar a"
@@ -458,7 +485,7 @@ class management extends Component {
               <Form.Item>
                   <label>Progreso</label>
                   <Select 
-                        defaultValue={this.state.progress}
+                       
                         mode="multiple"
                         style={{ width: '100%' }}
                         placeholder="Progreso"
@@ -558,7 +585,8 @@ class management extends Component {
 
               </Row>
         </Col>
-      </Row>
+      </Row>)}
+      </SocketContext.Consumer>
     );
   }
 }
