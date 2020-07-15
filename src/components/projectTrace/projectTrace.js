@@ -1,11 +1,12 @@
 import React from 'react';
-import { List, Col, Row, Button, Modal, 
-    Form, Input, Select, Tag,
-    Avatar, Tooltip, Space, Divider, Steps, DatePicker, Checkbox } from "antd";
+import { Col, Row, Button, Select, Space} from "antd";
 import StateOfActivivities from './chartsx';
 import charImg from './../../assets/graph.svg';
 import ManagementApi from '../../api/management/managenmentApi';
 import './projectTrace.css';
+
+import GranttGraph from './granttGraph';
+
 import Http from './../../api/http';
 
 const http = new Http();
@@ -23,10 +24,14 @@ const typegraphs = [
     id: 2,
     content: 'estado de las actividades'
  }, 
-{
+ {
   id: 3,
   content: 'Calificacion de las actividades'
-}];
+ },
+ {
+  id: 4,
+  content: 'Diagrama de Grantt'
+ }];
 
 class ProjectTrace extends React.Component {
     constructor(props){
@@ -35,37 +40,31 @@ class ProjectTrace extends React.Component {
             projects: [],
             project:[],
             phases:[],
+            phase: '',
             nameAsesor: localStorage.getItem("username"),
             idProject: 0,
             typegraph: 0,
             visibleGraph: false,
+            grantt: false,
+            otherControls: false,
             titleGraph: ''
             
         }
 
     }
 
-    getProjecs(){
+    async getProjects(){
         let projects = [];
         const jsonasesor = {
             nameAsesor: this.state.nameAsesor
+        };
+        
+        const response = await http.post('project/getProjects2', jsonasesor);
+        for(let i=0; i < response.result.length; i++){
+          projects.push(response.result[i]);
         }
-        fetch('http://localhost:3005/project/getProjects2', {
-            method: 'POST',
-            body: JSON.stringify(jsonasesor),
-            headers:{
-                'Content-Type': 'application/json'
-            }})
-            .then(res=> res.json())
-            .then((response)=>{
-                console.log(response);
-                for(let i=0; i < response.result.length; i++){
-                    projects.push(response.result[i]);
-                }
-                this.setState({projects: projects});
-                
-            });
-            console.log("datos table");
+        this.setState({projects: projects});
+        console.log("datos table");
     }
 
     async getAllProjects(){
@@ -76,9 +75,16 @@ class ProjectTrace extends React.Component {
       })
     }
 
+    async getPhases() {
+      const response = await http.get(`project/phases?id=${this.state.idProject}`);
+      const phases =  response.result.methodologicalPhases.split(',');
+      this.setState({
+        phases: phases
+      });
+    }
 
 
-    findTitleById(id) {
+  findTitleById(id) {
       for(let i=0; i < typegraphs.length; i++){
         if(typegraphs[i].id == id) {
           return typegraphs[i].content;
@@ -92,66 +98,56 @@ class ProjectTrace extends React.Component {
         });
       }
 
-      getProject = async (id) =>{
-    
-        let response  = await api.getProjectById(id);
-        console.log("projectsssssss: ", response);
-          if(response.result.length > 0){
-            return {phases: response.phases , project: response.result};
-          }
-      }
-
       onChangeGraph = (id) =>{
         const title = this.findTitleById(id);
-        console.log("title >>> ", title);
+        console.log("title >>> ", title, " >>> id ", 4);
+        if(id == 4) {
+          this.setState({
+            typegraph: id,
+            titleGraph: title,
+            otherControls: true,
+          });
+          this.getPhases();
+        }else {
+          this.setState({
+            visibleGraph: true,
+            typegraph: id,
+            titleGraph: title,
+            grantt : false,
+            otherControls: false,
+          })
+        }
+      }
+
+
+      onChangeGantt = (phase) =>{
+        console.log(phase);
         this.setState({
-          typegraph: id,
-          titleGraph: title
+          visibleGraph: false,
+          phase: phase, 
+         
+          grantt : true,
         })
       }
 
-
-      getGraph = () =>{
-        this.setState(
-          {visibleGraph: true}
-        )
+      reset = () =>{
+        this.setState({
+          visibleGraph: false,
+          grantt: false,
+          otherControls: false,
+        })
       }
 
     componentDidMount(){
         if(localStorage.getItem('role') === 'adviser'){
-          this.getProjecs();
+          this.getProjects();
         }else if (localStorage.getItem('role') === 'administrator'){
           this.getAllProjects();
         }
         
      }
 
-
     render() {
-       
-
-        const data = {
-            labels: this.state.phases,
-            datasets:[
-                {
-                    label:"population",
-                    data:[
-                        7000,
-                        5000,
-                        3000
-                    ],
-                    backgroundColor:[
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)',
-                        'rgba(255, 159, 64, 0.6)',
-                        'rgba(255, 99, 132, 0.6)'
-                    ]
-                }
-            ]
-        }
         return(
        <Row>
           <Col span={24}>
@@ -176,7 +172,6 @@ class ProjectTrace extends React.Component {
               )}
 
            </Select>
-           
 
            <Select defaultValue="seleccione un Repote" className="Select_Inputs" onChange={this.onChangeGraph} >
               ( 
@@ -185,7 +180,15 @@ class ProjectTrace extends React.Component {
                })}
            </Select>
 
-           <Button type="primary" onClick={this.getGraph}>Graficar</Button>
+
+           {this.state.otherControls ? <Select defaultValue="Seleciona una Fase" className="Select_Inputs" onChange={this.onChangeGantt}>
+            { this.state.phases.map(item => {
+               return (<Option value={item}> {item} </Option>)
+              })
+            }    
+           </Select> : null}
+
+           <Button type="primary" onClick={this.reset}>Valores por defecto</Button>
            </Space>
            </Col>
 
@@ -193,15 +196,16 @@ class ProjectTrace extends React.Component {
              {
                this.state.visibleGraph ? (
                 <StateOfActivivities idProject={this.state.idProject} typeGraph={this.state.typegraph}
-                titleGraph={this.state.titleGraph}/>) :  <img className="Img_Char"src={charImg} />
-             }
-               
+                titleGraph={this.state.titleGraph}/>) : this.state.grantt ? (<GranttGraph idProject={this.state.idProject}
+                  phase={this.state.phase}/>) : <img className="Img_Char"src={charImg} /> 
+             }               
            </Col>
        </Row> 
-    
         );
     }
 
 }
 
 export default ProjectTrace;
+
+ 
