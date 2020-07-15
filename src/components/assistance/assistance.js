@@ -5,6 +5,9 @@ import TracingComponent from './../seguimiento/tracingComponent';
 import './assistance.css';
 import Charts from './charts';
 import assistantImg from '../../assets/assistant.svg';
+import Http from './../../api/http';
+
+const http = new Http();
 const {Option} = Select;
 const {TabPane} = Tabs;
 const api = new assistenceApi();
@@ -22,7 +25,7 @@ class Assistance extends React.Component{
     }
 
     getAllEvents = async ()=>{
-        const response = await api.getAllEvents();
+        const response = await http.get('tracing/getEvents'); // api.getAllEvents();
         this.setState({events:  response.result});
     }
 

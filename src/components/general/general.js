@@ -15,7 +15,7 @@ class GeneralComponent extends React.Component {
     };
 
     getUpcomingEvents = async () =>{
-        const response = await http.get('event/getEventStatistics');  //eventSta.getEventStatistics();
+        const response = await http.get('event/getEventStatistics'); 
         console.log(response);
         this.setState({
             eventStatistics: response.result
