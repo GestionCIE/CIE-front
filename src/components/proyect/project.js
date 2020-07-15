@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Button, Tag, Input, Tooltip, Layout, Row, Col, Form, message, Table, Modal, TreeSelect} from 'antd';
 import { PlusOutlined, SaveOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import Http from './../../api/http';
-import SocketClient from  './../../socket/socketClient';
+import Http from '../../api/http';
+import SocketClient from  '../../socket/socketClient';
 
 const {Content} = Layout;
 const {confirm} = Modal;
@@ -11,7 +11,7 @@ const http = new Http();
 const socket = new SocketClient();
 socket.createSocket();
 
-class ProyectComponent extends Component{
+class Project extends Component{
 
     constructor(){
         super();
@@ -372,4 +372,4 @@ class ProyectComponent extends Component{
     }
 }
 
-export default ProyectComponent;
+export default Project;
