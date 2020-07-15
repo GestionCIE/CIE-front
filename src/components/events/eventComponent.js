@@ -8,11 +8,12 @@ import  './eventComponent.css';
 import eventStatisticsApi from '../../api/common/eventStatistics';
 import lasActivitySystemApi from '../../api/common/lastActivitySystem';
 import eventImg from '../../assets/event.svg';
+import Http from './../../api/http';
 
 
 const eventS = new eventStatisticsApi();
 const lastActivity = new lasActivitySystemApi();
-
+const http = new Http();
 const {Content} = Layout;
 const {TextArea} = Input;
 const {confirm, success} = Modal;
@@ -94,21 +95,15 @@ class EventComponent extends React.Component {
         });
     }
 
-    deleteEvent(id) {
+    async deleteEvent(id) {
         const jsonid = {id: id};
-        fetch('http://localhost:3005/event/deleteEvent', {
-            method: 'POST',
-            body: JSON.stringify(jsonid),
-            headers:{
-                'Content-Type': 'application/json'
-            }})
-            .then(res=> res.json())
-            .then((response)=>{
-                if(response.result === 'erased'){
-                    success({content: 'se ha eliminado el evento'});
-                }
-                this.reloadTable();
-            });   
+
+        const response = await http.post('event/deleteEvent', jsonid);
+        if(response.result === 'erased'){
+            success({content: 'Se ha eliminado el evento'});
+            this.reloadTable();
+
+        } 
     }
 
     createEvent = async ()=>{
@@ -118,39 +113,23 @@ class EventComponent extends React.Component {
             date: this.state.date,
             eventImage: this.state.image
         };
-        console.log(jsonEvent);    
-        fetch('http://localhost:3005/event/createEvent', {
-            method: 'POST',
-            body: JSON.stringify(jsonEvent),
-            headers:{
-                'Content-Type': 'application/json'
-            }})
-            .then(res=> res.json())
-            .then(  async (response) => {
-                if(response.result === 'created'){
-                    console.log("Response -> ", response);
-                   const response_statistics = await eventS.createEventStatistics({idEvent: response.id});
-                   if(response_statistics == 'created')
-                        success({content :'se ha creado un evento'});
-                        // await this.createLastActivitySystem("creo un nuevo evento");
-                        this.closeModal();
-                }
-                this.reloadTable();
-            });
+        const response = await http.post('event/createEvent', jsonEvent);
+        if(response.result  === 'created') {
+            const response_statistics = await http.post('event/createEventStatistics', {idEvent: response.id} );
+            if(response_statistics.result == 'created')
+                success({content :'se ha creado un evento'});
+            this.closeModal();
+            this.reloadTable();
+        } 
     }
 
-    reloadTable(){
+    async reloadTable(){
         let data = [];
-        fetch('http://localhost:3005/event/getEvents')
-            .then(res=> res.json())
-            .then((response)=>{
-                console.log(response);
-                for(let i=0; i < response.result.length; i++){
-                    data.push(response.result[i]);
-                }
-                this.setState({data: data});
-                
-            });
+        const response = await http.get('event/getEvents');
+        for(let i=0; i < response.result.length; i++){
+            data.push(response.result[i]);
+        }
+        this.setState({data: data});
     }
 
     componentDidMount(){
@@ -165,34 +144,27 @@ class EventComponent extends React.Component {
         this.setState({date: moment(value,'YYYY-MM-DD')});
     }
 
-    updateEvent = ()=>{
+    updateEvent = async ()=>{
         console.log("updateEvent", this.state.nameEvent);
         const jsonEvent = {
             nameEvent: this.state.nameEvent,
             description: this.state.description,
             date: this.state.date, 
             id: this.state.idEdit};
-        console.log(jsonEvent);    
-        fetch('http://localhost:3005/event/editEvent', {
-            method: 'POST',
-            body: JSON.stringify(jsonEvent),
-            headers:{
-                'Content-Type': 'application/json'
-            }})
-            .then(res=> res.json())
-            .then((response)=>{
-                if(response.result === 'edited'){
-                    message.success('el evento ha sido editado');
-                    this.setState({
-                        nameEvent : "",
-                        description: "",
-                        date: moment(new Date(), 'YYYY-MM-DD'),
-                        idEdit: "",
-                        edit: false
-                    });
-                }
-                this.reloadTable();
+        console.log(jsonEvent);  
+        const response = await http.post('event/editEvent', jsonEvent);
+        if(response.result === 'edited') {
+            message.success('el evento ha sido editado');
+            this.setState({
+                nameEvent : "",
+                description: "",
+                date: moment(new Date(), 'YYYY-MM-DD'),
+                idEdit: "",
+                edit: false
             });
+            this.closeModal();
+            this.reloadTable();
+        }  
     }
 
     howIsButton(){
