@@ -3,6 +3,10 @@ import {Input, Form, Button, Layout, Row, Col, Avatar} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import FacebookLogin from "../../../components/FacebookLogin/FacebookLogin"
 import login from '../../../assets/login.svg';
+import Http from './../../../api/http';
+
+
+const http = new Http();
 const {Content} = Layout;
 
 class Login extends React.Component{
@@ -19,32 +23,23 @@ class Login extends React.Component{
 
 
 
-    login = (e) =>{
+    login = async (e) =>{
         const data = { ...this.state};
         console.log("data", this.props);
-
-            fetch('http://localhost:3005/users/login', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers:{
-                    'Content-Type': 'application/json'
-            }}).then(res =>res.json())
-            .then((response) =>{
-                console.log("respuesta ", response);
-                if(response.login){
-                    localStorage.setItem("TOKEN", response.token);
-                    const username = response.result[0].name;
-                    const role = response.result[0].role;
-                    const id = response.result[0].idUsers;
-                    const img = response.result[0].image;
-                    
-                    localStorage.setItem("username", username);
-                    localStorage.setItem("role", role);
-                    localStorage.setItem("idUser", id);
-                    localStorage.setItem("imageUrl", img);
-                    this.props.history.push('/admin');
-                }
-            });
+        const response = await http.post('users/login', data);
+        if(response.login){
+            localStorage.setItem("TOKEN", response.token);
+            const username = response.result[0].name;
+            const role = response.result[0].role;
+            const id = response.result[0].idUsers;
+            const img = response.result[0].image;
+            
+            localStorage.setItem("username", username);
+            localStorage.setItem("role", role);
+            localStorage.setItem("idUser", id);
+            localStorage.setItem("imageUrl", img);
+            this.props.history.push('/admin');
+        }
     }
     render(){
         return(
