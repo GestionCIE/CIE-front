@@ -1,8 +1,12 @@
 import React from 'react';
 import {Input, Form, Layout, Row, Col, Button, Select, message} from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import history from '../../../routers/history';
+
+import Http from './../../../api/http';
+
 import './login.css';
+
+const http = new Http();
 
 const {Content} = Layout;
 const {Option} = Select;
@@ -17,24 +21,16 @@ class Register extends React.Component{
         relationship: 'Relación con la Universidad' //default value
     };
 
-    register = (e)=>{
+    register = async (e)=>{
 
         const data = { ...this.state};
         console.log("data", data);
 
-        fetch('http://localhost:3005/users/createUser', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers:{
-                'Content-Type': 'application/json'
-        }}).then(res =>res.json())
-        .then((response) =>{
-            console.log(response);
-            if(response.result == 'created'){
-                message.success("Se ha registrado correctamente");
-                this.props.history.push('/inicio/signup')
-            }
-        });
+        const response = await http.post('users/createUser', data);
+        if(response.result == 'created'){
+            message.success("Se ha registrado correctamente");
+            this.props.history.push('/inicio/signup')
+        }
     }
 
     onChangeSelect = (value)=>{

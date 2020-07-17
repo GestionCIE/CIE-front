@@ -1,6 +1,9 @@
 import React from "react";
 import { Form, Input, Button, Select, message } from "antd";
 import eventStatisticsApi  from '../../../api/common/eventStatistics';
+import Http from './../../../api/http';
+
+const http = new Http();
 const apiEventS =  new eventStatisticsApi();
 
 const { Option } = Select;
@@ -32,29 +35,22 @@ class Attendance extends React.Component {
     const data = {...this.state, idEvent: this.props.idEvent};
     console.log("register");
     console.log(data);
-    fetch('http://localhost:3005/event/createAttendance', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers:{
-                'Content-Type': 'application/json'
-        }}).then(res =>res.json())
-        .then(async (response) =>{
-            console.log(response);
-            if(response.result == 'created'){
-              
-               const data_id = {
-                 type: 1,
-                 count: 1,
-                 id :  this.props.idEvent
-               };
 
-               const response_update =  await apiEventS.updateStatistics(data_id);
-               if(response_update.result == 'edited'){
-                  message.success("Te has inscrito al evento");
-                  this.props.closeModal();
-               }
-            } 
-        });
+    const response = await http.post('event/createAttendance', data);
+    if(response.result == 'created'){
+              
+      const data_id = {
+        type: 1,
+        count: 1,
+        id :  this.props.idEvent
+      };
+
+      const response_update =  await  http.post('event/updateEventStatistics', data_id);
+      if(response_update.result == 'edited'){
+         message.success("Te has inscrito al evento");
+         this.props.closeModal();
+      }
+   }
   }
 
   onChangeData = (e)=>{

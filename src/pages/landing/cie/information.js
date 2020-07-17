@@ -2,7 +2,10 @@ import React, { useState, useEffect, Fragment } from "react";
 import Formulario from "./form";
 import { Row, Col, Typography, Card, Layout, Modal } from "antd";
 import tutor from "../../../assets/img/tutor.jpg";
-import moment from 'moment';
+import Http from './../../../api/http';
+
+
+const http = new Http();
 const { Title } = Typography;
 const { Content } = Layout;
 
@@ -76,33 +79,26 @@ function Information() {
   }, []);
 
 
-  const getDataEvent = ()=>{
+  const getDataEvent =async ()=>{
     let data = [];
-    fetch('http://localhost:3005/event/getEvents')
-    .then(res=> res.json())
-    .then((response)=>{
-        console.log(response);
-        for(let i=0; i < response.result.length; i++){
-            data.push(response.result[i]);
-        }
-       setDataEvent({data: data});
-        
-    });
+
+    const response =  await http.get('event/getEvents');
+    for(let i=0; i < response.result.length; i++){
+      data.push(response.result[i]);
+    }
+    setDataEvent({data: data});
   }
 
-    const getDataService = ()=>{
+    const getDataService = async ()=>{
       let data = [];
-      fetch('http://localhost:3005/service/getServices')
-      .then(res=> res.json())
-      .then((response)=>{
-          console.log(response);
-          for(let i=0; i < response.result.length; i++){
-              data.push(response.result[i]);
-          }
-         setDataService({data: data});
-          
-      });
+
+      const response = await http.get('service/getServices');
+      for(let i=0; i < response.result.length; i++){
+        data.push(response.result[i]);
+      }
+      setDataService({data: data});
     }
+
   return (
     <Content className="information">
       <Title level={3}>
