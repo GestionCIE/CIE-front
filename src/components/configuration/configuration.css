@@ -1,0 +1,21 @@
+
+.Div_Setting{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between ;
+}
+
+.Div_Setting {
+    width: 70%;
+}
+
+.Div_Setting_Button {
+    width: 100%;
+}
+
+.Div_Setting_Header{
+    display: flex;
+    justify-content: space-between;
+}
+
+
