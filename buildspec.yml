@@ -14,11 +14,10 @@ phases:
 
   build:
     commands:
-      - yarn test
-      - yarn build
+      - yarn run build
 
 artifacts:
   files:
-    - "**/*"
+    - '**/*'
   discard-paths: no
   base-directory: build
