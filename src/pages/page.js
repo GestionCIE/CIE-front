@@ -37,7 +37,7 @@ class Home extends React.Component {
         />
         <Layout className="site-layout">
           <HeaderComponent onClick={this.onAlert} history={this.props.history} />
-          <Content>
+          <Content >
             <ContentPrivate handleImage={this.handleImage} ></ContentPrivate>
           </Content>
         </Layout>

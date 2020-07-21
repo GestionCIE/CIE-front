@@ -1,23 +1,24 @@
 import React from 'react';
 import { Input, Button, Layout, Row, Col, DatePicker, Upload, Table, message, 
-    Modal, Form, Space, TimePicker } from 'antd';
+    Modal, Form, Space, TimePicker, Steps, Divider } from 'antd';
 import {UploadOutlined, SaveOutlined , EditOutlined, DeleteOutlined, ShareAltOutlined, PlusOutlined,
     ExclamationCircleOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import  './eventComponent.css';
-import eventStatisticsApi from '../../api/common/eventStatistics';
+
 import lasActivitySystemApi from '../../api/common/lastActivitySystem';
 import eventImg from '../../assets/event.svg';
 import Http from './../../api/http';
+import FacebookPost from '../facebook/facebookPost';
 
-
-const eventS = new eventStatisticsApi();
 const lastActivity = new lasActivitySystemApi();
 const http = new Http();
 const {Content} = Layout;
 const {TextArea} = Input;
 const {confirm, success} = Modal;
- 
+const {Step}= Steps;
+
+
 
 class EventComponent extends React.Component {
 
@@ -35,7 +36,8 @@ class EventComponent extends React.Component {
         idEdit: '', // olny is used for edit event
         edit: false,
         visibleModal: false,
-        image: ''
+        image: '',
+        current: 0
     };
 
     setVisibleModal = ()=>{
@@ -50,12 +52,10 @@ class EventComponent extends React.Component {
                 image: info.file.name
             })
         }
-      
-
     }
 
     closeModal =() =>{
-        this.setState({visibleModal: false});
+        this.setState({visibleModal: false, current: 0});
     }
 
 
@@ -141,7 +141,8 @@ class EventComponent extends React.Component {
     }
 
     onChangeDate = (e, value)=>{
-        this.setState({date: moment(value,'YYYY-MM-DD')});
+        console.log(value);
+        this.setState({date: value});
     }
 
     updateEvent = async ()=>{
@@ -173,20 +174,100 @@ class EventComponent extends React.Component {
       
       
         if(this.state.edit){
-            button = (<Button  stye={{marginleft: '2%'}}onClick={ this.updateEvent }> <EditOutlined /> Editar Evento</Button> );
+            button = (<Button  stye={{marginleft: '2%'}} className="Form_Event_Button" onClick={ this.updateEvent }> <EditOutlined /> Editar Evento</Button> );
         } else{
-            button = (<Button type="primary" onClick={ this.createEvent }> <SaveOutlined /> Crear Evento</Button>);
+            button = (<Button type="primary" className="Form_Event_Button" onClick={ this.createEvent }> <SaveOutlined /> Crear Evento</Button>);
         }
 
         return button;
     }
 
+    handleCancelEvent = () =>{
+        this.closeModal();
+
+        this.setState({
+            edit: false
+        });
+    }
+
     cancelEvent(){
         let button = null;
         if(this.state.edit){
-            button = (<Button  onClick={ this.updateEvent }> <EditOutlined /> Cancelar Edicion</Button>);
+            button = (<Button className="Form_Event_Button"  onClick={ this.handleCancelEvent }> <EditOutlined /> Cancelar Edicion</Button>);
         }
         return button;
+    }
+
+    contentForm = () => (
+        <Form className="Form_Event">
+        <Form.Item>
+                <label>Nombre del evento</label>
+                <Input id="input" placeholder="Nombre del evento" value={this.state.nameEvent} name="nameEvent" onChange = {this.onChangeData}/> 
+        </Form.Item>
+    
+        {/* <Form.Item>
+              
+        </Form.Item> */}
+        
+        <Form.Item>
+        <label>Hora de inicio y fin</label> <br/>
+            <div className="Form_Event_Hour">
+                <Space size={8}>
+                   
+                    <TimePicker placeholder="Hora de inicio" format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
+                    {/* <label>Hora de fin</label> <br/> */}
+                    <TimePicker placeholder="Hora de fin"  format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
+                </Space>
+            </div>
+           
+        </Form.Item>
+
+        {/* <Form.Item>
+              
+        </Form.Item> */}
+
+        <Form.Item>
+                <label>Expositor</label> <br/>
+                <Input id="input" placeholder="Expositor" value={this.state.nameEvent} name="expositor" onChange = {this.onChangeData}/> 
+        </Form.Item>
+
+        <Form.Item>
+                <label>Descripcion</label> <br/>
+                <TextArea placeholder="Descripción" value={this.state.description} name="description" onChange={this.onChangeData} allowClear/>  
+        </Form.Item>
+        <Form.Item>
+            <div className="Form_Event_Group">
+            <label>Fecha del evento</label> <br/>
+            <Space size={8}>
+                <DatePicker placeholder="Fecha del evento" value={moment(this.state.date, 'YYYY-MM-DD')} name="date" onChange={this.onChangeDate}/>
+                <Upload onChange={this.onChangeFile}
+                    name="eventFile"
+                    action="http://localhost:3005/event/uploadFile">
+                        <Button>
+                        <UploadOutlined/> Subir Archivo
+                        </Button>
+                </Upload> 
+            </Space>
+            </div>
+        </Form.Item>
+
+        <Form.Item>
+            {this.howIsButton()}
+            {this.cancelEvent()}
+        </Form.Item>
+    </Form>
+    );
+
+    postFacebook = () => (<FacebookPost image={this.state.image} />)
+
+    next(){
+        const current = this.state.current + 1;
+        this.setState({ current });
+    }
+
+    prev(){
+        const current = this.state.current - 1;
+        this.setState({ current });
     }
 
 
@@ -223,6 +304,18 @@ class EventComponent extends React.Component {
 
 
         ];
+
+        const steps = [
+            {
+                title: 'Crear Evento',
+                content: this.contentForm
+            },
+        
+            {
+                title: 'Publicar Evento',
+                content: this.postFacebook
+            }
+        ];
         return(
             <Content>
                 <Row>
@@ -246,54 +339,21 @@ class EventComponent extends React.Component {
                     <Col span={24}>
                         <Table  style={{width: '80%'}} size="small" rowKey={recoder => recoder.idEvents } columns={columns} dataSource={this.state.data} ></Table>
                     </Col>
-                    <Modal visible={this.state.visibleModal} title="Eventos" onCancel={this.closeModal}>
+                    <Modal footer={false} visible={this.state.visibleModal} title="Eventos" onCancel={this.closeModal}>
                         <Row>
                             <Col span={24}>
-                                <Form className="Form_Event">
-                                    <Form.Item>
-                                            <label>Nombre del evento</label>
-                                            <Input id="input" placeholder="Nombre del evento" value={this.state.nameEvent} name="nameEvent" onChange = {this.onChangeData}/> 
-                                    </Form.Item>
-                                
-                                    <Form.Item>
-                                            <label>Fecha del evento</label> <br/>
-                                            <DatePicker placeholder="Fecha del evento" defaultValue={moment(this.state.date, 'YYYY-MM-DD')} name="date" onChange={this.onChangeDate}/>
-                                    </Form.Item>
-                                    
-                                    <Form.Item>
-                                        <   label>Hora de inicio</label> <br/>
-                                            <TimePicker placeholder="Hora de inicio" format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
-                                    </Form.Item>
-
-                                    <Form.Item>
-                                            <label>Hora de fin</label> <br/>
-                                            <TimePicker placeholder="Hora de fin"  format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
-                                    </Form.Item>
-
-                                    <Form.Item>
-                                            <label>Expositor</label> <br/>
-                                            <Input id="input" placeholder="Expositor" value={this.state.nameEvent} name="expositor" onChange = {this.onChangeData}/> 
-                                    </Form.Item>
-
-                                    <Form.Item>
-                                            <label>Descripcion</label> <br/>
-                                            <TextArea placeholder="Descripción" value={this.state.description} name="description" onChange={this.onChangeData} allowClear/>  
-                                    </Form.Item>
-                                    <Form.Item>
-                                            <Upload onChange={this.onChangeFile}
-                                            name="eventFile"
-                                            action="http://localhost:3005/event/uploadFile">
-                                                <Button>
-                                                <UploadOutlined/> Subir Archivo
-                                                </Button>
-                                            </Upload>   
-                                    </Form.Item>
-
-                                    <Form.Item>
-                                        {this.howIsButton()}
-                                        {this.cancelEvent()}
-                                    </Form.Item>
-                                </Form>
+                                <Steps current={this.state.current} >
+                                    {steps.map(item => (
+                                    <Step key={item.title} title={item.title} />))
+                                    }
+                                </Steps>
+                                <div>{steps[this.state.current].content()}</div>
+                                <Divider type="horizontal"/>
+                                <div>
+                                    {this.state.current < steps.length -1 && (<Button type="primary" onClick={() => this.next()}>Siguiente</Button>)}
+                                    {this.state.current === steps.length -1 && (<Button type="primary" onClick={() => this.closeModal()}> Completar </Button>)}
+                                    {this.state.current > 0 && (<Button type="primary"  style={{ margin: '0 8px' }} onClick={() => this.prev()}>Anterior</Button>)}
+                                </div>
                             </Col>
                         </Row>  
                     </Modal>

@@ -98,7 +98,7 @@ class PrincipalComponent extends React.Component {
                 </Menu.Item>
             })
           }
-          <Menu.Item key="15"  className="Menu_Item">
+          <Menu.Item key="40"  className="Menu_Item">
             <ArrowLeftOutlined />
             <Link to="/inicio" onClick={this.exit}>
               <span className="Menu_Item_Span" >Salir</span>

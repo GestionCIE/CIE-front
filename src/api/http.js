@@ -25,6 +25,27 @@ class Http {
             .catch(error => reject(error));
         })
     }
+
+    getExternal(url){
+        return new Promise((resolve, reject )=>{
+            fetch(url)
+            .then( res => res.json())
+            .then(res => resolve(res))
+            .catch(error => reject(error));
+        });
+    }
+
+    postExternal(url, data){
+        return new Promise ((resolve , reject)=>{
+            fetch(url, {
+                body: JSON.stringify(data),
+                method: 'POST',
+               headers: { 'Content-Type' : 'application/json' } 
+            }).then( res => res.json())
+            .then(res => resolve(res))
+            .catch(error => reject(error));
+        })
+    }
     
 }
 
