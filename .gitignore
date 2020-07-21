@@ -4,3 +4,4 @@ package-lock.json
 .vscode
 public
 build
+.env.development
