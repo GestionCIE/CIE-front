@@ -12,4 +12,8 @@
 .site-layout .site-layout-background {
     background: #fff;
   }
+
+  .Page_Content {
+      overflow: scroll;
+  }
   

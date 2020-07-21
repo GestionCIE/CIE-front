@@ -5,7 +5,7 @@ import Login from "./login/login";
 import Inicio from "./cie/cie";
 import Projects from "./projects/projects.js";
 import newEvents from './newEvents.js';
-
+import Advisers from './advisers';
 class Content extends React.Component {
   render() {
     return (
@@ -19,6 +19,7 @@ class Content extends React.Component {
           component={Projects}
         ></Route>
         <Route exact path="/inicio/events" component={newEvents}></Route>
+        <Route exact path="/inicio/advisers" component={Advisers}></Route>
       </Switch>
     );
   }

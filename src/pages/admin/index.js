@@ -55,7 +55,7 @@ class ContentPrivate extends React.Component {
         return (
             
             <Content  
-            className="site-layout-background"
+            className="site-layout-background  Page_Content"
             style={{
               margin: '24px 16px',
               padding: 24,

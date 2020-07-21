@@ -15,3 +15,12 @@
 .Img_Event{
     width: 50%;
 }
+
+.Form_Event_Button {
+    width: 100%;
+}
+
+.Form_Event_Hour {
+    display: flex;
+    justify-content: flex-start;
+}

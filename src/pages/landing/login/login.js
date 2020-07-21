@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input, Form, Button, Layout, Row, Col, Avatar} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import FacebookLogin from "../../../components/FacebookLogin/FacebookLogin"
+import CFacebookLogin from "../../../components/facebook/facebookLogin"
 import login from '../../../assets/login.svg';
 import Http from './../../../api/http';
 
@@ -74,7 +74,7 @@ class Login extends React.Component{
                         </Form.Item>
 
                         <Form.Item>
-                            <FacebookLogin history={this.props.history}></FacebookLogin>
+                            <CFacebookLogin history={this.props.history} />
                         </Form.Item>
                     </Form>
                 </Col>
