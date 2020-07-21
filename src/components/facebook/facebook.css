@@ -1,0 +1,12 @@
+.Div_Content_Post {
+    margin-top: 20px;
+}
+
+.Div_Content_Post_Header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.Form_Item_Button{
+    width: 100%;
+}
