@@ -11,7 +11,7 @@ class Menu extends React.Component {
         <Col span={24} className="Menu">
           <Row>
             <Col>
-              <Link to="/inicio/">CIE</Link>
+              <Link to="/">CIE</Link>
             </Col>
             <Col>
               <Link to="/cie">Acerca de</Link>
@@ -20,18 +20,18 @@ class Menu extends React.Component {
               <Link to="/cie">Perfiles</Link>
             </Col>
             <Col>
-              <Link to="/inicio/projects">Proyectos</Link>
+              <Link to="/projects">Proyectos</Link>
             </Col>
             <Col>
-            <Link to="/inicio/advisers">Asesores</Link>
+            <Link to="/advisers">Asesores</Link>
             </Col>
           </Row>
           <Row>
             <Col>
-              <Link to="/inicio/signup">Iniciar Seccion</Link>
+              <Link to="/signup">Iniciar Seccion</Link>
             </Col>
             <Col>
-              <Link to="/inicio/signin">Registrarse</Link>
+              <Link to="/signin">Registrarse</Link>
             </Col>
           </Row>
         </Col>
