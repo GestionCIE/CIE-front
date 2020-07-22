@@ -1,11 +1,12 @@
 import React from 'react';
 import {Layout, Row, Col, Table, Switch, Menu, Checkbox} from 'antd';
 import {ScheduleOutlined} from '@ant-design/icons';
+import Http from '../../api/http';
 
 
 const {SubMenu} = Menu
 const {Content} = Layout;
-
+const http = new Http();
 
 
 class TracingComponent extends React.Component {
@@ -17,38 +18,23 @@ class TracingComponent extends React.Component {
     };
 
   
-    reloadTable(id){  
+    async reloadTable(id){  
         let tracing = [];
-        const jsonid = {id: id};
-        fetch('http://localhost:3005/tracing/getAttendance', {
-          method: 'POST',
-          body: JSON.stringify(jsonid),
-          headers:{
-              'Content-Type': 'application/json'
-          }})
-            .then(res=> res.json())
-            .then((response)=>{
-                console.log(response);
-                for(let i=0; i < response.result.length; i++){
-                    tracing.push(response.result[i]);
-                }
-                this.setState({tracing: tracing});
-                
-            });
+      
+        const response = await http.get(`tracing/getAttendance?id=${id}`)
+        for(let i=0; i < response.result.length; i++){
+            tracing.push(response.result[i]);
+        }
+        this.setState({tracing: tracing});
     }
 
-    getEvents(){
-      let {data} = this.state
-      fetch('http://localhost:3005/tracing/getEvents')
-          .then(res=> res.json())
-          .then((response)=>{
-              console.log(response);
-              for(let i=0; i < response.result.length; i++){
-                  data.push(response.result[i]);
-              }
-              this.setState({data: data});
-              
-          });
+    async getEvents(){
+      let {data} = this.state;
+      const response = await http.get('tracing/getEvents');
+      for(let i=0; i < response.result.length; i++){
+          data.push(response.result[i]);
+      }
+      this.setState({data: data});
   }
 
   componentDidMount(){
@@ -69,26 +55,36 @@ class TracingComponent extends React.Component {
     };
 
     //---------------------------------------------
-    handleTracing(recoder) {  
+    handleTracing(recoder, e) {
+    console.log(e);  
     const jsonTracing = {
-      confirmedAssistance: 1,
+      attended: e.target.checked,
       idattendance: recoder.idattendance
     }
-      fetch('http://localhost:3005/tracing/updateAttendance', {
+
+
+      fetch('http://localhost:3005/tracing/updateAttended', {
           method: 'POST',
           body: JSON.stringify(jsonTracing),
           headers:{
               'Content-Type': 'application/json'
-          }})
+          }}).then(res =>{
+            res.json();
+          }).then(res =>{
+            console.log(res);
+            // this.getEvents();
+            this.reloadTable(recoder.idEvent);
+          });
+       
     }
   
     render(){
 
       const columns = [
         {
-          title: '',
-          dataIndex: '',
-          render: (text, recoder)=>( <Checkbox onClick={this.handleTracing.bind(this, recoder)}></Checkbox>)
+          title: 'Confirmado',
+          dataIndex: 'attended',
+          render: (text, recoder)=>( <Checkbox checked={recoder.attended == 1 ? true : false} onChange={this.handleTracing.bind(this, recoder)}></Checkbox>)
       },
         {
             title: 'nombre',
