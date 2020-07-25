@@ -6,7 +6,6 @@ import {
 
 import EventComponent from '../../components/events/eventComponent';
 import ServiceComponent from '../../components/services/serviceComponent';
-import TracingComponent from "../../components/seguimiento/tracingComponent"
 import Configuration from '../../components/configuration/configuration';
 import ProjectManagement from '../../components/management/management';
 import Project from "../../components/proyect/project";
@@ -66,16 +65,15 @@ class ContentPrivate extends React.Component {
                     {
                         (context) => (
                             <Switch>
-                                <Route path ="/admin/events" component={EventComponent}/>
-                                <Route path ="/admin/services" component={ServiceComponent}/>
-                                <Route path ="/admin/tracing" component={TracingComponent}/>
-                                <Route path ="/admin/config" component={Configuration}/>
-                                <Route path ="/admin/management" render={()=><ProjectManagement idProject={this.props.idProject} />}/>
-                                <Route path = "/admin/proyect" component={Project}/>
-                                <Route path= "/admin/assistance" component={Assistance}/>
-                                <Route path="/admin/profile" render={()=><ProfileComponent handle={this.props.handleImage}/>}/>
-                                <Route path="/admin/trazproject" component={ProjectTrace} />
-                                <Route path="/admin" component={GeneralComponent}/>
+                                <Route exact path ="/admin/events" component={EventComponent}/>
+                                <Route exact path ="/admin/services" component={ServiceComponent}/>
+                                <Route exact path ="/admin/config" component={Configuration}/>
+                                <Route exact path ="/admin/management" render={()=><ProjectManagement idProject={this.props.idProject} />}/>
+                                <Route exact path = "/admin/proyect" component={Project}/>
+                                <Route exact path= "/admin/assistance" component={Assistance}/>
+                                <Route exact path="/admin/profile" render={()=><ProfileComponent handle={this.props.handleImage}/>}/>
+                                <Route exact path="/admin/trazproject" component={ProjectTrace} />
+                                <Route exact path="/admin" component={GeneralComponent}/>
                             </Switch>
                         )
                     }

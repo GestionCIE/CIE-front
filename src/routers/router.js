@@ -13,7 +13,7 @@ function RouterMain() {
    
         <Router history={history}>
           <Route path="/" component={Public}></Route>
-          <Route path="/admin" component={Home}></Route>
+         
         </Router>
 
   );

@@ -1,59 +1,46 @@
 import React from 'react';
-import {Layout, Row, Col, Table, Switch, Menu, Checkbox} from 'antd';
+import {Layout, Row, Col, Table, Switch, Menu, Checkbox, Modal, message} from 'antd';
 import {ScheduleOutlined} from '@ant-design/icons';
+import Http from '../../api/http';
 
 
 const {SubMenu} = Menu
 const {Content} = Layout;
-
+const {success, error} = Modal;
+const http = new Http();
 
 
 class TracingComponent extends React.Component {
-    
+
     state = {
-        tracing: [],
-        loading: false,
-        data: []
+      tracing: [],
+      loading: false,
+      data: []
     };
 
   
-    reloadTable(id){  
-        let tracing = [];
-        const jsonid = {id: id};
-        fetch('http://localhost:3005/tracing/getAttendance', {
-          method: 'POST',
-          body: JSON.stringify(jsonid),
-          headers:{
-              'Content-Type': 'application/json'
-          }})
-            .then(res=> res.json())
-            .then((response)=>{
-                console.log(response);
-                for(let i=0; i < response.result.length; i++){
-                    tracing.push(response.result[i]);
-                }
-                this.setState({tracing: tracing});
-                
-            });
+    async reloadTable(id){  
+      let tracing = [];
+    
+      const response = await http.get(`tracing/getAttendance?id=${id}`)
+      for(let i=0; i < response.result.length; i++){
+          tracing.push(response.result[i]);
+      }
+      this.setState({tracing: tracing});
     }
 
-    getEvents(){
-      let {data} = this.state
-      fetch('http://localhost:3005/tracing/getEvents')
-          .then(res=> res.json())
-          .then((response)=>{
-              console.log(response);
-              for(let i=0; i < response.result.length; i++){
-                  data.push(response.result[i]);
-              }
-              this.setState({data: data});
-              
-          });
-  }
+    async getEvents(){
+      let {data} = this.state;
+      const response = await http.get('tracing/getEvents');
+      for(let i=0; i < response.result.length; i++){
+          data.push(response.result[i]);
+      }
+      this.setState({data: data});
+    }
 
-  componentDidMount(){
-    this.getEvents();
- }
+  	componentDidMount(){
+    	this.getEvents();
+	}
 
     changeTheme = value => {
       this.setState({
@@ -68,28 +55,34 @@ class TracingComponent extends React.Component {
       });
     };
 
-    //---------------------------------------------
-    handleTracing(recoder) {  
-    const jsonTracing = {
-      confirmedAssistance: 1,
-      idattendance: recoder.idattendance
-    }
-      fetch('http://localhost:3005/tracing/updateAttendance', {
-          method: 'POST',
-          body: JSON.stringify(jsonTracing),
-          headers:{
-              'Content-Type': 'application/json'
-          }})
+
+  	async handleTracing(recoder, e) {
+        console.log(e);  
+		const jsonTracing = {
+			attended: e.target.checked,
+			idattendance: recoder.idattendance
+    	}
+
+    
+		const response = await http.post('tracing/updateAttended', jsonTracing);
+		if(response.result === 'edited') {
+		    this.reloadTable(recoder.idEvent);
+		    const message = e.target.checked == true ? "Se ha confirmado la asistencia" : "Se desconfirma la asistencia";
+            success({ content: message});
+		}else {
+		    error({content: "Ha habido un error en la confirmacion o desconfirmacion de la asistencia"});
+		}
+       
     }
   
     render(){
 
       const columns = [
         {
-          title: '',
-          dataIndex: '',
-          render: (text, recoder)=>( <Checkbox onClick={this.handleTracing.bind(this, recoder)}></Checkbox>)
-      },
+          title: 'Confirmado',
+          dataIndex: 'attended',
+          render: (text, recoder)=>( <Checkbox checked={recoder.attended == 1 ? true : false} onChange={this.handleTracing.bind(this, recoder)}></Checkbox>)
+        },
         {
             title: 'nombre',
             dataIndex: 'fullName'
@@ -106,7 +99,7 @@ class TracingComponent extends React.Component {
             title: 'telefono',
             dataIndex: 'phoneNumber',
         }
-      ];
+        ];
         return(
             <Content>
                 <Row>

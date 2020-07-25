@@ -31,7 +31,7 @@ class Attendance extends React.Component {
     email: '',
     phoneNumer: ''
   };
-  
+   
   regster = async () =>{
     const data = {...this.state, idEvent: this.props.idEvent};
     console.log("register");
