@@ -6,7 +6,6 @@ import {
 
 import EventComponent from '../../components/events/eventComponent';
 import ServiceComponent from '../../components/services/serviceComponent';
-import TracingComponent from "../../components/seguimiento/tracingComponent"
 import Configuration from '../../components/configuration/configuration';
 import ProjectManagement from '../../components/management/management';
 import Project from "../../components/proyect/project";
@@ -68,7 +67,6 @@ class ContentPrivate extends React.Component {
                             <Switch>
                                 <Route exact path ="/admin/events" component={EventComponent}/>
                                 <Route exact path ="/admin/services" component={ServiceComponent}/>
-                                <Route exact path ="/admin/tracing" component={TracingComponent}/>
                                 <Route exact path ="/admin/config" component={Configuration}/>
                                 <Route exact path ="/admin/management" render={()=><ProjectManagement idProject={this.props.idProject} />}/>
                                 <Route exact path = "/admin/proyect" component={Project}/>
