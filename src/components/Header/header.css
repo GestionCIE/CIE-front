@@ -16,7 +16,7 @@
 }
 
 .Items{
-  width:4%;
+  widows: 8%;
   height: 5vh;
   display: flex;
   justify-content: space-between; 
@@ -51,7 +51,7 @@
 .Notification{
   background-color:#fff;
   border: 1px  silver solid ;
-  border-radius: 10px;
+  border-radius: 5px;
   height: 40vh;
   width: 20%;
   z-index: 1;
@@ -60,10 +60,14 @@
   overflow: auto;
 }
 
-.Notification_Title_p{
+
+.Notification_Title{
+
     margin-top:-10px;
     margin-left:20px;
+    font-weight: bold;
 }
+
 .Notification_Group{
   margin-top:-30px;
   padding: 0;
@@ -73,15 +77,16 @@
 
 .Notification_Content{
   margin-left:20px;
-  line-height: 1px;
+  line-height: 15px;
   display: flex;
 }
 
 .text{
   margin-top: 15px;
   margin-left: 5px;
-  display: block;
+  display: flex;
   font-size: 12px;
+  height: 2px;
 
 }
 
@@ -91,9 +96,7 @@
 }
 
 .Notification_Avatar{
-  width: 15%;
+  width: 20%;
   border-radius: 20px;
   margin-top: 10px;
 }
-
-

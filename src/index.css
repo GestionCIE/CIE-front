@@ -1,3 +1,12 @@
+html {
+  width: 300px;
+  height: 100px;
+  overflow-y: scroll;
+  /* background: -prefix-linear-gradient(left top, blue, white);  */
+  scrollbar-color: -moz-linear-gradient( #1890ff, white);
+  scrollbar-width: thin;
+}
+
 body {
   margin: 0;
   /* font-family: 'Give You Glory', cursive; */
@@ -12,3 +21,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+::-webkit-scrollbar{
+  width: 10px;
+  
+}
+
+::-webkit-scrollbar-thumb {
+ background: linear-gradient(transparent, #1890ff);
+ border-radius: 6px;
+
+}
+
