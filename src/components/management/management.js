@@ -142,7 +142,7 @@ class management extends Component {
 
   getProject = async (id) =>{
     
-    let response  = await api.getProjectById(id);
+    let response  = await  http.get(`project/getProject?id=${id}`);
     console.log("projectsssssss: ", response);
       if(response.result.length > 0){
         return {phases: response.phases , project: response.result};
@@ -151,7 +151,7 @@ class management extends Component {
 
 
   async getAllProjects() {
-    const response = await api.getProjects(localStorage.getItem('role'), localStorage.getItem('username'));
+    const response = await http.get(`project/getProjects?type=${localStorage.getItem('role')}&name=${localStorage.getItem('username')}`)
     this.setState({projects: response.result});
   }
 
@@ -184,7 +184,7 @@ class management extends Component {
 
   getParticipants = async (id)=>{
     let options = [];
-    const response = await api.getParticipants(id)
+    const response = await  http.get(`project/getParticipans?id=${id}`);
     options.push(<Option value={response.result.advisor} key={0}>{response.result.advisor}</Option>)
     for(let i=0; i < response.result.entrepreneurs.length; i++){
       options.push(<Option value={response.result.entrepreneurs[i].name}
@@ -216,7 +216,7 @@ class management extends Component {
 
   getActivities = async (id, phase) => {
 
-      const response = await api.getActivityByProjectAndPhase(id, phase);
+      const response = await http.get(`project/getActivityByProjectAndPhase?id=${id}&phase=${phase}`);
       console.log("Activities :", response);
       return response.result;
   }
@@ -260,7 +260,7 @@ class management extends Component {
       resources :  this.state.urlresource
     };
     console.log("data >> ", data);
-    const response = await api.createActivity(data);
+    const response = await  http.post('project/createActivity', data); //api.createActivity(data);
     
     if(response.result  == 'created'){
       success({content: 'se creo la actividad correctamente'});
@@ -310,7 +310,7 @@ class management extends Component {
 
   onChangeGetProfiles = async (id)=>{
     if(id != '-1'){
-      const response = await api.getParticipants(id);
+      const response = await  http.get(`project/getParticipans?id=${id}`);
       const {phases, project} = await this.getProject(id);
       const options  = await this.getParticipants(id);
       const activities = await this.getActivities(this.state.idProject, phases[0].phase);
