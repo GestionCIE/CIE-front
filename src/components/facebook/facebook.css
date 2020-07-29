@@ -1,12 +1,35 @@
 .Div_Content_Post {
-    margin-top: 20px;
+    margin-top: 100px;
+    height: 40vh;
 }
 
-.Div_Content_Post_Header {
+.Div_Post_Header {
+    margin-top: 30px;
     display: flex;
     justify-content: flex-start;
 }
 
+.Div_Post_Header_Image {
+    width: 40%;
+    /* height: 40px; */
+} 
+
+.editorContainer {
+    padding: 1em;
+    margin: 1em;
+  }
+  
+  .editors {
+    border: 1px blue solid;
+    padding: 1em;
+    margin: 1em;
+    /* font-family: 'Open Sans'; */
+    font-size: 90%;
+  }
+  
+
 .Form_Item_Button{
     width: 100%;
+
 }
+

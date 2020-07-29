@@ -63,7 +63,7 @@ class EventComponent extends React.Component {
         lastActivity.createActivitySystem({
             idUser: localStorage.getItem('idUser'),
             activity: activity
-        })
+        });
     }
 
     handleDelete = recoder =>{
