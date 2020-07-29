@@ -5,6 +5,9 @@ import {LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import './profile.css';
 
 import  ProfileApi, {POST_UPLOAD_FILE_PROFILE} from '../../api/profile/profile';
+import Http from './../../api/http';
+
+const http = new Http();
 const api = new ProfileApi();
 const {Step}  = Steps;
 const {warning} = Modal;
@@ -32,7 +35,7 @@ class ProfileComponent extends React.Component{
     }
 
     async getProfile(){
-        const response = await api.getProfile(localStorage.getItem('idUser'));
+        const response = await http.get(`users/getUserById?id=${localStorage.getItem('idUser')}`);
         const user = response.result[0];
         console.log(response);
         const project = response.project;
@@ -190,7 +193,7 @@ class ProfileComponent extends React.Component{
 
     handleEdit = async () =>{
         const data = {...this.state, id: localStorage.getItem('idUser')};
-        const response = await api.editProfile(data);
+        const response = await  http.get('users/editUser', data);
         console.log(response);
         if(response.result == 'edited'){
             Modal.success({content: "El perfil se ha actualizado"});
