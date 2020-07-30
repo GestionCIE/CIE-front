@@ -30,7 +30,7 @@
 
 
 .Btn_Activity{
-  background-color: #13BC75 ;
+  width: 100%;
 }
 .Drawer_Content{
   display: flex;
@@ -56,8 +56,4 @@
 
 .Img_Give {
   width: 100%;
-}
-
-.Btn_Activity {
-  width: 50%;
 }

@@ -46,6 +46,10 @@ class Http {
             .catch(error => reject(error));
         })
     }
+
+    uploadImage(uri){
+        return `${this.URL}/${uri}`;
+    }
     
 }
 

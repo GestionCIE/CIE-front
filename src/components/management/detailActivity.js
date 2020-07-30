@@ -2,7 +2,7 @@ import React from 'react';
 import {Drawer, Row, Col, Avatar, Tooltip, Rate } from  'antd';
 import Comments from './comments';
 import Http from './../../api/http';
-
+import {getNameResource} from './../../utils/utils';
 const http = new Http();
 
 class detailActivity extends React.Component {
@@ -23,7 +23,7 @@ class detailActivity extends React.Component {
 
         this.setState({
             description: data.description,
-            resource: data.resource,
+            resource: data.resources,
             executionWeek: data.executionWeek
         })
         
@@ -79,14 +79,14 @@ class detailActivity extends React.Component {
                 <Col span={24}>
                     <div className="Drawer_Content">
                         <div>
-                            <span> Nombre: </span> <span> {this.props.detailtActivity.nameActivity}</span> 
+                            <h6> Nombre: </h6> <p> {this.props.detailtActivity.nameActivity}</p> 
                         </div>
                         <div>
-                            <span>Description: </span>
+                            <h6>Description: </h6>
                             <p>{this.state.description}</p>
                         </div>
                         <div>
-                            <span>Integrantes: </span>
+                            <h6>Integrantes: </h6>
                              {
                                
                                  this.props.detailtActivity.profile.map(e => {
@@ -101,15 +101,15 @@ class detailActivity extends React.Component {
 
                         </div>
                         <div>
-                            <label>Semana de ejecucion:</label><br />
+                            <h6>Semana de ejecucion:</h6><br />
                             <p>{this.state.executionWeek}</p>
 
                         </div>
-                        <span>Recursos: </span>
-                        <a href={this.state.resource}> Recurso</a>
+                        <h6>Recursos: </h6>
+                            <a href={this.state.resource} download> {getNameResource(this.state.resource)}</a>
 
                         <div>
-                             <label>Calificar Actividad</label><br/>
+                             <h6>Calificar Actividad</h6><br/>
                              <Rate value={this.state.rate} count={4} onChange={this.onChangeRate}/>
                         </div>
                             

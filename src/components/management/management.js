@@ -348,7 +348,7 @@ class management extends Component {
 
   onChangeFile = (info) =>{
     if(info.file.status == 'done'){
-      console.log(info.file.response.image.replace(/\\/g, "//"));
+    
       this.setState({
           urlresource: info.file.name
       });
@@ -455,7 +455,8 @@ class management extends Component {
           <Modal visible={this.state.visible}
             title={this.state.titleModal}
             onCancel = {this.closeModal}
-            onOk = {this.createActivity}>
+            onOk = {this.createActivity}
+            footer={false}>
             <Form className="Form_Modal">
               <Form.Item>
                     <h6>Fase Metodologica Actual</h6>
@@ -503,7 +504,7 @@ class management extends Component {
               <Form.Item>
                 <label>Agregar Recursos</label> <br/>
                 <Upload
-                  action="http://localhost:3005/project/uploadFile"
+                  action={http.uploadImage('project/uploadFile')}
                   onChange={this.onChangeFile}
 
                   name="uploadFile">
@@ -513,7 +514,7 @@ class management extends Component {
 
               <Form.Item>
                 <Button onClick={()=>{ this.state.titleModal == 'Crear Evento' ? 
-                this.createActivity() : this.EditActivity() }} className="Btn_Activity">
+                this.createActivity() : this.EditActivity() }} className="Btn_Activity" type="primary">
                   {this.state.titleModal}
                 </Button>
               </Form.Item>
