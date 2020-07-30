@@ -1,5 +1,6 @@
 import React from 'react';
-import {Drawer, Row, Col, Avatar, Tooltip, Rate } from  'antd';
+import {Drawer, Row, Col, Avatar, Tooltip, Rate, Progress, Button } from  'antd';
+import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
 import Comments from './comments';
 import Http from './../../api/http';
 import {getNameResource} from './../../utils/utils';
@@ -14,7 +15,8 @@ class detailActivity extends React.Component {
         description: '',
         resource: '',
         executionWeek: '',
-        rate: 1
+        rate: 1,
+        percentaje: 0
     };
 
     async getActivity(){
@@ -24,7 +26,8 @@ class detailActivity extends React.Component {
         this.setState({
             description: data.description,
             resource: data.resources,
-            executionWeek: data.executionWeek
+            executionWeek: data.executionWeek,
+            percentaje: data.percentaje == undefined ? 0 : data.percentaje
         })
         
         console.log("response >>>" , response);
@@ -66,6 +69,34 @@ class detailActivity extends React.Component {
 
     }
 
+    increase = () => {
+        let percentaje = this.state.percentaje + 1;
+        if (percentaje > 100) {
+            percentaje = 100;
+        }
+
+        this.updatePercentaje({id : this.props.detailtActivity.id, percentaje});
+        console.log(this.props.idProject, " ", this.props.phase);
+        this.props.reloadActivities(this.props.idProject, this.props.phase, 1);
+        this.setState({ percentaje });
+    };
+
+    decline = () => {
+        let percentaje = this.state.percentaje - 1;
+        if (percentaje < 0) {
+            percentaje = 0;
+        }
+
+        this.updatePercentaje({id : this.props.detailtActivity.id, percentaje});
+        console.log(this.props.idProject, " ", this.props.phase);
+        this.props.reloadActivities(this.props.idProject, this.props.phase, 1);
+        this.setState({ percentaje });
+    };
+
+    async updatePercentaje(data) {
+        const response = await http.post('project/percentaje', data);
+        console.log(response);
+    }
 
     render(){
         return( <Drawer width="40%"
@@ -99,6 +130,14 @@ class detailActivity extends React.Component {
                                  }) 
                              }
 
+                        </div>
+                        <div>
+                            <h6>Estado de la actividad</h6>
+                            <Progress type="circle" width={40} percent={this.state.percentaje} />
+                            <Button.Group>
+                            <Button onClick={this.decline} icon={<MinusOutlined />} />
+                            <Button onClick={this.increase} icon={<PlusOutlined />} />
+                            </Button.Group>
                         </div>
                         <div>
                             <h6>Semana de ejecucion:</h6><br />
