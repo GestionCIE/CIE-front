@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { List, Col, Row, Button, Modal, 
   Form, Input, Select, Tag,
-  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Upload, Checkbox } from "antd";
+  Avatar, Tooltip, Space, Divider, Steps, DatePicker, Upload, Checkbox, Progress } from "antd";
 import ManagementApi from '../../api/management/managenmentApi';
 import './management.css'; 
 import AvatarComponent from './avatar';
@@ -100,6 +100,9 @@ class management extends Component {
         break;
       case '2':
         stateHtml =  (<Tag color='success'> Termindo </Tag>)
+        break;
+      case '3':
+        stateHtml = (<Tag color='warning'> Suspendida </Tag>)
         break;
       default:
         stateHtml = (<Tag color='default'>Sin estado</Tag>)
@@ -365,6 +368,18 @@ class management extends Component {
     })
   }
 
+  getPercentaje(recoder){
+    console.log(recoder);
+    if(recoder.state == "3"  ){
+      return (<Progress width={40} className="Progress" type="circle" status="exception" 
+      percent={recoder.percentaje != undefined ? recoder.percentaje : 0 } />);
+    }else {
+      return (<Progress width={40} className="Progress" type="circle" 
+      percent={recoder.percentaje != undefined ? recoder.percentaje : 0 } />);
+    }
+   
+  }
+
   render() {
     const states = [<Option key="1" value="1">En Ejecucion</Option>,
       <Option key="2" value="2">Cumplidad</Option>,
@@ -400,7 +415,14 @@ class management extends Component {
       dataIndex: "state",
       key: "state",
       render: (text, recoder)=> this.getState(recoder.state)
+    },
+    {
+      title: "Porcentaje",
+      dataIndex: "percentaje",
+      key: "percentaje",
+      render: (text, recoder) => this.getPercentaje(recoder)
     }];
+
     return (
       <SocketContext.Consumer>
       {(context) => (
@@ -526,7 +548,8 @@ class management extends Component {
             phases={this.state.phases} idProject={this.state.idProject}/>
           {
             this.state.showComponent ? <DetailActivity visibleDrawer={this.state.visibleDrawer}
-            closeDrawer={this.closeDrawer} detailtActivity={this.state.detailtActivity}  /> : null
+            closeDrawer={this.closeDrawer} detailtActivity={this.state.detailtActivity} reloadActivities={this.callgetActivities}
+            idProject={this.state.idProject} phase={this.state.phaseSelect}/> : null
           }
 
           <Divider /> 
