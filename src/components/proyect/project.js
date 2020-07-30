@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Button, Tag, Input, Tooltip, Layout, Row, Col, Form, message, Table, Modal, TreeSelect} from 'antd';
-import { PlusOutlined, SaveOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, SaveOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import Http from '../../api/http';
 import SocketClient from  '../../socket/socketClient';
-
+import './project.css';
 const {Content} = Layout;
-const {confirm} = Modal;
+const {confirm, success} = Modal;
 const { TreeNode } = TreeSelect;
 const http = new Http();
 const socket = new SocketClient();
@@ -44,6 +44,8 @@ class Project extends Component{
         for(let i=0; i < response.result.length; i++){
             entrepreneurs.push(response.result[i]);
         }
+
+        console.log(entrepreneurs);
         this.setState({Entre: entrepreneurs});
 
     }
@@ -64,7 +66,7 @@ class Project extends Component{
         const jsonid = {id: id};
         const response = await http.post('project/deleteProject', jsonid);
             if(response.result === 'erased'){
-                message.error('se ha eliminado el evento');
+                success({content:'se ha eliminado el evento'});
                 this.reloadTable();
             }
     }
@@ -73,8 +75,8 @@ class Project extends Component{
         console.log('edit', recoder);
         this.setState({
             nameProyect : recoder.projectName,
-            tagsmethodologies: [recoder.methodologicalPhases],
-            tagsEntrepreneurs: [recoder.entrepreneurs],
+            tagsmethodologies: recoder.methodologicalPhases.split(','),
+            Entre: this.state.Entre,
             idEdit: recoder.idProject,
             edit: true
         });
@@ -87,7 +89,7 @@ class Project extends Component{
             nameProyect: this.state.nameProyect,
             nameAsesor: this.state.nameAsesor,
             tagsmethodologies: this.state.tagsmethodologies,
-            tagsEntrepreneurs: this.state.tagsEntrepreneurs,
+            Entre: this.state.value,
             id: this.state.idEdit
         };
                 
@@ -95,7 +97,7 @@ class Project extends Component{
 
         const response = await http.post('project/editProject', jsonProyect);
         if(response.result === 'edited'){
-            message.success('el proyecto ha sido editado');
+            success({content: 'el proyecto ha sido editado'});
             this.setState({
                 nameProyect : "",
                 idEdit: "",
@@ -117,7 +119,7 @@ class Project extends Component{
         const response = await http.post('project/createProject', jsonProyect);
 
         if(response.result === 'created') {
-            message.success('se ha creado un proyecto');
+            success({content: 'se ha creado un proyecto y se han agregado los emprendores con exito'});
             const notification = {
                 to: this.state.value,
                 message: `El asesor ${localStorage.getItem('username')} te ha invitado a trabajar`,
@@ -126,7 +128,7 @@ class Project extends Component{
             };
             socket.emit('/invite', notification);
             socket.on('/invited', (data) => {
-                message.success("se han invitado a los emprededores con exito");
+               console.log(data);
             });
 
             this.reloadTable();
@@ -139,6 +141,8 @@ class Project extends Component{
         const jsonasesor = {
             nameAsesor: this.state.nameAsesor
         }
+
+        console.log(jsonasesor);
 
         const response = await http.post('project/getProjects2', jsonasesor);
         for(let i=0; i < response.result.length; i++){
@@ -161,6 +165,7 @@ class Project extends Component{
     }
 
     onChange = value => {
+        console.log("onchange select entre", value);
         this.setState({ value });
     };
 
@@ -223,13 +228,24 @@ class Project extends Component{
 
     howIsButton(){
         let button = null;
-        
+
         if(this.state.edit){
-            button = (<Button  stye={{marginleft: '2%'}}onClick={ this.updateProyect }> <EditOutlined /> Editar Proyecto</Button> );
+            button = (<Button  className="Btn_Project_Edit" onClick={ this.updateProyect }> <EditOutlined /> Editar Proyecto</Button> );
+            
         } else{
-            button = (<Button type="primary" onClick={ this.createProyect.bind(this) }> <SaveOutlined /> Crear Proyecto</Button>);
+            button = (<Button  className="Btn_Project" type="primary" onClick={ this.createProyect.bind(this) }> <SaveOutlined /> Crear Proyecto</Button>);
         }
         return button;
+    }
+
+    cancelEdit = () => {
+        this.setState({
+            edit:false
+        });
+    }
+
+    cancelButton(){
+        return (<Button  className="Btn_Project_Edit" onClick={ this.cancelEdit }> <CloseOutlined /> Cancelar Edición</Button> );
     }
     
 
@@ -272,16 +288,17 @@ class Project extends Component{
                     <Col span={7}>
                         <Form>
                             <Form.Item >
-                                <label>Lider del proyecto</label><br/>
+                                <p>Lider del proyecto</p>
                                 <label>{localStorage.getItem("username")}</label>
                             </Form.Item>
 
                             <Form.Item>
-                                <label>Nombre del proyecto</label><br/>
+                                <p>Nombre del proyecto</p>
                                 <Input id="input" placeholder="Nombre" value={this.state.nameProyect} name="nameProyect" onChange = {this.onChangeData.bind(this)}/> 
                             </Form.Item>
 
                             <Form.Item>
+                                <p>Fases de la metodologia</p>
                                 {tagsmethodologies.map((tag, index) => {
                                  if (editInputIndex === index) {
                                     return (
@@ -336,6 +353,7 @@ class Project extends Component{
                             </Form.Item>
                             
                             <Form.Item>
+                              <p>Emprendedores</p>
                               <TreeSelect
                                 showSearch
                                 style={{ width: '100%' }}
@@ -359,13 +377,14 @@ class Project extends Component{
                         
                             <Form.Item>
                                 {this.howIsButton()}
+                                {this.state.edit ? this.cancelButton() : null}
                             </Form.Item>
                         </Form>
                     </Col>
                     <Col span={16} push={1}>
-                        <Table rowKey={recoder => recoder.idEvents } columns={columns} dataSource={this.state.data} ></Table>
+                        <h6>Proyectos de emprendimiento</h6>
+                        <Table rowKey={recoder => recoder.idEvents } size="small" columns={columns} dataSource={this.state.data} ></Table>
                     </Col>
-
                 </Row>
             </Content>
         )
