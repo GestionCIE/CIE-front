@@ -36,6 +36,14 @@
 }
 
   
-  .steps-action {
+.steps-action {
     margin-top: 24px;
-  }
+}
+
+.Btn_ChangePassword{
+    width: 100%;
+}
+
+.Img_ChangePassword{
+    width: 100%;
+}

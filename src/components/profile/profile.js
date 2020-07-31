@@ -1,14 +1,12 @@
 import React from 'react';
 import {Row, Col, Upload, Button, Form, Input, Steps, Select, Tag, Modal} from 'antd';
 import 'antd/dist/antd.css';
-import {LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import {LoadingOutlined, PlusOutlined, LockOutlined } from '@ant-design/icons';
 import './profile.css';
-
-import  ProfileApi, {POST_UPLOAD_FILE_PROFILE} from '../../api/profile/profile';
 import Http from './../../api/http';
+import Security from './../../assets/security.svg';
 
 const http = new Http();
-const api = new ProfileApi();
 const {Step}  = Steps;
 const {warning} = Modal;
 const {Option} = Select;
@@ -31,7 +29,9 @@ class ProfileComponent extends React.Component{
         email: '',
         imageUrl: '',
         project: '',
-        rol: ''
+        rol: '',
+        currentPassword: '',
+        newPassword: ''
     }
 
     async getProfile(){
@@ -93,7 +93,7 @@ class ProfileComponent extends React.Component{
         const isImg = file.type === 'image/jpeg' || file.type === 'image/png';
         if(!isImg) 
             warning("Error al subir la foto"); 
-        const response =  await  http.post('users/writeIdProfile',{id: localStorage.getItem('idUser')});//api.writeIdProfile();
+        const response =  await  http.post('users/writeIdProfile',{id: localStorage.getItem('idUser')});
         console.log("before", response);
         return isImg;
     }
@@ -204,6 +204,68 @@ class ProfileComponent extends React.Component{
         }
     }
 
+    changePassword = () =>{
+
+    }
+
+    modalChangePassword(){
+        return (
+            <Modal title="Cambiar contraseña" visible={this.state.modalChangePassword}
+            onCancel={this.closeModalPassword}
+            footer={null}>
+                <Row>
+                    <Col span={12}>
+                        <Form>
+                            <Form.Item name="hh">
+                                <p>Contraseña actual</p>
+                                <Input.Password placeholder="Ingresa tu contrasena actual" name="currentPassword"
+                                value={this.state.currentPassword} onChange={this.onChangeForm}/>
+                            </Form.Item>
+                            <Form.Item name="newPassword" hasFeedback rules={[{required: true, message: 'Ingresa la nueva contraseña'}]} 
+                            >
+                                <p>Nueva contraseña</p>
+                                <Input.Password placeholder="Nueva contraseña" name="newPassword"
+                                value={this.state.newPassword} onChange={this.onChangeForm} prefix={<LockOutlined/>}/>
+                            </Form.Item>
+
+                            <Form.Item  name="r-newPassword"  hasFeedback rules={[{required: true, message: 'Repite la contraseña'}, 
+                            ({getFieldValue})=>({
+                                validator(rule, value){
+                                    if(!value || getFieldValue('newPassword') == value)
+                                         return Promise.resolve();
+                                     return Promise.reject('La contraseña no coincide');
+                                }
+                              })]} dependencies={['newPassword']}
+                           >
+                                <p>Repite contraseña</p>
+                                <Input.Password placeholder="Repite contraseña" name="r-newPassword" prefix={<LockOutlined/>}/>
+                            </Form.Item>
+
+                            <Form.Item name="jj">
+                                <Button  type="primary" onClick={this.changePassword} className="Btn_ChangePassword">Cambiar Contraseña</Button>
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                    <Col span={12}>
+                        <img src={Security} className="Img_ChangePassword"/>
+                    </Col>
+                </Row>
+            </Modal>
+        );
+    }
+
+    showModalPassword = () => {
+        this.setState({
+            modalChangePassword: true
+        });
+    }
+
+    closeModalPassword = () => {
+        this.setState({
+            modalChangePassword: false
+        });
+    }
+
     render() {
 
         const titles_steps = [
@@ -243,7 +305,7 @@ class ProfileComponent extends React.Component{
                        
                    </div>
                    <div className="Profile_Buttons">
-                        <Button  type="primary">Cambiar Contraseña</Button>
+                        <Button onClick={this.showModalPassword} type="primary">Cambiar Contraseña</Button>
                         <Button onClick={this.showModalEditProfile}type="primary">Editar Perfil</Button>
                    </div>
                 </Col>
@@ -302,6 +364,7 @@ class ProfileComponent extends React.Component{
                         </Col>
                     </Row>
                 </Modal>
+                {this.modalChangePassword()}
             </Row>
         )
     }
