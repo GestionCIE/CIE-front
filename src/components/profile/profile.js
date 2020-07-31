@@ -224,7 +224,7 @@ class ProfileComponent extends React.Component{
                    listType="picture-card"
                    className="avatar-uploader"
                    showUploadList={false}
-                   action={POST_UPLOAD_FILE_PROFILE}
+                   action={http.uploadImage('users/uploadProfile')}
                    beforeUpload={this.beforeUpload}
                    onChange={this.onChange}
                    >
