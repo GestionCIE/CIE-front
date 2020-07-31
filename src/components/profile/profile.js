@@ -93,7 +93,7 @@ class ProfileComponent extends React.Component{
         const isImg = file.type === 'image/jpeg' || file.type === 'image/png';
         if(!isImg) 
             warning("Error al subir la foto"); 
-        const response =  await api.writeIdProfile({id: localStorage.getItem('idUser')});
+        const response =  await  http.post('users/writeIdProfile',{id: localStorage.getItem('idUser')});//api.writeIdProfile();
         console.log("before", response);
         return isImg;
     }
@@ -193,7 +193,7 @@ class ProfileComponent extends React.Component{
 
     handleEdit = async () =>{
         const data = {...this.state, id: localStorage.getItem('idUser')};
-        const response = await  http.get('users/editUser', data);
+        const response = await  http.post('users/editUser', data);
         console.log(response);
         if(response.result == 'edited'){
             Modal.success({content: "El perfil se ha actualizado"});
