@@ -87,13 +87,14 @@ class Comments extends React.Component {
                 submitting: false,
                 value: '',
                 comments : [
+
+                    ...this.state.comments,
                     {
                         author: 'Cristian Vargas',
                         avatar: localStorage.getItem('imageUrl'),
                         content: <p> {this.state.value} </p>,
                         datetime: moment().fromNow()
-                    },
-                    ...this.state.comments
+                    }
                 ]
             })
 
