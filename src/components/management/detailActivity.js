@@ -1,5 +1,5 @@
 import React from 'react';
-import {Drawer, Space, Modal , Row, Col, Avatar, Tooltip, Rate, Progress, Button, Select } from  'antd';
+import {Drawer, Space, InputNumber,  Modal , Row, Col, Avatar, Tooltip, Rate, Progress, Button, Select } from  'antd';
 import {MinusOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import Comments from './comments';
 import Http from './../../api/http';
@@ -18,7 +18,8 @@ class detailActivity extends React.Component {
         executionWeek: '',
         rate: 1,
         percentaje: 0,
-        state: ''
+        state: '',
+        prefix: 10
     };
 
 
@@ -74,7 +75,7 @@ class detailActivity extends React.Component {
     }
 
     increase = () => {
-        let percentaje = this.state.percentaje + 1;
+        let percentaje = this.state.percentaje + this.state.prefix;
         if (percentaje > 100) {
             percentaje = 100;
         }
@@ -86,7 +87,7 @@ class detailActivity extends React.Component {
     };
 
     decline = () => {
-        let percentaje = this.state.percentaje - 1;
+        let percentaje = this.state.percentaje - this.state.prefix;
         if (percentaje < 0) {
             percentaje = 0;
         }
@@ -115,6 +116,7 @@ class detailActivity extends React.Component {
     async updateState(value){
         const response = await http.post('project/state', 
         {id: this.props.detailtActivity.id, state: value[0]});
+        this.getPercentaje();
         this.props.reloadActivities(this.props.idProject, this.props.phase, 1);
         console.log(response);
     }
@@ -142,6 +144,30 @@ class detailActivity extends React.Component {
             onOk: ()=>{ this.deleteActivity()}
         });
     }
+
+    getPercentaje(){
+        const state = this.state.state;
+        const percentaje = this.state.percentaje;
+
+        if(state == "3"  ){
+          return (<Progress width={40} className="Progress" type="circle" status="exception" 
+          percent={percentaje != undefined ? percentaje : 0 } />);
+        }else {
+          if(percentaje == 100) {
+            return (<Progress width={40} className="Progress" type="circle" status="success"
+            percent={percentaje != undefined ? percentaje : 0 } />);
+          }else {
+            return (<Progress width={40} className="Progress" type="circle" 
+            percent={percentaje != undefined ? percentaje : 0 } />);
+          }
+         
+        }
+       
+      }
+
+      onChangePrefix = (value) =>{
+          this.setState({prefix: value});
+      }
 
 
     render(){
@@ -186,7 +212,7 @@ class detailActivity extends React.Component {
                             {this.props.getState(this.state.state)}
                             <Space size={8}>
                                 
-                                <Progress type="circle" width={40} percent={this.state.percentaje} />
+                                {this.getPercentaje()}
                                 <Button.Group>
                                 <Button onClick={this.decline} icon={<MinusOutlined />} />
                                 <Button onClick={this.increase} icon={<PlusOutlined />} />
@@ -201,6 +227,9 @@ class detailActivity extends React.Component {
                                     {this.props.getOptionState()}
                                 </Select>
                             </Space>
+                            <p>Ajuste del porcentaje</p>
+                            <InputNumber size="small" min={1} max={100} 
+                                defaultValue={this.state.prefix} onChange={this.onChangePrefix} />
                         </div>
                         <div>
                             <h6>Semana de ejecucion:</h6><br />
