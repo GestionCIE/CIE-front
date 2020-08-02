@@ -1,11 +1,12 @@
 import React from 'react';
-import {Drawer, Row, Col, Avatar, Tooltip, Rate, Progress, Button } from  'antd';
-import {MinusOutlined, PlusOutlined} from '@ant-design/icons';
+import {Drawer, Space, Modal , Row, Col, Avatar, Tooltip, Rate, Progress, Button, Select } from  'antd';
+import {MinusOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import Comments from './comments';
 import Http from './../../api/http';
 import {getNameResource} from './../../utils/utils';
-const http = new Http();
 
+const http = new Http();
+const {success, confirm } = Modal;
 class detailActivity extends React.Component {
     state = {
         visibleDrawer: false,
@@ -16,8 +17,10 @@ class detailActivity extends React.Component {
         resource: '',
         executionWeek: '',
         rate: 1,
-        percentaje: 0
+        percentaje: 0,
+        state: ''
     };
+
 
     async getActivity(){
         const response = await http.get(`project/getActivity?id=${this.props.detailtActivity.id}`)
@@ -27,8 +30,9 @@ class detailActivity extends React.Component {
             description: data.description,
             resource: data.resources,
             executionWeek: data.executionWeek,
-            percentaje: data.percentaje == undefined ? 0 : data.percentaje
-        })
+            percentaje: data.percentaje == undefined ? 0 : data.percentaje,
+            state:  data.state
+        });
         
         console.log("response >>>" , response);
 
@@ -98,6 +102,48 @@ class detailActivity extends React.Component {
         console.log(response);
     }
 
+
+    getStates = (value)=>{
+        
+        const state = value[0];
+        if(state != undefined){
+            this.updateState(state);
+            this.setState({state: state});
+        }
+    }
+
+    async updateState(value){
+        const response = await http.post('project/state', 
+        {id: this.props.detailtActivity.id, state: value[0]});
+        this.props.reloadActivities(this.props.idProject, this.props.phase, 1);
+        console.log(response);
+    }
+
+    async deleteActivity(){
+        const response = await http.post('project/deleteActivity', 
+        {id: this.props.detailtActivity.id});
+        if(response.result == 'erased'){
+            success({
+                content: 'Se ha borrado la actividad correctamente'
+            });
+            this.props.reloadActivities(this.props.idProject, this.props.phase, 1);
+            this.props.closeDrawer();
+        }
+    }
+
+    delete = () => {
+        confirm({
+            title: 'Deseas eliminar la actividad ?',
+            icon: <ExclamationCircleOutlined/>,
+            content: 'Esta actividad se eliminara del proyecto',
+            okText: 'Eliminar',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk: ()=>{ this.deleteActivity()}
+        });
+    }
+
+
     render(){
         return( <Drawer width="40%"
         title="Detalle de la actividad"
@@ -109,8 +155,12 @@ class detailActivity extends React.Component {
             <Row>
                 <Col span={24}>
                     <div className="Drawer_Content">
-                        <div>
+                        <div className="Drawer_Content_Div">
+                            <div>
                             <h6> Nombre: </h6> <p> {this.props.detailtActivity.nameActivity}</p> 
+                            </div>
+                          
+                            <Button type="danger" icon={<DeleteOutlined />} onClick={this.delete}>Eliminar Actividad</Button>
                         </div>
                         <div>
                             <h6>Description: </h6>
@@ -133,11 +183,24 @@ class detailActivity extends React.Component {
                         </div>
                         <div>
                             <h6>Estado de la actividad</h6>
-                            <Progress type="circle" width={40} percent={this.state.percentaje} />
-                            <Button.Group>
-                            <Button onClick={this.decline} icon={<MinusOutlined />} />
-                            <Button onClick={this.increase} icon={<PlusOutlined />} />
-                            </Button.Group>
+                            {this.props.getState(this.state.state)}
+                            <Space size={8}>
+                                
+                                <Progress type="circle" width={40} percent={this.state.percentaje} />
+                                <Button.Group>
+                                <Button onClick={this.decline} icon={<MinusOutlined />} />
+                                <Button onClick={this.increase} icon={<PlusOutlined />} />
+                                </Button.Group>
+                                
+                                <Select 
+                        
+                                    mode="multiple"
+                                    style={{ minWidth: '200px' }}
+                                    placeholder="Progreso"
+                                    onChange={this.getStates}>                        
+                                    {this.props.getOptionState()}
+                                </Select>
+                            </Space>
                         </div>
                         <div>
                             <h6>Semana de ejecucion:</h6><br />

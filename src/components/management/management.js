@@ -200,6 +200,7 @@ class management extends Component {
   getStates = (value)=>{
     this.setState({stateActivity: value});
   }
+
   setPhase(phase){
     console.log(phase, " : ",this.state.phaseSelect);
     if(this.state.phaseSelect != phase){
@@ -374,16 +375,30 @@ class management extends Component {
       return (<Progress width={40} className="Progress" type="circle" status="exception" 
       percent={recoder.percentaje != undefined ? recoder.percentaje : 0 } />);
     }else {
-      return (<Progress width={40} className="Progress" type="circle" 
-      percent={recoder.percentaje != undefined ? recoder.percentaje : 0 } />);
+      if(recoder.percentaje == 100) {
+        return (<Progress width={40} className="Progress" type="circle" status="success"
+        percent={recoder.percentaje != undefined ? recoder.percentaje : 0 } />);
+      }else {
+        return (<Progress width={40} className="Progress" type="circle" 
+        percent={recoder.percentaje != undefined ? recoder.percentaje : 0 } />);
+      }
+     
     }
    
   }
 
-  render() {
-    const states = [<Option key="1" value="1">En Ejecucion</Option>,
+  getOptionState(){
+    const states = [
+      <Option key="1" value="1">En Ejecucion</Option>,
       <Option key="2" value="2">Cumplidad</Option>,
-      <Option key="3" value="3">Suspendida</Option> ];
+      <Option key="3" value="3">Suspendida</Option> 
+    ];
+
+    return states;
+  }
+
+  render() {
+    
     
     const originColumns  = [
     {
@@ -513,7 +528,7 @@ class management extends Component {
                         style={{ width: '100%' }}
                         placeholder="Progreso"
                         onChange={this.getStates}>                        
-                        {states}
+                        {this.getOptionState()}
                       </Select>
               
               </Form.Item>
@@ -549,7 +564,8 @@ class management extends Component {
           {
             this.state.showComponent ? <DetailActivity visibleDrawer={this.state.visibleDrawer}
             closeDrawer={this.closeDrawer} detailtActivity={this.state.detailtActivity} reloadActivities={this.callgetActivities}
-            idProject={this.state.idProject} phase={this.state.phaseSelect}/> : null
+            idProject={this.state.idProject} phase={this.state.phaseSelect}
+            getOptionState={this.getOptionState} getState={this.getState} /> : null
           }
 
           <Divider /> 
