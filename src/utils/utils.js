@@ -5,4 +5,3 @@ export const getNameResource = (url) => {
     }
     return "Esta actividad no tiene recursos"
 }
-

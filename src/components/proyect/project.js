@@ -35,7 +35,7 @@ class Project extends Component{
 
 
     handleDelete = recoder =>{
-            this.showConfirmDeleteProyect(recoder);
+        this.showConfirmDeleteProyect(recoder);
     }
 
     async getEntrepreneurs(){
