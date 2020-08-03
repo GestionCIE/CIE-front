@@ -5,3 +5,7 @@ export const getNameResource = (url) => {
     }
     return "Esta actividad no tiene recursos"
 }
+
+export const is = (role) =>{
+    return localStorage.getItem('role') === role;
+}

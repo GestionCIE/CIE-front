@@ -459,7 +459,7 @@ class management extends Component {
             {this.state.projects.length > 0 ? (
                 this.state.projects.map((project, index) => {
                   return (
-                    <Option value={project.idProject}>
+                    <Option key={index} value={project.idProject}>
                       {project.projectName}
                     </Option>
                   );
