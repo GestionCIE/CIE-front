@@ -29,7 +29,7 @@ class Project extends Component{
         data: [],
         edit: false,
         idEdit: '',
-        value: undefined,
+        value: [],
         Entre: [],
     };
 
@@ -89,7 +89,7 @@ class Project extends Component{
             nameProyect: this.state.nameProyect,
             nameAsesor: this.state.nameAsesor,
             tagsmethodologies: this.state.tagsmethodologies,
-            Entre: this.state.value,
+            Entre: this.state.value.join(),
             id: this.state.idEdit
         };
                 
@@ -113,7 +113,7 @@ class Project extends Component{
             nameProyect: this.state.nameProyect,
             tagsmethodologies: this.state.tagsmethodologies,
             nameAsesor: this.state.nameAsesor,
-            value: this.state.value      
+            Entre: this.state.value.join()      
         };
         console.log("json",jsonProyect);
         const response = await http.post('project/createProject', jsonProyect);
