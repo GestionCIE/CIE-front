@@ -608,7 +608,7 @@ class management extends Component {
 
                   <Space size={8}>
                     <Button onClick={this.setVisibleModal} name="add"  id="add">Crear actividad</Button>
-                    <Button onClick={this.setVisibleModal} name="edit" >Editar actividad</Button>
+                    <Button onClick={this.setVisibleModal} name="edit" id="edit" >Editar actividad</Button>
                     <Button onClick={this.showModalAssigment}> Asig. Asesor a una fase</Button>
                     {this.state.nameAssigned != '' ? (
                     <>
