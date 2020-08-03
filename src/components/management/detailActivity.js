@@ -3,11 +3,15 @@ import {Drawer, Space, InputNumber,  Modal , Row, Col, Avatar, Tooltip, Rate, Pr
 import {MinusOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined} from '@ant-design/icons';
 import Comments from './comments';
 import Http from './../../api/http';
-import {getNameResource} from './../../utils/utils';
+import {getNameResource, is} from './../../utils/utils';
+import {SocketContext}  from './../../routers/context';
 
 const http = new Http();
 const {success, confirm } = Modal;
 class detailActivity extends React.Component {
+
+    static contextType = SocketContext;
+
     state = {
         visibleDrawer: false,
         activity:[],
@@ -52,6 +56,29 @@ class detailActivity extends React.Component {
 
     componentDidMount() {
         this.getActivity();
+    }
+
+
+    getParticipants(){
+        const result = [];
+        const participants = this.props.detailtActivity.profile;
+        for(let i=0; i< participants.length;  i++){
+            result.push(participants[i].responsable);
+        }
+
+        return result;
+    }
+
+    deleteNotification(){
+        const activity = this.props.detailtActivity.nameActivity;
+        const noti = {  
+            from: localStorage.getItem('username'),
+            message:`La actividad ${activity} ha sido eliminada del proyecto`,
+            to: this.getParticipants(),
+            image: localStorage.getItem('imageUrl')
+        };
+
+        this.context.socket.emit('/deleteActivity', noti );
     }
 
     onChangeRate = (number) => {
@@ -128,8 +155,10 @@ class detailActivity extends React.Component {
             success({
                 content: 'Se ha borrado la actividad correctamente'
             });
+            
             this.props.reloadActivities(this.props.idProject, this.props.phase, 1);
             this.props.closeDrawer();
+            this.deleteNotification();
         }
     }
 
@@ -165,13 +194,24 @@ class detailActivity extends React.Component {
        
       }
 
-      onChangePrefix = (value) =>{
-          this.setState({prefix: value});
+    onChangePrefix = (value) =>{
+        this.setState({prefix: value});
+    }
+
+    showExecutionWeek(){
+        const dateInit = this.state.executionWeek.split(' ')[0];
+        const dateEnd  = this.state.executionWeek.split(' ')[1];
+
+        return (<p>
+            <Space size={8}>
+                <span>Fecha de inicio : { dateInit}</span>
+                <span>Fecha de Fin: {dateEnd}</span> 
+            </Space> 
+          </p>);
       }
 
-
     render(){
-        return( <Drawer width="40%"
+         return <Drawer width="40%"
         title="Detalle de la actividad"
         placement="right"
         closable={false}
@@ -185,8 +225,10 @@ class detailActivity extends React.Component {
                             <div>
                             <h6> Nombre: </h6> <p> {this.props.detailtActivity.nameActivity}</p> 
                             </div>
-                          
-                            <Button type="danger" icon={<DeleteOutlined />} onClick={this.delete}>Eliminar Actividad</Button>
+                            {
+                                is('adviser') == true ? <Button type="danger" icon={<DeleteOutlined />} onClick={this.delete}>Eliminar Actividad</Button> : null
+                            }
+                            
                         </div>
                         <div>
                             <h6>Description: </h6>
@@ -233,7 +275,7 @@ class detailActivity extends React.Component {
                         </div>
                         <div>
                             <h6>Semana de ejecucion:</h6><br />
-                            <p>{this.state.executionWeek}</p>
+                            {this.showExecutionWeek()}
 
                         </div>
                         <h6>Recursos: </h6>
@@ -250,8 +292,7 @@ class detailActivity extends React.Component {
                     </div>
                 </Col>
             </Row>
-        </Drawer>)
-    
+        </Drawer>
     }
 }   
 

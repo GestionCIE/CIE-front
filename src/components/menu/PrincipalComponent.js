@@ -13,7 +13,9 @@ import {
 import { Link } from "react-router-dom";
 import "./index.css";
 import Profile from "./profile";
+import Http from './../../api/http';
 
+const http = new Http();
 const { Sider } = Layout;
 class PrincipalComponent extends React.Component {
   state = {
@@ -39,13 +41,9 @@ class PrincipalComponent extends React.Component {
     }
   }
 
-  getModulesByRole(){
-    fetch(`http://localhost:3005/config/getModulesByRole?role=${localStorage.getItem("role")}`)
-    .then(res =>res.json())
-    .then((response) =>{
-      console.log(response);
-      this.setState({modules: response.result});
-    });
+ async getModulesByRole(){
+    const response = await http.get(`config/getModulesByRole?role=${localStorage.getItem("role")}`);
+    this.setState({modules: response.result});
   }
 
   componentDidMount(){
