@@ -121,10 +121,10 @@ class management extends Component {
     console.log("Moment ", week_result );
   }
 
-  setVisibleModal = (e)=>{
-    console.log("name modal >>>>", e.target.id);
+  setVisibleModal = (type)=>{
+    console.log("type modal >>>> ",type);
     let title = '';
-    if(e.target.id == 'add') {
+    if(type == 'add') {
       title = 'Crear Evento';
     }else {
       title = 'Editar Evento';
@@ -607,8 +607,8 @@ class management extends Component {
                  ( <>
 
                   <Space size={8}>
-                    <Button onClick={this.setVisibleModal} name="add"  id="add">Crear actividad</Button>
-                    <Button onClick={this.setVisibleModal} name="edit" id="edit" >Editar actividad</Button>
+                    <Button onClick={() => this.setVisibleModal("add")} >Crear actividad</Button>
+                    <Button onClick={() => this.setVisibleModal("edit")} >Editar actividad</Button>
                     <Button onClick={this.showModalAssigment}> Asig. Asesor a una fase</Button>
                     {this.state.nameAssigned != '' ? (
                     <>
