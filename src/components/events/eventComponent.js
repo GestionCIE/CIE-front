@@ -15,7 +15,7 @@ const lastActivity = new lasActivitySystemApi();
 const http = new Http();
 const {Content} = Layout;
 const {TextArea} = Input;
-const {confirm, success} = Modal;
+const {confirm, success, error} = Modal;
 const {Step}= Steps;
 
 
@@ -37,6 +37,7 @@ class EventComponent extends React.Component {
         edit: false,
         visibleModal: false,
         image: '',
+        speaker:'',
         current: 0
     };
 
@@ -47,10 +48,10 @@ class EventComponent extends React.Component {
     onChangeFile = (info) => {
 
         if(info.file.status == 'done'){
-            console.log(info.file.name);
+            console.log(info.file.response.image);
             this.setState({
-                image: info.file.name
-            })
+                image: info.file.response.image
+            });
         }
     }
 
@@ -80,7 +81,7 @@ class EventComponent extends React.Component {
             edit: true
         });
         console.log(this.state.nameEvent);
-        
+        this.setVisibleModal();
     }
         
     showConfirmDeleteEvent(recoder){
@@ -142,8 +143,45 @@ class EventComponent extends React.Component {
 
     onChangeDate = (e, value)=>{
         console.log(value);
-        this.setState({date: value});
+        const todayDate = moment(new Date(), 'YYYY-MM-DD').format('YYYY-MM-DD').toString();
+        console.log(todayDate);
+       
+        if(this.validateDate(value, todayDate)) {
+            this.setState({date: value});
+        }else {
+            error({content: 'La fecha debe ser mayor al dia actual'});
+        }
+           
     }
+
+    validateDate(selected, now){
+
+        const selectedTemp =  {
+            year: selected.split('-')[0],
+            month: selected.split('-')[1],
+            day: selected.split('-')[2],
+            
+        }
+
+        const nowTemp = {
+            year:  now.split('-')[0],
+            month: now.split('-')[1],
+            day: now.split('-')[2]
+        }
+        console.log(selectedTemp);
+        console.log(nowTemp);
+
+        return (selectedTemp.year >= nowTemp.year && 
+            selectedTemp.month >= nowTemp.month &&
+            selectedTemp.day >= nowTemp.day) ? true : false;
+
+    }
+
+
+    validateHour(){
+
+    }
+    
 
     updateEvent = async ()=>{
         console.log("updateEvent", this.state.nameEvent);
@@ -200,35 +238,29 @@ class EventComponent extends React.Component {
 
     contentForm = () => (
         <Form className="Form_Event">
-        <Form.Item>
+        <Form.Item rules={[
+          {
+            required: true,
+            message: 'Please input your username!',
+          },
+        ]}>
                 <label>Nombre del evento</label>
                 <Input id="input" placeholder="Nombre del evento" value={this.state.nameEvent} name="nameEvent" onChange = {this.onChangeData}/> 
         </Form.Item>
-    
-        {/* <Form.Item>
-              
-        </Form.Item> */}
-        
         <Form.Item>
         <label>Hora de inicio y fin</label> <br/>
             <div className="Form_Event_Hour">
                 <Space size={8}>
-                   
                     <TimePicker placeholder="Hora de inicio" format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
-                    {/* <label>Hora de fin</label> <br/> */}
                     <TimePicker placeholder="Hora de fin"  format="HH:mm" defaultValue={moment('12:08', 'HH:mm')}/>
                 </Space>
             </div>
            
         </Form.Item>
 
-        {/* <Form.Item>
-              
-        </Form.Item> */}
-
         <Form.Item>
                 <label>Expositor</label> <br/>
-                <Input id="input" placeholder="Expositor" value={this.state.nameEvent} name="expositor" onChange = {this.onChangeData}/> 
+                <Input id="input" placeholder="Expositor" name="speaker" value={this.state.speaker} name="expositor" onChange = {this.onChangeData}/> 
         </Form.Item>
 
         <Form.Item>
@@ -242,7 +274,7 @@ class EventComponent extends React.Component {
                 <DatePicker placeholder="Fecha del evento" value={moment(this.state.date, 'YYYY-MM-DD')} name="date" onChange={this.onChangeDate}/>
                 <Upload onChange={this.onChangeFile}
                     name="eventFile"
-                    action="http://localhost:3005/event/uploadFile">
+                    action={http.uploadImage('event/uploadFile')}>
                         <Button>
                         <UploadOutlined/> Subir Archivo
                         </Button>
@@ -296,18 +328,11 @@ class EventComponent extends React.Component {
                 dataIndex: 'delete',
                 render: (text, recoder)=>( <Button type="danger" onClick={() => this.handleDelete(recoder)}> <DeleteOutlined>/</DeleteOutlined> Eliminar</Button>)
             }, 
-            // {
-            //     title: 'Publicar',
-            //     dataIndex: 'publish',
-            //     render: (text, recoder)=> <Button type="primary" > <ShareAltOutlined /> Publicar</Button>
-            // }
-
-
         ];
 
         const steps = [
             {
-                title: 'Crear Evento',
+                title: this.state.edit ? 'Editar Evento' : 'Crear Evento',
                 content: this.contentForm
             },
         
