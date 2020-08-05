@@ -1,4 +1,6 @@
 import React from 'react';
+import {Card} from 'antd';
+
 import {Chart} from 'react-google-charts';
 import Http from './../../api/http';
 
@@ -16,7 +18,7 @@ class GranttGraph extends React.Component {
     async getData(){
        let f_data = [];
        let response = await  
-       http.get(`project//activities/gantt?id=${this.props.idProject}&phase=${this.props.phase}`)
+       http.get(`project/activities/gantt?id=${this.props.idProject}&phase=${this.props.phase}`)
        console.log(response);
        f_data.push(new Array(
         { type: 'string', label: 'Task ID' },
@@ -35,11 +37,11 @@ class GranttGraph extends React.Component {
         f_data.push(new Array(
             response[i].idActivities,
             response[i].nameActivity,
-            null,
+            response[i].resources,
             new Date(startDate.year, startDate.month, startDate.day),
             new Date(endDate.year, endDate.month, endDate.day),
             null,
-            100,
+            response[i].percentaje,
             null
 
         ))
@@ -71,7 +73,8 @@ class GranttGraph extends React.Component {
     }
 
     render(){
-        return (<Chart style={{marginTop: '30px'}} width={'100%'} height={'400px'} chartType="Gantt"
+        return (<Card className="CardGrantt">  
+        <Chart style={{marginTop: '30px'}} width={'100%'} height={'400px'} chartType="Gantt"
         loader={<div>Cargando Gantt</div>}
         data={this.state.data}
           options={{
@@ -80,7 +83,8 @@ class GranttGraph extends React.Component {
               trackHeight: 30,
             },
           }}
-        />)
+        />
+        </Card>)
     }
 }
 
