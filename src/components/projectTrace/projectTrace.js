@@ -1,8 +1,8 @@
 import React from 'react';
 import { Col, Row, Button, Select, Space} from "antd";
+import {is} from './../../utils/utils';
 import StateOfActivivities from './chartsx';
 import charImg from './../../assets/graph.svg';
-import ManagementApi from '../../api/management/managenmentApi';
 import './projectTrace.css';
 
 import GranttGraph from './granttGraph';
@@ -10,12 +10,13 @@ import GranttGraph from './granttGraph';
 import Http from './../../api/http';
 
 const http = new Http();
-const api = new ManagementApi();
+
 
 
 const {Option} = Select;
 
-const typegraphs = [
+const typegraphs = is('adviser') ? 
+[
   {
      id: 1,
      content: 'cantidad de actividades'
@@ -23,15 +24,28 @@ const typegraphs = [
   {
     id: 2,
     content: 'estado de las actividades'
- }, 
- {
-  id: 3,
-  content: 'Calificacion de las actividades'
- },
- {
-  id: 4,
-  content: 'Diagrama de Grantt'
- }];
+  }, 
+  {
+    id: 3,
+    content: 'Calificacion de las actividades'
+  },
+  {
+    id: 4,
+    content: 'Diagrama de Grantt'
+  }] : [
+  {
+    id: 5,
+    content: 'Emprendedores atendidos'
+  },
+  {
+    id: 6,
+    content: 'Estado de los emprendimientos'
+  },
+  {
+    id:7,
+    content: 'Emprendedores por programa'
+  }
+];
 
 class ProjectTrace extends React.Component {
     constructor(props){

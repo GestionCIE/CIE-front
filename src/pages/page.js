@@ -12,12 +12,12 @@ const { Content } = Layout;
 class Home extends React.Component {
   state = {
     path: "",
-    collapsed: true,
+    collapsed: false,
     img:""
   };
 
   onAlert = () => {
-    this.setState({ collapsed: !this.state.collapsed });
+   this.setState({ collapsed: !this.state.collapsed });
     console.log(this.state.collapsed);
   };
 
