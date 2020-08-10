@@ -5,6 +5,7 @@ import "./public.css";
 import ContentPublic from "./switchContent";
 import Menu from "./menu";
 
+
 const { Header, Content } = Layout;
 
 class Public extends React.Component {

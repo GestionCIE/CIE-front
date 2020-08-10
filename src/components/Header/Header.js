@@ -14,7 +14,7 @@ class HeaderComponent extends React.Component {
     super(props);
   }
   state = {
-    collapsed: true,
+    collapsed: false,
     openbell: 'none',
     amountNotifications: 0
   };

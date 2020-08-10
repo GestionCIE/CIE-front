@@ -1,19 +1,28 @@
 import React from 'react';
-import {Row, Col, Table, Collapse, List, Select, Switch, Button, Modal} from 'antd';
+import {Row, Col, Table, Collapse, List, Select, Switch, Button, Modal, Form, Input, Tag} from 'antd';
+import {UserAddOutlined } from '@ant-design/icons';
 import Http from './../../api/http';
 
 const http = new Http();
 const {Panel} = Collapse;
 const {Option} = Select; 
-const {success, confirm} = Modal;
+const {success, confirm, error} = Modal;
 
 class RoleSettings extends React.Component {
     state = {
         data: [],
         moduleAdviser: [],
         moduleAssistant: [],
-        moduleEntrepreneur: []
-
+        moduleEntrepreneur: [],
+        showModal: false,
+        
+            name: '',
+            username: '',
+            password: '',
+            email: '',
+            relationshipUniversity:'Personal de la institucion',
+            role: ''
+    
     };
 
     componentDidMount(){
@@ -52,7 +61,6 @@ class RoleSettings extends React.Component {
     }
 
     setNewRole = async (value)=>{
-        
         const data = {role: value.split(' ')[0], id: value.split(' ')[1] };
         const response = await http.post('users/admin/updateRole', data);
         if(response.result === 'edited') {
@@ -61,12 +69,20 @@ class RoleSettings extends React.Component {
         }
     }
 
+    onChangeRole = (value) => {
+        const cvalue = value.split(' ')[0];
+        console.log(cvalue);
+        this.setState({role: cvalue });
+    }
+
     createSelectOption(id){
-        console.log(id);
-        let select = <Select defaultValue="Selecionar Rol" onChange={this.setNewRole}> 
-            <Option value={`adviser ${id}`}>Asesor</Option>
-            <Option value={`assistant ${id}`}>Asistente</Option>
-            <Option value={`administrator ${id}`}>Administrador</Option>
+        const contentValue = (id > 0) ? "Selecionar Rol" : this.state.role;
+        const action = (id > 0)? this.setNewRole : this.onChangeRole;
+        let select = <Select value={contentValue} onChange={action}>
+
+            <Option value={`adviser ${(id > 0)? id:''}`}>Asesor</Option>
+            <Option value={`assistant ${(id > 0) ? id:''}`}>Asistente</Option>
+            <Option value={`administrator ${(id > 0) ? id:''}`}>Administrador</Option>
         </Select>; 
         return select;
     }
@@ -104,6 +120,44 @@ class RoleSettings extends React.Component {
         return (<Button type="danger" onClick={() =>this.deleteUser(id)}>Eliminar usuario</Button>)
     }
     
+    showModal = () => {
+        this.setState({showModal: true});
+    }
+
+    closeModal = () =>{
+        this.setState({showModal: false});
+    }
+
+    onChangeData= (e) =>{
+        console.log(`${e.target.name} ${e.target.value}`);
+        this.setState({[e.target.name]: e.target.value});
+    }
+
+    createUser = async () =>{
+        const data  = {
+            fullname: this.state.name,
+            username: this.state.username,
+            password: this.state.password,
+            email: this.state.email,
+            relationship: this.state.relationshipUniversity,
+            role: this.state.role
+        };
+
+        console.log(data);
+        const response = await http.post('users/createUser', data);
+        if(response.result = 'created'){
+            success({
+                content: 'Usuario se creo correctamente'
+            });
+
+            this.getAllUsers();
+        }else {
+            error({content: 'No se creo el usuario correctamente'});
+
+        }
+        this.closeModal();
+    }
+    
     render(){
         const columns = [{
             title: 'Nombre',
@@ -137,6 +191,7 @@ class RoleSettings extends React.Component {
             <>
             <Row>
             <Col span={17}>
+                <Button type="primary" icon={<UserAddOutlined />} onClick={this.showModal}> Crear Usuario </Button>
                 <h6>Roles de usuario</h6>
                 <Table size="small" rowKey={ recoder => recoder.idUsers} columns={columns} dataSource={this.state.data}/>            
             </Col>
@@ -180,6 +235,40 @@ class RoleSettings extends React.Component {
                     </Panel> 
                 </Collapse>
                 </Col>
+                <Modal visible={this.state.showModal}
+                 footer={false} onCancel={this.closeModal} title="Crear Usuario"
+                >
+                 <Form>
+                     <Form.Item>
+                            <label>Nombre completo</label>
+                            <Input value={this.state.name}  name="name" onChange={this.onChangeData} />
+                     </Form.Item>
+                     <Form.Item>
+                            <label>Nombre de usuario</label>
+                            <Input value={this.state.username} name="username" onChange={this.onChangeData} />
+                     </Form.Item>
+                     <Form.Item>
+                            <label>Contraseña</label>
+                            <Input name="password" value={this.state.password} onChange={this.onChangeData} />
+                     </Form.Item>
+                     <Form.Item>
+                            <label>Email</label>
+                            <Input name="email" value={this.state.email} onChange={this.onChangeData}/>
+                     </Form.Item>
+                     <Form.Item>
+                            <label>Rol</label>
+                            {this.createSelectOption()}
+                     </Form.Item>
+                     <Form.Item>
+                            <label>Relacion con la universiad </label>
+                            <Tag color="blue"> {this.state.relationshipUniversity} </Tag>
+                     </Form.Item>
+
+                     <Form.Item>
+                            <Button type="primary"  className="Btn_Create_User" type="primary" onClick={this.createUser}>Crear Usuario</Button>
+                     </Form.Item>
+                 </Form>
+                </Modal>
             </Row>
             </>
         )
