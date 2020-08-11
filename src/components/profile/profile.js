@@ -1,16 +1,18 @@
 import React from 'react';
-import {Row, Col, Upload, Button, Form, Input, Steps, Select, Tag, Modal} from 'antd';
+import {Row, Col, Upload, Button, Form, Input, Steps, Select, Tag, Modal, Tabs} from 'antd';
 import 'antd/dist/antd.css';
 import {LoadingOutlined, PlusOutlined, LockOutlined } from '@ant-design/icons';
 import './profile.css';
 import Http from './../../api/http';
 import Security from './../../assets/security.svg';
+import {whatRelationship, getRole, getRelationship} from './../../utils/utils';
+import ProfesionalProfile from './professionalProfile';
 
 const http = new Http();
 const {Step}  = Steps;
 const {warning} = Modal;
 const {Option} = Select;
-
+const {TabPane} = Tabs;
 
 
 class ProfileComponent extends React.Component{
@@ -31,7 +33,8 @@ class ProfileComponent extends React.Component{
         project: '',
         rol: '',
         currentPassword: '',
-        newPassword: ''
+        newPassword: '',
+        load: false
     }
 
     async getProfile(){
@@ -50,11 +53,21 @@ class ProfileComponent extends React.Component{
             imageUrl: user.image,
             project: project.projectName,
             rol: project.rol
+           
         });
     }
 
     componentDidMount(){
         this.getProfile();
+    }
+
+    componentDidUpdate(){
+        if(!this.state.load){
+            this.getProfile();
+            this.setState({
+                load: true
+            });
+        }
     }
 
     next(){
@@ -140,15 +153,14 @@ class ProfileComponent extends React.Component{
                 <Row>
                     <Col span={12}>
                         <label>Tipo de Usuario</label> <br/>
-                        <Tag color="#108ee9">{this.state.role}</Tag>
+                        <Tag color="#108ee9">{getRole(this.state.role)}</Tag>
                     </Col>
                     <Col span={12}>
                         <label>Relacion con la CUA  </label><br/>
-                        <Tag color="#108ee9" >{this.state.relationshipUniversity}</Tag>
+                        <Tag color="#108ee9" >{getRelationship(this.state.relationshipUniversity)}</Tag>
                     </Col>
                 </Row>
                 
-              
             </Form.Item>
         </Form>
         )
@@ -277,95 +289,122 @@ class ProfileComponent extends React.Component{
             content: this.proyect}
         ];
 
+
         return(
-            <Row>
-                <Col span={10}>
-                   <h6>Perfil de usuario</h6>
-                   <Upload
-                   name="profile"
-                   listType="picture-card"
-                   className="avatar-uploader"
-                   showUploadList={false}
-                   action={http.uploadImage('users/uploadProfile')}
-                   beforeUpload={this.beforeUpload}
-                   onChange={this.onChange}
-                   >
-                       
-                    {this.state.imageUrl ? <img src={this.state.imageUrl} alt="avatar" 
-                    style={{ width: '100%', maxHeight: '10vh' }} /> : this.uploadButton }
-                   </Upload>
-                   
-                   <div className="Profile_Data_Contact">
-                        <h6>Datos de contacto</h6><br />
-                        <p> <b>Correo Electronico: </b></p>
-                        <p>{this.state.email}</p>
-                        <p>{this.state.phone}</p>
-                        <p><b>Telefono:</b> <span>{ (this.state.phone !== undefined )? this.state.phone : 'No tiene telefono' }  </span></p>
-                        <p><b>Celular:</b> <span>{ (this.state.mobile !==undefined) ?  this.state.mobile : 'No tiene celular' }</span> </p>
-                       
-                   </div>
-                   <div className="Profile_Buttons">
-                        <Button onClick={this.showModalPassword} type="primary">Cambiar Contraseña</Button>
-                        <Button onClick={this.showModalEditProfile}type="primary">Editar Perfil</Button>
-                   </div>
-                </Col>
-                <Col span={12}>
-                    <div className="Profile_Content_Col2">
-                      
-                        <div>
-                            <h6>Datos Basicos</h6>
-                            <p><b>Nombre: </b> <span>{this.state.name} </span></p>
-                            <p><b>Tipo de usuario: </b> <span>{this.state.role}</span></p>
-                            <p><b>Relacion con la CUA: </b> <span>{this.state.relationshipUniversity}</span></p>
-                            {/* <p><b>Semestre Academico: </b> <span>9</span></p> */}
-                        </div>
+            <Tabs>
+                <TabPane tab="Perfil General"  key={1}>
+                <Row>
+                    <Col span={10}>
+                        <h6>Perfil de usuario</h6>
+                        <Upload
+                        name="profile"
+                        listType="picture-card"
+                        className="avatar-uploader"
+                        showUploadList={false}
+                        action={http.uploadImage('users/uploadProfile')}
+                        beforeUpload={this.beforeUpload}
+                        onChange={this.onChange}
+                        >
                         
-                        <div>
-                        <h6>Proyecto</h6>
-                            <p><b>Proyecto Actual: </b> <span>{this.state.project}</span></p>
-                            <p><b>Rol: </b> <span>{this.state.rol}</span></p>
-                        </div>    
-                    </div>
-
-                </Col>
-                <Modal
-                    title="Edición del Perfil de usuario"
-                    visible={this.state.modalEditProfile}
-                    onCancel={this.closeModalEditProfile}
-                    onOk={this.closeModalEditProfile}
-                >
-                    <Row>
-                        <Col span={24}>
-                            <Steps current={this.state.current}>
-                                { titles_steps.map(item => 
-                                <Step key={item.title} title={item.title} />
-                                )}
-                            </Steps>
-                            <div className="steps-content">
-                                {titles_steps[this.state.current].content()}
-                            </div>
-                            <div className="steps-action">
-                                    { this.state.current < titles_steps.length -1  && (
-                                    <Button type="primary" onClick={()=> this.next()}>
-                                        Siguiente
-                                    </Button>)}
-
-                                    { this.state.current === titles_steps.length -1 && (
-                                        <Button type="primary" onClick={()=> this.handleEdit()}>
-                                            Editar
-                                        </Button>)
-                                    }
-
-                                    { this.state.current > 0 && (
-                                        <Button type="primary" style={{ margin: '0 8px' }} onClick={()=> this.prev()}>
-                                            Anterior
-                                        </Button>)}
-                            </div>
+                        {this.state.imageUrl ? <img src={this.state.imageUrl} alt="avatar" 
+                        style={{ width: '100%', maxHeight: '10vh' }} /> : this.uploadButton }
+                        </Upload>
+                        
+                        <div className="Profile_Data_Contact">
+                                <h6>Datos de contacto</h6><br />
+                                <p> <b>Correo Electronico: </b></p>
+                                <p>{this.state.email}</p>
+                                <p>{this.state.phone}</p>
+                                <p><b>Telefono:</b> <span>{ (this.state.phone !== undefined )? this.state.phone : 'No tiene telefono' }  </span></p>
+                                <p><b>Celular:</b> <span>{ (this.state.mobile !==undefined) ?  this.state.mobile : 'No tiene celular' }</span> </p>
+                            
+                        </div>
+                        <div className="Profile_Buttons">
+                                <Button onClick={this.showModalPassword} type="primary">Cambiar Contraseña</Button>
+                                <Button onClick={this.showModalEditProfile}type="primary">Editar Perfil</Button>
+                        </div>
                         </Col>
+                        <Col span={12}>
+                            <div className="Profile_Content_Col2">
+                            
+                                <div>
+                                    <h6>Datos Basicos</h6>
+                                    <p><b>Nombre: </b> <span>{this.state.name} </span></p>
+                                    <p><b>Tipo de usuario: </b> <span>{getRole(this.state.role)}</span></p>
+                                    <p><b>Relacion con la CUA: </b> <span>{getRelationship(this.state.relationshipUniversity)}</span></p>
+                                    {/* <p><b>Semestre Academico: </b> <span>9</span></p> */}
+                                </div>
+                                
+                                <div>
+                                <h6>Proyecto</h6>
+                                    <p><b>Proyecto Actual: </b> <span>{this.state.project}</span></p>
+                                    <p><b>Rol: </b> <span>{this.state.rol}</span></p>
+                                </div>    
+                            </div>
+
+                        </Col>
+                        <Modal
+                            title="Edición del Perfil de usuario"
+                            visible={this.state.modalEditProfile}
+                            onCancel={this.closeModalEditProfile}
+                            onOk={this.closeModalEditProfile}
+                        >
+                            <Row>
+                                <Col span={24}>
+                                    <Steps current={this.state.current}>
+                                        { titles_steps.map(item => 
+                                        <Step key={item.title} title={item.title} />
+                                        )}
+                                    </Steps>
+                                    <div className="steps-content">
+                                        {titles_steps[this.state.current].content()}
+                                    </div>
+                                    <div className="steps-action">
+                                            { this.state.current < titles_steps.length -1  && (
+                                            <Button type="primary" onClick={()=> this.next()}>
+                                                Siguiente
+                                            </Button>)}
+
+                                            { this.state.current === titles_steps.length -1 && (
+                                                <Button type="primary" onClick={()=> this.handleEdit()}>
+                                                    Editar
+                                                </Button>)
+                                            }
+
+                                            { this.state.current > 0 && (
+                                                <Button type="primary" style={{ margin: '0 8px' }} onClick={()=> this.prev()}>
+                                                    Anterior
+                                                </Button>)}
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Modal>
+                        {this.modalChangePassword()}
                     </Row>
-                </Modal>
-                {this.modalChangePassword()}
-            </Row>
+                </TabPane>
+                {
+                    whatRelationship('personalIntern') ?
+                    (<TabPane tab="Datos profesionales" key={2}>
+                        <ProfesionalProfile />                             
+                    </TabPane>) : null
+                }
+
+                {
+                     whatRelationship('external') ?
+                     (<TabPane tab="Datos emprendedor externo" key={3}>
+                         <ProfesionalProfile />                             
+                     </TabPane>) : null
+                }
+
+                {
+                    whatRelationship('student') ?
+                    (<TabPane tab="Datos del estudiante" key={4}>
+                        <ProfesionalProfile />                             
+                    </TabPane>) : null
+                }
+                
+            </Tabs>
+           
         )
     }
 }

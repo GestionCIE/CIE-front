@@ -47,3 +47,11 @@
 .Img_ChangePassword{
     width: 100%;
 }
+
+.Form_Item_Input{
+    width: 50%;
+}
+
+.Form_Item_Button{
+    width: 50%;
+}
