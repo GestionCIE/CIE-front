@@ -113,21 +113,68 @@ class management extends Component {
   }
 
   onChangeWeek = (week) =>{
-    
-    const week_result = `${moment(new Date(week[0])).format('YYYY-MM-DD')} ${moment(new Date(week[1])).format('YYYY-MM-DD')}`
-    this.setState({
-      week: week_result
-    });
-    console.log("Moment ", week_result );
+    if(week != undefined || week != null) {
+      console.log(week);
+      const week_start = moment(new Date(week[0])).format('YYYY-MM-DD');
+      const week_end = moment(new Date(week[1])).format('YYYY-MM-DD');
+      if(this.validateDate(week_start, week_end)){
+        const week_result = `${week_start} ${week_end}`;
+        this.setState({
+          week: week_result
+        });
+        console.log("Moment ", week_result );
+      }else {
+        error({content: 'Selecione una fecha permitida'});
+      }
+    }
   }
+
+  validateDate(start, end){
+      // start >= now
+      // start >= end
+      const todayDate = moment(new Date(), 'YYYY-MM-DD').format('YYYY-MM-DD').toString();
+      const w_start = {
+        year: start.split('-')[0],
+        month: start.split('-')[1],
+        day: start.split('-')[2]
+      };
+
+      const w_end = {
+        year: end.split('-')[0],
+        month: end.split('-')[1],
+        day: end.split('-')[2]
+      }
+
+      const now = {
+        year: todayDate.split('-')[0],
+        month: todayDate.split('-')[1],
+        day: todayDate.split('-')[2]
+      };
+
+      console.log(w_start);
+      console.log(now);
+      console.log(w_end);
+      if( w_start.year >= now.year &&  
+        w_start.month >= now.month && w_start.day >= now.day){
+          console.log("primer cond");
+          if(w_start.year <= w_end.year && 
+            w_start.month <= w_end.month && w_start.day <= w_end.day){
+              console.log("segundo cond");
+              return true;
+          }
+      }else {
+        return false;
+      }
+    
+    }
 
   setVisibleModal = (type)=>{
     console.log("type modal >>>> ",type);
     let title = '';
     if(type == 'add') {
-      title = 'Crear Evento';
+      title = 'Crear Actividad';
     }else {
-      title = 'Editar Evento';
+      title = 'Editar Actividad';
     }
     this.setState({visible: true, titleModal: title});
   }
@@ -244,6 +291,16 @@ class management extends Component {
       return (htmlProfile);
   }
 
+  validate(assings){
+    if(this.state.nameActivity != '' && assings != '' && this.state.stateActivity[0] != ''
+      && this.state.phaseSelect != '' && this.state.idProject != -1 && this.state.description != ''
+     ){
+        return true;
+      }else {
+        return false;
+      }
+  }
+
   createActivity = async () =>{
 
     let assings = '';
@@ -253,29 +310,36 @@ class management extends Component {
       assings = ((i + 1) == this.state.assign.length) 
       ?  assings + this.state.assign[i] : assings + this.state.assign[i] + ","; 
     }
-   
-    const data = {
-      nameActivity: this.state.activity ,
-      responsables:assings , 
-      state: this.state.stateActivity[0],
-      phase: this.state.phaseSelect,
-      id: this.state.idProject,
-      week: this.state.week,
-      description: this.state.description,
-      resources :  this.state.urlresource
-    };
-    console.log("data >> ", data);
-    const response = await  http.post('project/createActivity', data); //api.createActivity(data);
-    
-    if(response.result  == 'created'){
-      success({content: 'se creo la actividad correctamente'});
-      this.callgetActivities(this.state.idProject, this.state.phaseSelect, 0);
-      this.closeModal();
-      this.notificationCreateActivity();
 
+
+    if(this.validate()){
+      const data = {
+        nameActivity: this.state.activity ,
+        responsables:assings , 
+        state: this.state.stateActivity[0],
+        phase: this.state.phaseSelect,
+        id: this.state.idProject,
+        week: this.state.week,
+        description: this.state.description,
+        resources :  this.state.urlresource
+      };
+      console.log("data >> ", data);
+      const response = await  http.post('project/createActivity', data); //api.createActivity(data);
+      
+      if(response.result  == 'created'){
+        success({content: 'se creo la actividad correctamente'});
+        this.callgetActivities(this.state.idProject, this.state.phaseSelect, 0);
+        this.closeModal();
+        this.notificationCreateActivity();
+  
+      }else {
+        error({content: 'ha habido un error al crear la actividad'});
+      }
     }else {
-      error({content: 'ha habido un error al crear la actividad'});
+      error({content: 'LLene todos los campos porfavor'});
     }
+   
+  
   }
 
   EditActivity =  () =>{
@@ -551,7 +615,7 @@ class management extends Component {
               </Form.Item>
 
               <Form.Item>
-                <Button onClick={()=>{ this.state.titleModal == 'Crear Evento' ? 
+                <Button onClick={()=>{ this.state.titleModal == 'Crear Actividad' ? 
                 this.createActivity() : this.EditActivity() }} className="Btn_Activity" type="primary">
                   {this.state.titleModal}
                 </Button>
