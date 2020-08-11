@@ -88,26 +88,33 @@ class Project extends Component{
     }
 
     updateProyect = async ()=>{
-        const jsonProyect = {
-            nameProyect: this.state.nameProyect,
-            nameAsesor: this.state.nameAsesor,
-            tagsmethodologies: this.state.tagsmethodologies,
-            Entre: this.state.value.join(),
-            id: this.state.idEdit
-        };
-                
-        console.log("nombreeee", this.state.nameProyect);
 
-        const response = await http.post('project/editProject', jsonProyect);
-        if(response.result === 'edited'){
-            success({content: 'el proyecto ha sido editado'});
-            this.setState({
-                nameProyect : "",
-                idEdit: "",
-                edit: false
-            });
-            this.reloadTable();
+        if(this.validate()){
+            const jsonProyect = {
+                nameProyect: this.state.nameProyect,
+                nameAsesor: this.state.nameAsesor,
+                tagsmethodologies: this.state.tagsmethodologies,
+                Entre: this.state.value.join(),
+                id: this.state.idEdit
+            };
+                    
+            console.log("nombreeee", this.state.nameProyect);
+    
+            const response = await http.post('project/editProject', jsonProyect);
+            if(response.result === 'edited'){
+                success({content: 'el proyecto ha sido editado'});
+                this.setState({
+                    nameProyect : "",
+                    idEdit: "",
+                    edit: false
+                });
+                this.reloadTable();
+                this.cleanForm();
+            }
+        }else {
+            error({content: 'Para editar porfavor, complete los campos'});
         }
+        
     }
     
    
