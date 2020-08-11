@@ -7,6 +7,7 @@ import Http from './../../api/http';
 import Security from './../../assets/security.svg';
 import {whatRelationship, getRole, getRelationship} from './../../utils/utils';
 import ProfesionalProfile from './professionalProfile';
+import StudentProfile from './studentProfile';
 
 const http = new Http();
 const {Step}  = Steps;
@@ -399,7 +400,7 @@ class ProfileComponent extends React.Component{
                 {
                     whatRelationship('student') ?
                     (<TabPane tab="Datos del estudiante" key={4}>
-                        <ProfesionalProfile />                             
+                        <StudentProfile />                             
                     </TabPane>) : null
                 }
                 

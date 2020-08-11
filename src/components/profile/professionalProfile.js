@@ -77,7 +77,7 @@ class ProfesionalProfile extends React.Component{
                <Col span={12}>
                     <h6>Perfil Profesional</h6><br/>
                     <p><b>Carrera Profesional: </b> <span>{this.state.universityDegrees}</span> </p>
-                    <p><b>Experiencia Profesional</b> <span>{this.state.experience}</span></p>
+                    <p><b>Experiencia Profesional</b> <span>{this.state.experience}</span></p><br/>
                     <Button type="primary" onClick={this.showModal}> Agregar Informacion Profesional</Button>
                </Col>
                <Modal visible={this.state.showModal}

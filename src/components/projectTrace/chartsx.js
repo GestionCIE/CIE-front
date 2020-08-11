@@ -39,6 +39,14 @@ class stateOfActivivities extends React.Component {
       });
     }
 
+    async getentrepreneursServed(){
+      const response = await http.get(`tracing/entrepreneursServed`);
+      this.setState({
+        data: response.data,
+        labels: response.labels
+      });
+    }
+
     componentDidMount() {
      this.getTypeGraph();
 
@@ -52,6 +60,9 @@ class stateOfActivivities extends React.Component {
         this.getAmountStateActivitities();
       }else if (typeGraph == '3') {
         this.getAmountRate();
+      }else if(typeGraph == '5'){
+        console.log("entre");
+        this.getentrepreneursServed();
       }
     }
 

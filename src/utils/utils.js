@@ -73,3 +73,24 @@ export const getRole = (key) => {
     console.log(value);
     return value;
 }
+
+export const getIncomeBy = (key) => {
+    let value = '';
+    switch (key) {
+        case '1':
+            value = 'Practicas';
+            break;
+        case '2': 
+            value = 'Opción de grado';
+            break;
+
+        case '3': 
+            value = 'Internacionalización';
+            break;
+        default:
+            value = 'No hay Motivo del ingreso';
+            break;
+    }
+
+    return value;
+};

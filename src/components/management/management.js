@@ -95,6 +95,9 @@ class management extends Component {
     console.log("state ", typeof state);
     let stateHtml = null;
     switch (state) {
+      case '0':
+        stateHtml = (<Tag color='default'>Asignado</Tag>)
+        break;
       case '1':
         stateHtml = (<Tag color='processing'>En ejecucion</Tag>)
         break;
@@ -324,7 +327,7 @@ class management extends Component {
         resources :  this.state.urlresource
       };
       console.log("data >> ", data);
-      const response = await  http.post('project/createActivity', data); //api.createActivity(data);
+      const response = await  http.post('project/createActivity', data);
       
       if(response.result  == 'created'){
         success({content: 'se creo la actividad correctamente'});
@@ -454,6 +457,7 @@ class management extends Component {
 
   getOptionState(){
     const states = [
+      <Option key="0" value="0">Asignado</Option>,
       <Option key="1" value="1">En Ejecucion</Option>,
       <Option key="2" value="2">Cumplidad</Option>,
       <Option key="3" value="3">Suspendida</Option> 
