@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import { Button, Tag, Input, Tooltip, Layout, Row, Col, Form, message, Table, Modal, TreeSelect} from 'antd';
 import { PlusOutlined, SaveOutlined, EditOutlined, DeleteOutlined, ExclamationCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import Http from '../../api/http';
-import SocketClient from  '../../socket/socketClient';
+import {SocketContext} from  '../../routers/context';
 import './project.css';
+
 const {Content} = Layout;
-const {confirm, success} = Modal;
+const {confirm, success, error} = Modal;
 const { TreeNode } = TreeSelect;
 const http = new Http();
-const socket = new SocketClient();
-socket.createSocket();
+
+
 
 class Project extends Component{
 
@@ -17,6 +18,8 @@ class Project extends Component{
         super();
         this.handleDelete =  this.handleDelete.bind(this);
     }
+
+    static contextType =  SocketContext;
 
     state = {
         nameProyect: '',
@@ -85,55 +88,88 @@ class Project extends Component{
     }
 
     updateProyect = async ()=>{
-        const jsonProyect = {
-            nameProyect: this.state.nameProyect,
-            nameAsesor: this.state.nameAsesor,
-            tagsmethodologies: this.state.tagsmethodologies,
-            Entre: this.state.value.join(),
-            id: this.state.idEdit
-        };
-                
-        console.log("nombreeee", this.state.nameProyect);
 
-        const response = await http.post('project/editProject', jsonProyect);
-        if(response.result === 'edited'){
-            success({content: 'el proyecto ha sido editado'});
-            this.setState({
-                nameProyect : "",
-                idEdit: "",
-                edit: false
-            });
-            this.reloadTable();
+        if(this.validate()){
+            const jsonProyect = {
+                nameProyect: this.state.nameProyect,
+                nameAsesor: this.state.nameAsesor,
+                tagsmethodologies: this.state.tagsmethodologies,
+                Entre: this.state.value.join(),
+                id: this.state.idEdit
+            };
+                    
+            console.log("nombreeee", this.state.nameProyect);
+    
+            const response = await http.post('project/editProject', jsonProyect);
+            if(response.result === 'edited'){
+                success({content: 'el proyecto ha sido editado'});
+                this.setState({
+                    nameProyect : "",
+                    idEdit: "",
+                    edit: false
+                });
+                this.reloadTable();
+                this.cleanForm();
+            }
+        }else {
+            error({content: 'Para editar porfavor, complete los campos'});
         }
+        
     }
     
    
     createProyect = async ()=> {
-        const jsonProyect = {
-            nameProyect: this.state.nameProyect,
-            tagsmethodologies: this.state.tagsmethodologies,
-            nameAsesor: this.state.nameAsesor,
-            Entre: this.state.value.join()      
-        };
-        console.log("json",jsonProyect);
-        const response = await http.post('project/createProject', jsonProyect);
 
-        if(response.result === 'created') {
-            success({content: 'se ha creado un proyecto y se han agregado los emprendores con exito'});
-            const notification = {
-                to: this.state.value,
-                message: `El asesor ${localStorage.getItem('username')} te ha invitado a trabajar`,
-                from: localStorage.getItem('username'),
-                image: localStorage.getItem('imageUrl')
+        if(this.validate()){
+            const jsonProyect = {
+                nameProyect: this.state.nameProyect,
+                tagsmethodologies: this.state.tagsmethodologies,
+                nameAsesor: this.state.nameAsesor,
+                Entre: this.state.value.join()      
             };
-            socket.emit('/invite', notification);
-            socket.on('/invited', (data) => {
-               console.log(data);
-            });
-
-            this.reloadTable();
-
+            console.log("json",jsonProyect);
+            const response = await http.post('project/createProject', jsonProyect);
+    
+            if(response.result === 'created') {
+                success({content: 'se ha creado un proyecto y se han agregado los emprendores con exito'});
+                const notification = {
+                    to: this.state.value,
+                    message: `El asesor ${localStorage.getItem('username')} te ha invitado a trabajar`,
+                    from: localStorage.getItem('username'),
+                    image: localStorage.getItem('imageUrl')
+                };
+                this.context.socket.emit('/invite', notification)
+                // socket.emit('/invite', notification);
+                this.context.socket.on('/invited', (data) => {
+                   console.log(data);
+                });
+    
+                this.reloadTable();
+                this.cleanForm();
+    
+            }
+        }else {
+            error({content: 'Termine de llenar los campos correspondiente'});
         }
+        
+    }
+
+    validate(){
+        if(this.state.nameProyect != '' && this.state.tagsmethodologies.length > 0 && 
+            this.state.nameAsesor != '' && this.state.value.length > 0){
+                console.log("entre", this.state.value);
+                return true;
+            }else {
+                return false;
+            }
+    }
+
+    cleanForm(){
+        this.setState({
+            nameProyect: '',
+            tagsmethodologies: [],
+            value: []
+        });
     }
 
     async reloadTable(){
@@ -283,110 +319,115 @@ class Project extends Component{
        
         const { tagsmethodologies, inputVisible, inputValue, editInputIndex, editInputValue } = this.state;
         return (
-            <Content>
-                <Row>
-                    <Col span={7}>
-                        <Form>
-                            <Form.Item >
-                                <p>Lider del proyecto</p>
-                                <label>{localStorage.getItem("username")}</label>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <p>Nombre del proyecto</p>
-                                <Input id="input" placeholder="Nombre" value={this.state.nameProyect} name="nameProyect" onChange = {this.onChangeData.bind(this)}/> 
-                            </Form.Item>
-
-                            <Form.Item>
-                                <p>Fases de la metodologia</p>
-                                {tagsmethodologies.map((tag, index) => {
-                                 if (editInputIndex === index) {
-                                    return (
-                                        <Input ref={this.saveEditInputRef} key={tag} size="small" className="tag-input"
-                                        value={editInputValue} onChange={this.handleEditInputChange} onBlur={this.handleEditInputConfirm}
-                                        onPressEnter={this.handleEditInputConfirm} /> 
-                                        );
-                                    }
-
-                                    const isLongTag = tag.length > 20;
-
-                                    const tagElem = (
-                                        <Tag className="edit-tag" key={tag} closable={index !== 0} onClose={() => this.handleClose(tag)}>
-                                            <span onDoubleClick={e => {
-                                                if (index !== 0) {
-                                                    this.setState({
-                                                        editInputIndex: index,
-                                                        editInputValue: tag },
-                                                        () => { this.editInput.focus()
-                                                    });
-                                                e.preventDefault();
-                                                }
-                                            }}>
-                                            {isLongTag ? `${tag.slice(0, 20)}...` : tag}
-                                            </span>
-                                        </Tag>
-                                    );
-                                    return isLongTag ? (
-                                    <Tooltip title={tag} key={tag}> 
-                                        {tagElem}
-                                    </Tooltip>
-                                    ) : (tagElem);
-                                    })
-                                    }
-                                    {inputVisible && (
-                                    <Input
-                                        ref={this.saveInputRef}
-                                        type="text"
-                                        size="small"
-                                        className="tag-input"
-                                        value={inputValue}
-                                        onChange={this.handleInputChange}
-                                        onBlur={this.handleInputConfirm}
-                                        onPressEnter={this.handleInputConfirm}
-                                    />
-                                    )}
-                                    {!inputVisible && (
-                                        <Tag className="site-tag-plus" onClick={this.showInput}>
-                                            <PlusOutlined /> Fases de la metodologia
-                                        </Tag>
-                                    )}
-                            </Form.Item>
-                            
-                            <Form.Item>
-                              <p>Emprendedores</p>
-                              <TreeSelect
-                                showSearch
-                                style={{ width: '100%' }}
-                                value={this.state.value}
-                                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                                placeholder="Please select"
-                                allowClear
-                                multiple
-                                treeDefaultExpandAll
-                                onChange={this.onChange}
-                                >
-                                    {
-                                         this.state.Entre.map(Entrepreneurs =>{
-                                             return(
-                                            <TreeNode value={Entrepreneurs.name} title={Entrepreneurs.name} />
-                                             );
-                                        })
-                                    }
-                                </TreeSelect>
-                            </Form.Item>
-                        
-                            <Form.Item>
-                                {this.howIsButton()}
-                                {this.state.edit ? this.cancelButton() : null}
-                            </Form.Item>
-                        </Form>
-                    </Col>
-                    <Col span={16} push={1}>
-                        <h6>Proyectos de emprendimiento</h6>
-                        <Table rowKey={recoder => recoder.idEvents } size="small" columns={columns} dataSource={this.state.data} ></Table>
-                    </Col>
-                </Row>
-            </Content>
+            <SocketContext.Consumer>
+                {(context) =>(
+                      <Content>
+                      <Row>
+                          <Col span={7}>
+                              <Form>
+                                  <Form.Item >
+                                      <p>Lider del proyecto</p>
+                                      <label>{localStorage.getItem("username")}</label>
+                                  </Form.Item>
+      
+                                  <Form.Item name="nameProyect" rules={[{required:true, message: 'Ingresa el nombre del proyecto'}]}>
+                                      <p>Nombre del proyecto</p>
+                                      <Input id="input" placeholder="Nombre" value={this.state.nameProyect} name="nameProyect" onChange = {this.onChangeData.bind(this)}/> 
+                                  </Form.Item>
+      
+                                  <Form.Item>
+                                      <p>Fases de la metodologia</p>
+                                      {tagsmethodologies.map((tag, index) => {
+                                       if (editInputIndex === index) {
+                                          return (
+                                              <Input ref={this.saveEditInputRef} key={tag} size="small" className="tag-input"
+                                              value={editInputValue} onChange={this.handleEditInputChange} onBlur={this.handleEditInputConfirm}
+                                              onPressEnter={this.handleEditInputConfirm} /> 
+                                              );
+                                          }
+      
+                                          const isLongTag = tag.length > 20;
+      
+                                          const tagElem = (
+                                              <Tag className="edit-tag" key={tag} closable={index !== 0} onClose={() => this.handleClose(tag)}>
+                                                  <span onDoubleClick={e => {
+                                                      if (index !== 0) {
+                                                          this.setState({
+                                                              editInputIndex: index,
+                                                              editInputValue: tag },
+                                                              () => { this.editInput.focus()
+                                                          });
+                                                      e.preventDefault();
+                                                      }
+                                                  }}>
+                                                  {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                                                  </span>
+                                              </Tag>
+                                          );
+                                          return isLongTag ? (
+                                          <Tooltip title={tag} key={tag}> 
+                                              {tagElem}
+                                          </Tooltip>
+                                          ) : (tagElem);
+                                          })
+                                          }
+                                          {inputVisible && (
+                                          <Input
+                                              ref={this.saveInputRef}
+                                              type="text"
+                                              size="small"
+                                              className="tag-input"
+                                              value={inputValue}
+                                              onChange={this.handleInputChange}
+                                              onBlur={this.handleInputConfirm}
+                                              onPressEnter={this.handleInputConfirm}
+                                          />
+                                          )}
+                                          {!inputVisible && (
+                                              <Tag className="site-tag-plus" onClick={this.showInput}>
+                                                  <PlusOutlined /> Fases de la metodologia
+                                              </Tag>
+                                          )}
+                                  </Form.Item>
+                                  
+                                  <Form.Item>
+                                    <p>Emprendedores</p>
+                                    <TreeSelect
+                                      showSearch
+                                      style={{ width: '100%' }}
+                                      value={this.state.value}
+                                      dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                      placeholder="Please select"
+                                      allowClear
+                                      multiple
+                                      treeDefaultExpandAll
+                                      onChange={this.onChange}
+                                      >
+                                          {
+                                               this.state.Entre.map(Entrepreneurs =>{
+                                                   return(
+                                                  <TreeNode value={Entrepreneurs.name} title={Entrepreneurs.name} />
+                                                   );
+                                              })
+                                          }
+                                      </TreeSelect>
+                                  </Form.Item>
+                              
+                                  <Form.Item>
+                                      {this.howIsButton()}
+                                      {this.state.edit ? this.cancelButton() : null}
+                                  </Form.Item>
+                              </Form>
+                          </Col>
+                          <Col span={16} push={1}>
+                              <h6>Proyectos de emprendimiento</h6>
+                              <Table rowKey={recoder => recoder.idEvents } size="small" columns={columns} dataSource={this.state.data} ></Table>
+                          </Col>
+                      </Row>
+                  </Content>
+                )}
+            </SocketContext.Consumer>
+          
         )
     }
 }

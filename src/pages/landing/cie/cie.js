@@ -20,6 +20,7 @@ class Cie extends React.Component {
   }
 
   render() {
+    console.log("ENV", process.env.DB_PASS);
     return (
       <Row>
         <Col span={24}>
