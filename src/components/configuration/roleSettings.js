@@ -20,7 +20,7 @@ class RoleSettings extends React.Component {
             username: '',
             password: '',
             email: '',
-            relationshipUniversity:'Personal de la institucion',
+            relationshipUniversity:'personalIntern',
             role: ''
     
     };
@@ -261,7 +261,7 @@ class RoleSettings extends React.Component {
                      </Form.Item>
                      <Form.Item>
                             <label>Relacion con la universiad </label>
-                            <Tag color="blue"> {this.state.relationshipUniversity} </Tag>
+                            <Tag color="blue"> Personal de la institución </Tag>
                      </Form.Item>
 
                      <Form.Item>

@@ -33,11 +33,13 @@ class Login extends React.Component{
             const role = response.result[0].role;
             const id = response.result[0].idUsers;
             const img = response.result[0].image;
+            const relationship = response.result[0].relationshipUniversity;
             
             localStorage.setItem("username", username);
             localStorage.setItem("role", role);
             localStorage.setItem("idUser", id);
             localStorage.setItem("imageUrl", img);
+            localStorage.setItem("relationship", relationship);
             this.props.history.push('/admin');
         }
     }
