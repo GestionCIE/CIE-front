@@ -4,7 +4,7 @@ import { LikeOutlined } from "@ant-design/icons";
 
 function Entrepreneur() {
   return (
-    <React.Fragment>
+    <>
       <Row className="entrepreneur">
         <Col span={8}>
           <Statistic
@@ -21,7 +21,7 @@ function Entrepreneur() {
           />
         </Col>
       </Row>
-    </React.Fragment>
+    </>
   );
 }
 

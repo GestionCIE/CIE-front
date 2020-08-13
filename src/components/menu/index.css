@@ -1,31 +1,30 @@
-
 .trigger {
   font-size: 18px;
   line-height: 64px;
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
-  
 }
 
 .trigger:hover {
-  color: #007FFF;
+  color: #007fff;
 }
 
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
-  background-color: #007FFF;
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #007fff;
 }
-.Principal_Sider, .Menu_Content{
-  background-color: #17224D;
-  color: #F5FAFA;
+.Principal_Sider,
+.Menu_Content {
+  background-color: #17224d;
+  color: #f5fafa;
 }
 
 .Menu_Content {
   width: 100%;
 }
 
-.Menu_Item_Span{
-  color: #F5FAFA;
+.Menu_Item_Span {
+  color: #f5fafa;
 }
 
 .logo {
@@ -36,18 +35,17 @@
   width: 100%;
 }
 
-.profile{
+.profile {
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 10px;
-  
 }
 
 .profile-text {
-  color: #F5FAFA;
+  color: #f5fafa;
 }
 
 .site-layout .site-layout-background {
-  background: #F5FAFA;
+  background: #f5fafa;
 }

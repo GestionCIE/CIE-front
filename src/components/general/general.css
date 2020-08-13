@@ -1,32 +1,29 @@
-.General_Card,  .General_Card_Meets{
-    border-radius: 1em;
+.General_Card,
+.General_Card_Meets {
+  border-radius: 1em;
 }
 
-.General_Meets{
-    display: flex;
-    flex-direction: row;
-
+.General_Meets {
+  display: flex;
+  flex-direction: row;
 }
-
-
 
 .General_Card_Meets {
-    margin-left: 5%;
-    background-image: url('../../assets/wave.svg');
-    background-repeat: no-repeat;
-    background-position: bottom;
-    -webkit-box-shadow: 3px 3px 5px 0px rgba(219,219,219,1);
-    -moz-box-shadow: 3px 3px 5px 0px rgba(219,219,219,1);
-    box-shadow: 3px 3px 5px 0px rgba(219,219,219,1);
-    
+  margin-left: 5%;
+  background-image: url("../../assets/wave.svg");
+  background-repeat: no-repeat;
+  background-position: bottom;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(219, 219, 219, 1);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(219, 219, 219, 1);
+  box-shadow: 3px 3px 5px 0px rgba(219, 219, 219, 1);
 }
 
-.General_Card_Meets_Buttons{
-    display: flex;
-    justify-content: flex-end;
+.General_Card_Meets_Buttons {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.Card_Meets_Button{
-    background-color: #00a854;
-    color: #fff;
+.Card_Meets_Button {
+  background-color: #00a854;
+  color: #fff;
 }
