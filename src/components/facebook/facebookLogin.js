@@ -1,49 +1,48 @@
 import React, { Component } from "react";
-import FacebookLogin from 'react-facebook-login';
-
+import FacebookLogin from "react-facebook-login";
 
 class CFacebookLogin extends Component {
-    state = {
-        isLoggedIn: false,
-        userID: '',
-        name: '',
-        email: '',
-        picture: ''
-    };
+  state = {
+    isLoggedIn: false,
+    userID: "",
+    name: "",
+    email: "",
+    picture: "",
+  };
 
-    onClickFacebook = () => {
+  onClickFacebook = () => {};
 
+  responseFacebook = (response) => {
+    console.log(response);
+  };
+
+  render() {
+    let content = null;
+    if (this.state.isLoggedIn) {
+    } else {
+      content = (
+        <FacebookLogin
+          appId="586619525379688"
+          autoLoad={true}
+          fields="name,email,picture"
+          onClick={this.onClickFacebook}
+          callback={this.responseFacebook}
+          size="metro"
+        ></FacebookLogin>
+      );
     }
 
-    responseFacebook = (response) => {
-        console.log(response);
-    }
-
-    render() {
-        let content = null;
-        if(this.state.isLoggedIn) {
-
-        }else {
-            content = (
-            <FacebookLogin appId="586619525379688"
-            autoLoad={true}
-            fields="name,email,picture"
-            onClick={this.onClickFacebook}
-            callback={this.responseFacebook}
-            size="metro">
-
-            </FacebookLogin>)
-        }
-
-        return (
-            <div style={{
-                width: "100%",
-                height: "40px"
-            }}>
-                {content}
-            </div>
-        )
-    }
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "40px",
+        }}
+      >
+        {content}
+      </div>
+    );
+  }
 }
 // class FacebookLogin extends Component{
 
@@ -90,7 +89,7 @@ class CFacebookLogin extends Component {
 //                 loggedStatus: false,
 //             })
 //         }
-        
+
 //     }
 
 //     checkLoginStatus(){
@@ -111,12 +110,12 @@ class CFacebookLogin extends Component {
 //         return(
 //             <div className="text-center">
 //                 {this.showPersonalData()}
-//                 <div class="fb-login-button" 
-//                 data-size="large" 
-//                 data-button-type="continue_with" 
-//                 data-layout="default" 
-//                 data-auto-logout-link="false" 
-//                 data-use-continue-as="false" 
+//                 <div class="fb-login-button"
+//                 data-size="large"
+//                 data-button-type="continue_with"
+//                 data-layout="default"
+//                 data-auto-logout-link="false"
+//                 data-use-continue-as="false"
 //                 data-width=""></div>
 //             </div>
 //         );

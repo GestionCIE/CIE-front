@@ -3,50 +3,50 @@
   border-style: dashed;
 }
 
-  [data-theme="dark"] .site-tag-plus {
-    background: transparent;
-    border-style: dashed;
-  }
+[data-theme="dark"] .site-tag-plus {
+  background: transparent;
+  border-style: dashed;
+}
 
-.Form_Modal{
+.Form_Modal {
   margin-top: 30px;
 }
 
-.Form_Button{
+.Form_Button {
   width: 100%;
 }
 
-.Content_Select, .Div-Avatar{
+.Content_Select,
+.Div-Avatar {
   display: flex;
   flex-direction: column;
 }
-.Div-Avatar{
+.Div-Avatar {
   margin-top: 35px;
 }
 
-.Select_Project{
+.Select_Project {
   min-width: 200px;
 }
 
-
-.Btn_Activity{
+.Btn_Activity {
   width: 100%;
 }
-.Drawer_Content{
+.Drawer_Content {
   display: flex;
   flex-direction: column;
 }
 
-.Img_Management{
+.Img_Management {
   width: 100%;
 }
 
-.Content_Methodologies{
+.Content_Methodologies {
   width: 70%;
 }
 
-.List_Item :hover{
-  color: #007FFF;
+.List_Item :hover {
+  color: #007fff;
   cursor: pointer;
 }
 
@@ -58,11 +58,11 @@
   width: 100%;
 }
 
-.Progress{
+.Progress {
   width: 10%;
 }
 
-.Drawer_Content_Div{
+.Drawer_Content_Div {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

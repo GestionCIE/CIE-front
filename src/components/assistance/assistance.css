@@ -1,13 +1,13 @@
-.Select_Assistance{
-    width: 20%;
+.Select_Assistance {
+  width: 20%;
 }
 
-.Img_Assistant{
-    width: 50%;
+.Img_Assistant {
+  width: 50%;
 }
 
-.Content_Chart{
-    width: 50%;
-    display: flex;
-    justify-content: space-between;
+.Content_Chart {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
 }

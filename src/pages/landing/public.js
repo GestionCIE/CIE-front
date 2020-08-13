@@ -5,14 +5,12 @@ import "./public.css";
 import ContentPublic from "./switchContent";
 import Menu from "./menu";
 
-
 const { Header, Content } = Layout;
 
 class Public extends React.Component {
   render() {
     return (
       <Layout>
-         
         <Header className="Menu_fixed">
           <Menu />
         </Header>

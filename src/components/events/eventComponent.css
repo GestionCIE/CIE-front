@@ -1,27 +1,26 @@
-.Form_Event{
-    margin-top: 20px;
+.Form_Event {
+  margin-top: 20px;
 }
 
-.Div_Content_Event{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 0;
+.Div_Content_Event {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
 }
 .Div_Position {
-    margin-top: 50%;
+  margin-top: 50%;
 }
 
-.Img_Event{
-    width: 50%;
+.Img_Event {
+  width: 50%;
 }
 
 .Form_Event_Button {
-    width: 100%;
+  width: 100%;
 }
 
 .Form_Event_Hour {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
-

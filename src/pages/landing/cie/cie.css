@@ -1,19 +1,22 @@
-
-.Text_Principal, .Text_Secondary, .Text_Tertiary{
+.Text_Principal,
+.Text_Secondary,
+.Text_Tertiary {
   margin-top: 100px;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
-.Text_Principal_H1, .Text_Secondary_H1, .Text_Tertiary_H1 {
+.Text_Principal_H1,
+.Text_Secondary_H1,
+.Text_Tertiary_H1 {
   font-size: 32px;
 }
 
 .Text_Principal_H3 {
   font-size: 24px;
 }
-.Text_Secondary_P{
+.Text_Secondary_P {
   font-size: 18px;
 }
 
@@ -22,9 +25,9 @@
   justify-content: center;
 }
 
-.Img_Offer{
-    width: 30%;
-    height: 100%;
+.Img_Offer {
+  width: 30%;
+  height: 100%;
 }
 
 .Img_Working {
@@ -34,7 +37,7 @@
   height: 100%;
 }
 
-.Img_Team{
+.Img_Team {
   width: 100%;
   height: 100%;
 }
@@ -45,7 +48,7 @@
   justify-content: space-around;
 }
 
-.Services_Content{
+.Services_Content {
   font-size: 14px;
   line-height: 2px;
   display: flex;
@@ -54,11 +57,11 @@
   width: 25%;
 }
 
-.Button_Info{
+.Button_Info {
   margin-top: 15px;
 }
 
-.Statistics{
+.Statistics {
   display: flex;
   justify-content: space-around;
   margin-top: 100px;
@@ -67,7 +70,7 @@
 .Footer {
   width: 100%;
   height: 200px;
-  background-color: #17224D;
+  background-color: #17224d;
   margin-top: 100px;
   /* display: flex; */
   color: #ffffff;
@@ -75,34 +78,33 @@
 
   /* flex-direction: column; */
   /* justify-content: center; */
-
 }
 
-.Footer_Info{
+.Footer_Info {
   width: 90%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-left: 50px;  
+  margin-left: 50px;
 }
 
-
- .Footer_Info_1, .Footer_Info_2, .Footer_Info_3{
+.Footer_Info_1,
+.Footer_Info_2,
+.Footer_Info_3 {
   margin-top: 20px;
 }
 
-
-.Img_Footer_Americana{
+.Img_Footer_Americana {
   width: 50%;
   height: 18vh;
   margin-left: 30%;
 }
-.Footer_Copyright{
+.Footer_Copyright {
   display: flex;
   justify-content: center;
 }
 
-.Copyright{
+.Copyright {
   margin-top: 25px;
 }
 

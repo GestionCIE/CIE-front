@@ -1,57 +1,56 @@
-.Profile_Data_Contact{
-    /* display: flex; */
-    /* line-height: 10px ; */
+.Profile_Data_Contact {
+  /* display: flex; */
+  /* line-height: 10px ; */
 }
 
 .Profile_text {
-    font-weight: bold;
+  font-weight: bold;
 }
 
-.Profile_Buttons{
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    height: 10vh;
-    justify-content: space-between;
+.Profile_Buttons {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 10vh;
+  justify-content: space-between;
 }
 
 .Profile_Content_Col2 {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 60vh;
 }
 
 .steps-content {
-    margin-top: 0px;
-    border-radius: 2px;
-    min-height: 300px;
-    max-height: 300px;
-    padding-top: 20px;
-    width: 80%;
+  margin-top: 0px;
+  border-radius: 2px;
+  min-height: 300px;
+  max-height: 300px;
+  padding-top: 20px;
+  width: 80%;
 }
 
-.Tag_Rol{
-    margin-left: 10px;
+.Tag_Rol {
+  margin-left: 10px;
 }
 
-  
 .steps-action {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 
-.Btn_ChangePassword{
-    width: 100%;
+.Btn_ChangePassword {
+  width: 100%;
 }
 
-.Img_ChangePassword{
-    width: 100%;
+.Img_ChangePassword {
+  width: 100%;
 }
 
-.Form_Item_Input{
-    width: 50%;
+.Form_Item_Input {
+  width: 50%;
 }
 
-.Form_Item_Button{
-    width: 50%;
+.Form_Item_Button {
+  width: 50%;
 }

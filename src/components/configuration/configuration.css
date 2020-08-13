@@ -1,25 +1,22 @@
-
-.Div_Setting{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between ;
+.Div_Setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Div_Setting {
-    width: 70%;
+  width: 70%;
 }
 
 .Div_Setting_Button {
-    width: 100%;
+  width: 100%;
 }
 
-.Div_Setting_Header{
-    display: flex;
-    justify-content: space-between;
+.Div_Setting_Header {
+  display: flex;
+  justify-content: space-between;
 }
 
-.Btn_Create_User{
-    width: 100%;
+.Btn_Create_User {
+  width: 100%;
 }
-
-

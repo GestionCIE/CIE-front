@@ -15,14 +15,14 @@
   justify-content: space-between;
 }
 
-.Items{
+.Items {
   widows: 8%;
   height: 5vh;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
-.icons{
+.icons {
   margin-left: auto;
 }
 
@@ -48,9 +48,9 @@
   }
 }
 
-.Notification{
-  background-color:#fff;
-  border: 1px  silver solid ;
+.Notification {
+  background-color: #fff;
+  border: 1px silver solid;
   border-radius: 5px;
   height: 40vh;
   width: 20%;
@@ -60,42 +60,39 @@
   overflow: auto;
 }
 
-
-.Notification_Title{
-
-    margin-top:-10px;
-    margin-left:20px;
-    font-weight: bold;
+.Notification_Title {
+  margin-top: -10px;
+  margin-left: 20px;
+  font-weight: bold;
 }
 
-.Notification_Group{
-  margin-top:-30px;
+.Notification_Group {
+  margin-top: -30px;
   padding: 0;
   display: flex;
   flex-direction: column;
 }
 
-.Notification_Content{
-  margin-left:20px;
+.Notification_Content {
+  margin-left: 20px;
   line-height: 15px;
   display: flex;
 }
 
-.text{
+.text {
   margin-top: 15px;
   margin-left: 5px;
   display: flex;
   font-size: 12px;
   height: 2px;
-
 }
 
-.hour{
+.hour {
   font-size: 9px;
-  color: #D7D7D7;
+  color: #d7d7d7;
 }
 
-.Notification_Avatar{
+.Notification_Avatar {
   max-width: 15%;
   max-height: 15%;
   border-radius: 5px;
