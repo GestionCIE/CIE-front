@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 
+import { Layout } from "antd";
 import EventComponent from "../../components/events/eventComponent";
 import ServiceComponent from "../../components/services/serviceComponent";
 import Configuration from "../../components/configuration/configuration";
@@ -10,15 +11,15 @@ import Assistance from "../../components/assistance/assistance";
 import GeneralComponent from "../../components/general/general";
 import ProfileComponent from "../../components/profile/profile";
 import ProjectTrace from "../../components/projectTrace/projectTrace";
-import { Layout } from "antd";
-import { SocketContext } from "./../../routers/context";
-import Http from "./../../api/http";
+import { SocketContext } from "../../routers/context";
+import Http from "../../api/http";
 
 const http = new Http();
 const { Content } = Layout;
 
 class ContentPrivate extends React.Component {
   static contextType = SocketContext;
+
   state = {
     modules: [],
   };

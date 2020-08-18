@@ -6,7 +6,8 @@ import "./page.css";
 import PrincipalComponent from "../components/menu/PrincipalComponent";
 import HeaderComponent from "../components/Header/Header";
 import ContentPrivate from "./admin/index";
-import SocketContextProvider from "./../routers/context";
+import SocketContextProvider from "../routers/context";
+
 const { Content } = Layout;
 
 class Home extends React.Component {
@@ -41,7 +42,7 @@ class Home extends React.Component {
               history={this.props.history}
             />
             <Content>
-              <ContentPrivate handleImage={this.handleImage}></ContentPrivate>
+              <ContentPrivate handleImage={this.handleImage} />
             </Content>
           </Layout>
         </Layout>

@@ -22,7 +22,6 @@ class Advisers extends React.Component {
         <Col span={24}>
           <div className="Content_Advisers">
             <Row gutter={[5, 10]} style={{ justifyContent: "center" }}>
-              {/* <Space size={6}> */}
               <Col span={6}>
                 <Card
                   className="Child"
@@ -141,7 +140,6 @@ class Advisers extends React.Component {
                   />
                 </Card>
               </Col>
-              {/* </Space> */}
             </Row>
           </div>
         </Col>

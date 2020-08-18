@@ -20,7 +20,6 @@ import {
   ShareAltOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-//import moment from 'moment';
 
 const { Content } = Layout;
 const { TextArea } = Input;
@@ -73,7 +72,7 @@ class ServiceComponent extends React.Component {
   }
 
   deleteService(id) {
-    const jsonid = { id: id };
+    const jsonid = { id };
     console.log(id);
     fetch("http://localhost:3005/service/deleteService", {
       method: "POST",
@@ -114,7 +113,7 @@ class ServiceComponent extends React.Component {
   };
 
   reloadTable() {
-    let data = [];
+    const data = [];
     fetch("http://localhost:3005/service/getServices")
       .then((res) => res.json())
       .then((response) => {
@@ -122,7 +121,7 @@ class ServiceComponent extends React.Component {
         for (let i = 0; i < response.result.length; i++) {
           data.push(response.result[i]);
         }
-        this.setState({ data: data });
+        this.setState({ data });
       });
   }
 
@@ -138,14 +137,14 @@ class ServiceComponent extends React.Component {
 
   /* onChangeDate = (e, value)=>{
         this.setState({date: value});
-    }*/
+    } */
 
   updateService = () => {
     console.log("updateService", this.state.nameService);
     const jsonService = {
       nameService: this.state.nameService,
       description: this.state.description,
-      //date: this.state.date,
+      // date: this.state.date,
       id: this.state.idEdit,
     };
     console.log(jsonService);
@@ -163,7 +162,7 @@ class ServiceComponent extends React.Component {
           this.setState({
             nameService: "",
             description: "",
-            //date: moment(new Date(), 'YYYY-MM-DD'),
+            // date: moment(new Date(), 'YYYY-MM-DD'),
             idEdit: "",
             edit: false,
           });
@@ -179,14 +178,12 @@ class ServiceComponent extends React.Component {
     if (this.state.edit) {
       button = (
         <Button stye={{ marginleft: "2%" }} onClick={this.updateService}>
-          {" "}
           <EditOutlined /> Editar Servicio
         </Button>
       );
     } else {
       button = (
         <Button type="primary" onClick={this.createService}>
-          {" "}
           <SaveOutlined /> Crear Servicio
         </Button>
       );
@@ -200,7 +197,6 @@ class ServiceComponent extends React.Component {
     if (this.state.edit) {
       button = (
         <Button onClick={this.updateService}>
-          {" "}
           <EditOutlined /> Cancelar Edicion
         </Button>
       );
@@ -223,7 +219,6 @@ class ServiceComponent extends React.Component {
         dataIndex: "edit",
         render: (text, recoder) => (
           <Button onClick={() => this.handleEdit(recoder)}>
-            {" "}
             <EditOutlined /> Editar
           </Button>
         ),
@@ -233,7 +228,6 @@ class ServiceComponent extends React.Component {
         dataIndex: "delete",
         render: (text, recoder) => (
           <Button type="danger" onClick={() => this.handleDelete(recoder)}>
-            {" "}
             <DeleteOutlined>/</DeleteOutlined> Eliminar
           </Button>
         ),
@@ -243,7 +237,6 @@ class ServiceComponent extends React.Component {
         dataIndex: "publish",
         render: (text, recoder) => (
           <Button type="primary">
-            {" "}
             <ShareAltOutlined /> Publicar
           </Button>
         ),
@@ -292,7 +285,7 @@ class ServiceComponent extends React.Component {
               rowKey={(recoder) => recoder.idServices}
               columns={columns}
               dataSource={this.state.data}
-            ></Table>
+            />
           </Col>
         </Row>
       </Content>

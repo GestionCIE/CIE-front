@@ -1,7 +1,8 @@
 import React from "react";
-import Http from "./../../api/http";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import { Row, Col } from "antd";
+import Http from "../../api/http";
+
 const http = new Http();
 
 class stateOfActivivities extends React.Component {
@@ -64,7 +65,7 @@ class stateOfActivivities extends React.Component {
   }
 
   getTypeGraph() {
-    const typeGraph = this.props.typeGraph;
+    const {typeGraph} = this.props;
     if (typeGraph == "1") {
       this.getAmountActivities();
     } else if (typeGraph == "2") {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Input, Button, Select, message } from "antd";
 import eventStatisticsApi from "../../../api/common/eventStatistics";
-import Http from "./../../../api/http";
+import Http from "../../../api/http";
 
 const http = new Http();
 const apiEventS = new eventStatisticsApi();
@@ -67,7 +67,7 @@ class Attendance extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Form {...layout} className="form" name="control-hooks">
           <Form.Item label="Nombre" rules={[{ required: true }]}>
             <Input name="fullname" onChange={this.onChangeData} />
@@ -96,8 +96,7 @@ class Attendance extends React.Component {
           <Form.Item
             noStyle
             shouldUpdate={(prevValues, currentValues) =>
-              prevValues.university !== currentValues.university
-            }
+              prevValues.university !== currentValues.university}
           >
             {({ getFieldValue }) =>
               getFieldValue("university") === "otro" ? (
@@ -108,8 +107,7 @@ class Attendance extends React.Component {
                 >
                   <Input />
                 </Form.Item>
-              ) : null
-            }
+              ) : null}
           </Form.Item>
           <Form.Item label="Compañia" rules={[{ required: false }]}>
             <Input name="company" onChange={this.onChangeData} />
@@ -130,9 +128,10 @@ class Attendance extends React.Component {
               Aceptar
             </Button>
           </Form.Item>
-        </Form>{" "}
-        <React.Fragment />
-      </React.Fragment>
+        </Form>
+        {" "}
+        <></>
+      </>
     );
   }
 }

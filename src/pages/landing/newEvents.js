@@ -18,19 +18,18 @@ class newEvents extends React.Component {
             <img className="Img_Calendar" src={ImgCalendar} />
             <div className="Content_Information_H6">
               <h6>
-                {" "}
-                <CheckOutlined /> Registrate en nuestros eventos y aprende mas
-                sobre el emprendimiento{" "}
+                <CheckOutlined />
+                Registrate en nuestros eventos y aprende mas sobre el
+                emprendimiento
               </h6>
               <h6>
-                {" "}
-                <CheckOutlined /> Alguno eventos son convocatorias para que te
-                unas al CIE{" "}
+                <CheckOutlined />
+                Alguno eventos son convocatorias para que te unas al CIE
               </h6>
               <h6>
-                {" "}
-                <CheckOutlined /> Un evento es una oportunidad para hacer redes
-                y concer gente nueva{" "}
+                <CheckOutlined />
+                Un evento es una oportunidad para hacer redes y concer gente
+                nueva
               </h6>
             </div>
           </div>

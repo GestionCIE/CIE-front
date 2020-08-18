@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Form, Row, Col, Select, Button } from "antd";
-import giveImg from "./../../assets/give.svg";
-import Http from "./../../api/http";
+import giveImg from "../../assets/give.svg";
+import Http from "../../api/http";
 
 const http = new Http();
 

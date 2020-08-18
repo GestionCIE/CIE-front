@@ -1,7 +1,8 @@
 import React from "react";
 import { Row, Col, Statistic } from "antd";
-import Http from "./../../api/http";
-import statistics from "./../../assets/statistics.svg";
+import Http from "../../api/http";
+import statistics from "../../assets/statistics.svg";
+
 const http = new Http();
 
 class AttendanceStatistics extends React.Component {
@@ -65,7 +66,7 @@ class AttendanceStatistics extends React.Component {
 
 class TracingStatistics extends React.Component {
   render() {
-    return <div></div>;
+    return <div />;
   }
 }
 

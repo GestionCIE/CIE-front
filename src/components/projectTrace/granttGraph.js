@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "antd";
 
 import { Chart } from "react-google-charts";
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 
@@ -13,7 +13,7 @@ class GranttGraph extends React.Component {
   };
 
   async getData() {
-    let f_data = [];
+    const f_data = [];
     let response = await http.get(
       `project/activities/gantt?id=${this.props.idProject}&phase=${this.props.phase}`
     );
@@ -79,8 +79,8 @@ class GranttGraph extends React.Component {
       <Card className="CardGrantt">
         <Chart
           style={{ marginTop: "30px" }}
-          width={"100%"}
-          height={"400px"}
+          width="100%"
+          height="400px"
           chartType="Gantt"
           loader={<div>Cargando Gantt</div>}
           data={this.state.data}

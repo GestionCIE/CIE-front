@@ -11,7 +11,8 @@ function Button({ label }) {
       }}
     >
       {" "}
-      {label}{" "}
+      {label}
+      {" "}
     </div>
   );
 }

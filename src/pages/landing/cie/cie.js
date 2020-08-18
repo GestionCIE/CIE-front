@@ -14,6 +14,7 @@ class Cie extends React.Component {
   onClickEvents = () => {
     this.props.history.push("/inicio/events");
   };
+
   onClickJoin = () => {
     this.props.history.push("/inicio/signin");
   };
@@ -62,7 +63,6 @@ class Cie extends React.Component {
                 <img className="Img_Team" src={team} />
               </div>
               <Button className="Button_Info" type="primary">
-                {" "}
                 Conoce mas
               </Button>
             </div>
@@ -73,7 +73,6 @@ class Cie extends React.Component {
                 <img className="Img_Team" src={office} />
               </div>
               <Button className="Button_Info" type="primary">
-                {" "}
                 Conoce mas
               </Button>
             </div>
@@ -88,12 +87,10 @@ class Cie extends React.Component {
                 type="primary"
                 onClick={this.onClickEvents}
               >
-                {" "}
                 Conoce mas
               </Button>
             </div>
           </div>
-          {/* <Entrepreneur /> */}
         </Col>
         <Col span={24}>
           <div className="Text_Tertiary">
@@ -119,12 +116,11 @@ class Cie extends React.Component {
               Unete
             </Button>
           </div>
-          {/* <Information></Information> */}
         </Col>
         <Col span={24}>
-          <div class="Statistics">
+          <div className="Statistics">
             <Statistic title="Proyectos Atendidos" value={30} />
-            {/* <Statistic title="Eventos Realizados" value={30} /> */}
+
             <Statistic title="Proyectos Culminados" value={30} />
           </div>
         </Col>

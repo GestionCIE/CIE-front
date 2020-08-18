@@ -8,16 +8,18 @@ import {
   BellOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { SocketContext } from "./../../routers/context";
+import { SocketContext } from "../../routers/context";
 import Notification from "./nofication";
 
 const { Header } = Layout;
 
 class HeaderComponent extends React.Component {
   static contextType = SocketContext;
+
   constructor(props) {
     super(props);
   }
+
   state = {
     collapsed: false,
     openbell: "none",
@@ -88,7 +90,7 @@ class HeaderComponent extends React.Component {
               </div>
             </div>
 
-            <Notification showbell={this.state.openbell}></Notification>
+            <Notification showbell={this.state.openbell} />
           </Header>
         )}
       </SocketContext.Consumer>
