@@ -1,13 +1,16 @@
 import React from "react";
-import { Form, Upload, Input, Row, Col, Button, Modal } from "antd";
-import { FacebookOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { Upload, Row, Col, Button, Modal } from "antd";
+import { ShareAltOutlined, PlusOutlined } from "@ant-design/icons";
 import { Editor, EditorState, RichUtils } from "draft-js";
+
+import Http from "../../api/http";
+
+import UploadFile from "./../commons/upload";
 import "draft-js/dist/Draft.css";
-import Http from "./../../api/http";
 import "./facebook.css";
-import Social from "./../../assets/social.svg";
+import Social from "../../assets/social.svg";
+
 const http = new Http();
-const { TextArea } = Input;
 const { success, error } = Modal;
 const apiFacebook = "https://graph.facebook.com";
 
@@ -19,6 +22,7 @@ class FacebookPost extends React.Component {
       idPage: "",
       namePage: "",
       editorState: EditorState.createEmpty(),
+      image: "",
     };
 
     this.onChange = (editorState) => this.setState({ editorState });
@@ -52,7 +56,7 @@ class FacebookPost extends React.Component {
       message: this.state.editorState
         .getCurrentContent()
         .getPlainText("\u0001"),
-      url: `https://source.unsplash.com/featured/?quote`,
+      url: this.state.image,
     };
 
     const response = await http.postExternal(
@@ -107,25 +111,21 @@ class FacebookPost extends React.Component {
     );
   };
 
+  setImage = (image) => {
+    console.log("father ", image);
+    this.setState({
+      image: image,
+    });
+  };
+
   render() {
     return (
       <Row>
         <Col span={24}>
           <div className="Div_Post_Header">
             <img className="Div_Post_Header_Image" src={Social} />
-            {/* <FacebookOutlined style={{fontSize: '24px'}}/> */}
-            <h6>Pagina de facebook : {this.state.namePage} </h6>
+            <h6>Pagina de facebook :{this.state.namePage}</h6>
           </div>
-
-          {/* <Form>
-                        <Form.Item>
-                            <TextArea placeholder="Publicacion" name="message" value={this.state.message} onChange={this.onChange} />
-                        </Form.Item>
-                     
-                        <Form.Item>
-                            
-                        </Form.Item>
-                    </Form>   */}
         </Col>
         <Col span={24}>
           <div className="editorContainer">
@@ -144,6 +144,7 @@ class FacebookPost extends React.Component {
               handleKeyCommand={this.handleKeyCommand}
             />
           </div>
+          <UploadFile setImage={this.setImage} />
         </Col>
         <Col span={24}>
           <Button

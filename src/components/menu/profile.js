@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar } from "antd";
-import { getRole } from "./../../utils/utils";
+import { getRole } from "../../utils/utils";
 import "./index.css";
 
 class Profile extends React.Component {

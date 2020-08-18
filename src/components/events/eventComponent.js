@@ -21,7 +21,6 @@ import {
   SaveOutlined,
   EditOutlined,
   DeleteOutlined,
-  ShareAltOutlined,
   PlusOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
@@ -30,7 +29,7 @@ import "./eventComponent.css";
 
 import lasActivitySystemApi from "../../api/common/lastActivitySystem";
 import eventImg from "../../assets/event.svg";
-import Http from "./../../api/http";
+import Http from "../../api/http";
 import FacebookPost from "../facebook/facebookPost";
 
 const lastActivity = new lasActivitySystemApi();
@@ -65,7 +64,7 @@ class EventComponent extends React.Component {
   };
 
   onChangeFile = (info) => {
-    if (info.file.status == "done") {
+    if (info.file.status === "done") {
       console.log(info.file.response.image);
       this.setState({
         image: info.file.response.image,
@@ -80,7 +79,7 @@ class EventComponent extends React.Component {
   createLastActivitySystem = async (activity) => {
     lastActivity.createActivitySystem({
       idUser: localStorage.getItem("idUser"),
-      activity: activity,
+      activity,
     });
   };
 
@@ -117,7 +116,7 @@ class EventComponent extends React.Component {
   }
 
   async deleteEvent(id) {
-    const jsonid = { id: id };
+    const jsonid = { id };
 
     const response = await http.post("event/deleteEvent", jsonid);
     if (response.result === "erased") {
@@ -147,12 +146,12 @@ class EventComponent extends React.Component {
   };
 
   async reloadTable() {
-    let data = [];
+    const data = [];
     const response = await http.get("event/getEvents");
     for (let i = 0; i < response.result.length; i++) {
       data.push(response.result[i]);
     }
-    this.setState({ data: data });
+    this.setState({ data });
   }
 
   componentDidMount() {
@@ -192,11 +191,11 @@ class EventComponent extends React.Component {
     console.log(selectedTemp);
     console.log(nowTemp);
 
-    return selectedTemp.year >= nowTemp.year &&
+    return !!(
+      selectedTemp.year >= nowTemp.year &&
       selectedTemp.month >= nowTemp.month &&
       selectedTemp.day >= nowTemp.day
-      ? true
-      : false;
+    );
   }
 
   validateHour() {}
@@ -321,7 +320,6 @@ class EventComponent extends React.Component {
           placeholder="Expositor"
           name="speaker"
           value={this.state.speaker}
-          name="expositor"
           onChange={this.onChangeData}
         />
       </Form.Item>
@@ -453,7 +451,7 @@ class EventComponent extends React.Component {
               rowKey={(recoder) => recoder.idEvents}
               columns={columns}
               dataSource={this.state.data}
-            ></Table>
+            />
           </Col>
           <Modal
             footer={false}

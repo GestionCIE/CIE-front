@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Form, Modal, Button, Input, InputNumber, Space } from "antd";
-import Http from "./../../api/http";
-import { getUserLogged } from "./../../utils/utils";
+import Http from "../../api/http";
+import { getUserLogged } from "../../utils/utils";
 
 const http = new Http();
 const { success, error } = Modal;
@@ -18,7 +18,7 @@ class ProfesionalProfile extends React.Component {
   }
 
   async getDataAdvisers() {
-    const id = getUserLogged().id;
+    const { id } = getUserLogged();
     const response = await http.get(`users/adviser?id=${id}`);
     if (response.result.length > 0) {
       this.setState({
@@ -78,15 +78,17 @@ class ProfesionalProfile extends React.Component {
           <h6>Perfil Profesional</h6>
           <br />
           <p>
-            <b>Carrera Profesional: </b>{" "}
-            <span>{this.state.universityDegrees}</span>{" "}
+            <b>Carrera Profesional: </b>
+
+            <span>{this.state.universityDegrees}</span>
           </p>
           <p>
-            <b>Experiencia Profesional</b> <span>{this.state.experience}</span>
+            <b>Experiencia Profesional</b>
+
+            <span>{this.state.experience}</span>
           </p>
           <br />
           <Button type="primary" onClick={this.showModal}>
-            {" "}
             Agregar Informacion Profesional
           </Button>
         </Col>
@@ -112,7 +114,9 @@ class ProfesionalProfile extends React.Component {
                 </Form.Item>
 
                 <Form.Item>
-                  <label> Años de Experiencia Profesional</label> <br />
+                  <label> Años de Experiencia Profesional</label>
+
+                  <br />
                   <InputNumber
                     className="Form_Item_Input"
                     value={this.state.experience}

@@ -10,8 +10,9 @@ import {
   Input,
   Select,
 } from "antd";
-import Http from "./../../api/http";
-import { getIncomeBy, getUserLogged } from "./../../utils/utils";
+import Http from "../../api/http";
+import { getIncomeBy, getUserLogged } from "../../utils/utils";
+
 const http = new Http();
 const { Option } = Select;
 const { success, error } = Modal;
@@ -47,6 +48,7 @@ class StudentProfile extends React.Component {
       semester: value,
     });
   };
+
   onChangeType = (value) => {
     this.setState({
       incomeBy: value,
@@ -58,7 +60,7 @@ class StudentProfile extends React.Component {
   }
 
   async getDataStudent() {
-    const id = getUserLogged().id;
+    const { id } = getUserLogged();
     const response = await http.get(`users/student?id=${id}`);
     if (response.result.length == 1) {
       this.setState({
@@ -70,9 +72,9 @@ class StudentProfile extends React.Component {
   }
 
   createStudent = async () => {
-    const id = getUserLogged().id;
+    const { id } = getUserLogged();
     const data = {
-      id: id,
+      id,
       academicProgram: this.state.academicProgram,
       semester: this.state.semester,
       incomeBy: this.state.incomeBy,
@@ -98,16 +100,21 @@ class StudentProfile extends React.Component {
         <Col span={12}>
           <h6>Perfil Academico</h6>
           <p>
-            <b>Programa Academico: </b>{" "}
-            <span>{this.state.academicProgram}</span>{" "}
+            <b>Programa Academico: </b>
+
+            <span>{this.state.academicProgram}</span>
           </p>
           <p>
-            <b>Semestre Actual: </b> <span>{this.state.semester}</span>{" "}
+            <b>Semestre Actual: </b>
+
+            <span>{this.state.semester}</span>
           </p>
           <p>
-            <b>Ingreso del proyecto por: </b>{" "}
-            <span>{getIncomeBy(this.state.incomeBy)}</span>{" "}
-          </p>{" "}
+            <b>Ingreso del proyecto por: </b>
+
+            <span>{getIncomeBy(this.state.incomeBy)}</span>
+          </p>
+
           <br />
           <Button type="primary" onClick={this.showModal}>
             Agregar Informacion Academica
@@ -146,16 +153,13 @@ class StudentProfile extends React.Component {
               <label>Ingreso del proyecto por</label>
               <Select value="ingreso por" onChange={this.onChangeType}>
                 <Option key={1} value="1">
-                  {" "}
-                  Practicas{" "}
+                  Practicas
                 </Option>
                 <Option key={2} value="2">
-                  {" "}
-                  Opción de grado{" "}
+                  Opción de grado
                 </Option>
                 <Option key={3} value="3">
-                  {" "}
-                  Internacionalización{" "}
+                  Internacionalización
                 </Option>
               </Select>
             </Form.Item>

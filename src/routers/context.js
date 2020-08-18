@@ -6,7 +6,7 @@ export const SocketContext = createContext();
 socket.createSocket();
 class SocketContextProvider extends React.Component {
   state = {
-    socket: socket,
+    socket,
     hi: "hola",
   };
 

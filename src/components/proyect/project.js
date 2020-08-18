@@ -58,9 +58,9 @@ class Project extends Component {
   };
 
   async getEntrepreneurs() {
-    let entrepreneurs = [];
+    const entrepreneurs = [];
     const response = await http.get("project/getEntrepreneurs");
-    for (let i = 0; i < response.result.length; i++) {
+    for (let i = 0; i < response.result.length; i = i + 1) {
       entrepreneurs.push(response.result[i]);
     }
 
@@ -84,7 +84,7 @@ class Project extends Component {
   }
 
   async deleteProyect(id) {
-    const jsonid = { id: id };
+    const jsonid = { id };
     const response = await http.post("project/deleteProject", jsonid);
     if (response.result === "erased") {
       success({ content: "se ha eliminado el evento" });
@@ -157,7 +157,7 @@ class Project extends Component {
           image: localStorage.getItem("imageUrl"),
         };
         this.context.socket.emit("/invite", notification);
-        // socket.emit('/invite', notification);
+
         this.context.socket.on("/invited", (data) => {
           console.log(data);
         });
@@ -179,9 +179,8 @@ class Project extends Component {
     ) {
       console.log("entre", this.state.value);
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   cleanForm() {
@@ -193,7 +192,7 @@ class Project extends Component {
   }
 
   async reloadTable() {
-    let data = [];
+    const data = [];
     const jsonasesor = {
       nameAsesor: this.state.nameAsesor,
     };
@@ -205,7 +204,7 @@ class Project extends Component {
       data.push(response.result[i]);
     }
 
-    this.setState({ data: data });
+    this.setState({ data });
   }
 
   componentDidMount() {
@@ -281,7 +280,6 @@ class Project extends Component {
     if (this.state.edit) {
       button = (
         <Button className="Btn_Project_Edit" onClick={this.updateProyect}>
-          {" "}
           <EditOutlined /> Editar Proyecto
         </Button>
       );
@@ -292,7 +290,6 @@ class Project extends Component {
           type="primary"
           onClick={this.createProyect.bind(this)}
         >
-          {" "}
           <SaveOutlined /> Crear Proyecto
         </Button>
       );
@@ -309,7 +306,6 @@ class Project extends Component {
   cancelButton() {
     return (
       <Button className="Btn_Project_Edit" onClick={this.cancelEdit}>
-        {" "}
         <CloseOutlined /> Cancelar Edición
       </Button>
     );
@@ -338,7 +334,6 @@ class Project extends Component {
         dataIndex: "edit",
         render: (text, recoder) => (
           <Button onClick={() => this.handleEdit(recoder)}>
-            {" "}
             <EditOutlined /> Editar
           </Button>
         ),
@@ -348,8 +343,8 @@ class Project extends Component {
         dataIndex: "delete",
         render: (text, recoder) => (
           <Button type="danger" onClick={() => this.handleDelete(recoder)}>
-            {" "}
-            <DeleteOutlined>/</DeleteOutlined> Eliminar
+            <DeleteOutlined>/</DeleteOutlined>
+            Eliminar
           </Button>
         ),
       },
@@ -504,7 +499,7 @@ class Project extends Component {
                   size="small"
                   columns={columns}
                   dataSource={this.state.data}
-                ></Table>
+                />
               </Col>
             </Row>
           </Content>

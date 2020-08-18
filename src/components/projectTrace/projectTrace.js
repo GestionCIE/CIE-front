@@ -1,13 +1,13 @@
 import React from "react";
 import { Col, Row, Button, Select, Space } from "antd";
-import { is } from "./../../utils/utils";
+import { is } from "../../utils/utils";
 import StateOfActivivities from "./chartsx";
-import charImg from "./../../assets/graph.svg";
+import charImg from "../../assets/graph.svg";
 import "./projectTrace.css";
 
 import GranttGraph from "./granttGraph";
 
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 
@@ -66,7 +66,7 @@ class ProjectTrace extends React.Component {
   }
 
   async getProjects() {
-    let projects = [];
+    const projects = [];
     const jsonasesor = {
       nameAsesor: this.state.nameAsesor,
     };
@@ -75,7 +75,7 @@ class ProjectTrace extends React.Component {
     for (let i = 0; i < response.result.length; i++) {
       projects.push(response.result[i]);
     }
-    this.setState({ projects: projects });
+    this.setState({ projects });
     console.log("datos table");
   }
 
@@ -94,7 +94,7 @@ class ProjectTrace extends React.Component {
     );
     const phases = response.result.methodologicalPhases.split(",");
     this.setState({
-      phases: phases,
+      phases,
     });
   }
 
@@ -105,6 +105,7 @@ class ProjectTrace extends React.Component {
       }
     }
   }
+
   onChangeGetProfiles = (id) => {
     this.setState({
       idProject: id,
@@ -136,7 +137,7 @@ class ProjectTrace extends React.Component {
     console.log(phase);
     this.setState({
       visibleGraph: false,
-      phase: phase,
+      phase,
 
       grantt: true,
     });

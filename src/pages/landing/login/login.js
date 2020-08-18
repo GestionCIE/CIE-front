@@ -3,7 +3,7 @@ import { Input, Form, Button, Layout, Row, Col, Avatar } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import CFacebookLogin from "../../../components/facebook/facebookLogin";
 import login from "../../../assets/login.svg";
-import Http from "./../../../api/http";
+import Http from "../../../api/http";
 
 const http = new Http();
 const { Content } = Layout;
@@ -26,7 +26,7 @@ class Login extends React.Component {
     if (response.login) {
       localStorage.setItem("TOKEN", response.token);
       const username = response.result[0].name;
-      const role = response.result[0].role;
+      const { role } = response.result[0];
       const id = response.result[0].idUsers;
       const img = response.result[0].image;
       const relationship = response.result[0].relationshipUniversity;
@@ -39,6 +39,7 @@ class Login extends React.Component {
       this.props.history.push("/admin");
     }
   };
+
   render() {
     return (
       <Content>
@@ -84,8 +85,7 @@ class Login extends React.Component {
                   className="login-form-button"
                   onClick={this.login}
                 >
-                  {" "}
-                  Ingresar{" "}
+                  Ingresar
                 </Button>
               </Form.Item>
 

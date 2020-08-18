@@ -22,24 +22,19 @@ const { Option } = Select;
 const { success, confirm, error } = Modal;
 
 class RoleSettings extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      data: [],
-      moduleAdviser: [],
-      moduleAssistant: [],
-      moduleEntrepreneur: [],
-      showModal: false,
-      name: "",
-      username: "",
-      password: "",
-      email: "",
-      relationshipUniversity: "personalIntern",
-      role: "",
-    };
-  }
-
-
+  state = {
+    data: [],
+    moduleAdviser: [],
+    moduleAssistant: [],
+    moduleEntrepreneur: [],
+    showModal: false,
+    name: "",
+    username: "",
+    password: "",
+    email: "",
+    relationshipUniversity: "personalIntern",
+    role: "",
+  };
 
   componentDidMount() {
     this.getAllUsers();
@@ -47,12 +42,12 @@ class RoleSettings extends React.Component {
   }
 
   async getAllUsers() {
-    const data = [];
+    const _data = [];
     const response = await http.get("users/admin/getAllUsers");
-    for (let i = 0; i < response.result.length; i=+1) {
-      data.push(response.result[i]);
+    for (let i = 0; i < response.result.length; i += 1) {
+      _data.push(response.result[i]);
     }
-    this.setState({ data });
+    this.setState({ data: _data });
   }
 
   getRole(role) {
@@ -93,7 +88,7 @@ class RoleSettings extends React.Component {
   createSelectOption(id) {
     const contentValue = id > 0 ? "Selecionar Rol" : this.state.role;
     const action = id > 0 ? this.setNewRole : this.onChangeRole;
-    let select = (
+    const select = (
       <Select value={contentValue} onChange={action}>
         <Option value={`adviser ${id > 0 ? id : ""}`}>Asesor</Option>
         <Option value={`assistant ${id > 0 ? id : ""}`}>Asistente</Option>
@@ -116,7 +111,7 @@ class RoleSettings extends React.Component {
   }
 
   deactivate = async (state, id) => {
-    const data = { visible: state, id: id };
+    const data = { visible: state, id };
     const response = await http.post("config/updateVisible", data);
     if (response.result == "edited") {
       success({ content: "Se cambio el estado del modulo" });
@@ -126,7 +121,7 @@ class RoleSettings extends React.Component {
 
   deleteUser = (id) => {
     const deleteOk = async () => {
-      const response = await http.post("config/deleteUser", { id: id });
+      const response = await http.post("config/deleteUser", { id });
       if (response.result === "erased") {
         success({ content: "Se ha eliminado el usuario del sistema" });
         this.getAllUsers();
@@ -173,7 +168,7 @@ class RoleSettings extends React.Component {
 
     console.log(data);
     const response = await http.post("users/createUser", data);
-    if ((response.result === "created")) {
+    if (response.result === "created") {
       success({
         content: "Usuario se creo correctamente",
       });
@@ -224,8 +219,7 @@ class RoleSettings extends React.Component {
               icon={<UserAddOutlined />}
               onClick={this.showModal}
             >
-              {" "}
-              Crear Usuario{" "}
+              Crear Usuario
             </Button>
             <h6>Roles de usuario</h6>
             <Table

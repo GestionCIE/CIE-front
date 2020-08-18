@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
-import Formulario from "./form";
 import { Row, Col, Typography, Card, Layout, Modal } from "antd";
+import Formulario from "./form";
 import tutor from "../../../assets/img/tutor.jpg";
-import Http from "./../../../api/http";
+import Http from "../../../api/http";
 
 const http = new Http();
 const { Title } = Typography;
@@ -12,14 +12,17 @@ class Events extends React.Component {
   state = {
     visible: false,
   };
+
   handleOk = (e) => {
     console.log(e);
     this.setState({ visible: false });
   };
+
   handleCancel = (e) => {
     console.log(e);
     this.setState({ visible: false });
   };
+
   handleModal = () => {
     this.setState({ visible: true });
   };
@@ -48,11 +51,14 @@ class Events extends React.Component {
           <span className="card__name"> Nombre del evento: </span>
           {this.props.eventName}
           <br />
-          <span className="card__date">Día del Evento:</span>{" "}
+          <span className="card__date">Día del Evento:</span>
           {this.props.eventDate}
           <br />
-          <span className="card__value"> Inscripción:</span> $100 <br />
-          <span className="card__ponent"> Ponente:</span> Marcos Aurelio
+          <span className="card__value"> Inscripción:</span>
+          $100
+          <br />
+          <span className="card__ponent"> Ponente:</span>
+          Marcos Aurelio
         </Card>
         <Modal
           centered
@@ -77,7 +83,9 @@ class Services extends React.Component {
       <Col xs={24} sm={18} md={12} lg={8} xl={8}>
         <Card hoverable cover={<img src={tutor} alt="tutor" />}>
           <span className="card__serviceName"> Servicio: </span>
-          {this.props.serviceName} <br />
+          {this.props.serviceName}
+
+          <br />
           <span className="card__serviceDesc">Descripción: </span>
           {this.props.serviceDescription}
         </Card>
@@ -96,23 +104,23 @@ function Information() {
   }, []);
 
   const getDataEvent = async () => {
-    let data = [];
+    const data = [];
 
     const response = await http.get("event/getEvents");
     for (let i = 0; i < response.result.length; i++) {
       data.push(response.result[i]);
     }
-    setDataEvent({ data: data });
+    setDataEvent({ data });
   };
 
   const getDataService = async () => {
-    let data = [];
+    const data = [];
 
     const response = await http.get("service/getServices");
     for (let i = 0; i < response.result.length; i++) {
       data.push(response.result[i]);
     }
-    setDataService({ data: data });
+    setDataService({ data });
   };
 
   return (
@@ -123,7 +131,7 @@ function Information() {
 
       <div>
         <Row className="information__container--row">
-          <Fragment>
+          <>
             {dataEvent.data.map((event, index) => {
               return (
                 <Events
@@ -132,7 +140,7 @@ function Information() {
                   eventDescription={event.eventDescription}
                   eventDate={event.eventDate.split("T")[0]}
                   eventImage={event.eventImage}
-                ></Events>
+                />
               );
             })}
 
@@ -142,10 +150,10 @@ function Information() {
                   key={service.idServices}
                   serviceName={service.serviceName}
                   serviceDescription={service.serviceDescription}
-                ></Services>
+                />
               );
             })}
-          </Fragment>
+          </>
         </Row>
       </div>
     </Content>

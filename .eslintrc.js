@@ -14,5 +14,12 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
-  rules: {},
+  rules: {
+    "class-methods-use-this": "off",
+    "react/jsx-filename-extension": "off",
+    "no-console": "off",
+    "react/sort-comp": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/state-in-constructor": "off",
+  },
 };

@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import "./index.css";
 import Profile from "./profile";
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 const { Sider } = Layout;
@@ -100,8 +100,7 @@ class PrincipalComponent extends React.Component {
                 <Menu.Item className="Menu_Item" key={e.idSystemModules}>
                   {this.addIcon()}
                   <Link to={e.route}>
-                    {" "}
-                    <span className="Menu_Item_Span">{e.nameModule}</span>{" "}
+                    <span className="Menu_Item_Span">{e.nameModule}</span>
                   </Link>
                 </Menu.Item>
               );

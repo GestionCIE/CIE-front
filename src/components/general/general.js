@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Timeline, Card, Statistic, Button } from "antd";
 import "./general.css";
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 
@@ -48,7 +48,7 @@ class GeneralComponent extends React.Component {
               <p>Solve initial network problems 2</p>
               <p>Solve initial network problems 3 2015-09-01</p>
             </Timeline.Item>
-            <Timeline.Item></Timeline.Item>
+            <Timeline.Item />
             <p>Technical testing 1</p>
             <p>Technical testing 2</p>
             <p>Technical testing 3 2015-09-01</p>
@@ -56,7 +56,7 @@ class GeneralComponent extends React.Component {
               return (
                 <Timeline.Item color="green">
                   <p>
-                    {data.activity} ${data.date} - {data.hour}
+                    {data.activity}${data.date}-{data.hour}
                   </p>
                 </Timeline.Item>
               );
@@ -92,7 +92,8 @@ class GeneralComponent extends React.Component {
                 <Col span={24}>
                   <p>Planeacion de nuevos eventos</p>
                   <p>Fecha: 19/05/2020</p>
-                  <span>Hora de inicio: 10:30 am</span>{" "}
+                  <span>Hora de inicio: 10:30 am</span>
+
                   <span>Hora de Fin: 10:30 am</span>
                   <br />
                 </Col>

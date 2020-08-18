@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Input, Button, Form, Modal, Switch, Space } from "antd";
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 const { success } = Modal;
@@ -17,6 +17,7 @@ class AdvancedSettings extends React.Component {
     disableFc: true,
     disableEm: true,
   };
+
   componentDidMount() {
     this.getData();
   }

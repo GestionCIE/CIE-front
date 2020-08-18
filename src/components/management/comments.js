@@ -1,7 +1,8 @@
 import React from "react";
 import { Comment, Avatar, Form, Button, List, Input } from "antd";
 import moment from "moment";
-import Http from "./../../api/http";
+import Http from "../../api/http";
+
 const http = new Http();
 
 const { TextArea } = Input;
@@ -101,7 +102,7 @@ class Comments extends React.Component {
           {
             author: "Cristian Vargas",
             avatar: localStorage.getItem("imageUrl"),
-            content: <p> {this.state.value} </p>,
+            content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
           },
         ],

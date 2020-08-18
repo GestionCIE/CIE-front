@@ -1,7 +1,7 @@
 import React from "react";
-import user from "../../assets/img/man.svg";
-import { SocketContext } from "./../../routers/context";
 import { Row, Col } from "antd";
+import user from "../../assets/img/man.svg";
+import { SocketContext } from "../../routers/context";
 
 class Notification extends React.Component {
   static contextType = SocketContext;
@@ -70,8 +70,8 @@ class Notification extends React.Component {
                         <img className="Notification_Avatar" src={item.image} />
                         <div className="Notification_Message">
                           <p className="text">
-                            {" "}
-                            {item.form} {item.message}
+                            {item.form}
+                            {item.message}
                             <span className="text hour">3:20 am</span>
                           </p>
                         </div>
