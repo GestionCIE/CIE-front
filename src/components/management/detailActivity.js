@@ -20,9 +20,9 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import Comments from "./comments";
-import Http from "./../../api/http";
-import { getNameResource, is } from "./../../utils/utils";
-import { SocketContext } from "./../../routers/context";
+import Http from "../../api/http";
+import { getNameResource, is } from "../../utils/utils";
+import { SocketContext } from "../../routers/context";
 
 const http = new Http();
 const { success, confirm } = Modal;
@@ -147,7 +147,7 @@ class detailActivity extends React.Component {
     const state = value[0];
     if (state != undefined) {
       this.updateState(state);
-      this.setState({ state: state });
+      this.setState({ state });
     }
   };
 
@@ -165,7 +165,7 @@ class detailActivity extends React.Component {
     const response = await http.post("project/deleteActivity", {
       id: this.props.detailtActivity.id,
     });
-    if (response.result == "erased") {
+    if (response.result === "erased") {
       success({
         content: "Se ha borrado la actividad correctamente",
       });
@@ -191,10 +191,10 @@ class detailActivity extends React.Component {
   };
 
   getPercentaje() {
-    const state = this.state.state;
-    const percentaje = this.state.percentaje;
+    const { state } = this.state;
+    const { percentaje } = this.state;
 
-    if (state == "3") {
+    if (state === "3") {
       return (
         <Progress
           width={40}
@@ -204,28 +204,26 @@ class detailActivity extends React.Component {
           percent={percentaje != undefined ? percentaje : 0}
         />
       );
-    } else {
-      if (percentaje == 100) {
-        return (
-          <Progress
-            width={40}
-            className="Progress"
-            type="circle"
-            status="success"
-            percent={percentaje != undefined ? percentaje : 0}
-          />
-        );
-      } else {
-        return (
-          <Progress
-            width={40}
-            className="Progress"
-            type="circle"
-            percent={percentaje != undefined ? percentaje : 0}
-          />
-        );
-      }
     }
+    if (percentaje === 100) {
+      return (
+        <Progress
+          width={40}
+          className="Progress"
+          type="circle"
+          status="success"
+          percent={percentaje != undefined ? percentaje : 0}
+        />
+      );
+    }
+    return (
+      <Progress
+        width={40}
+        className="Progress"
+        type="circle"
+        percent={percentaje != undefined ? percentaje : 0}
+      />
+    );
   }
 
   onChangePrefix = (value) => {
@@ -239,8 +237,11 @@ class detailActivity extends React.Component {
     return (
       <p>
         <Space size={8}>
-          <span>Fecha de inicio : {dateInit}</span>
-          <span>Fecha de Fin: {dateEnd}</span>
+          <span>Fecha de inicio :{dateInit}</span>
+          <span>
+            Fecha de Fin:
+            {dateEnd}
+          </span>
         </Space>
       </p>
     );

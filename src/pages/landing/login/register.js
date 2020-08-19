@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Form, Layout, Row, Col, Button, Select, message } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 
-import Http from "./../../../api/http";
+import Http from "../../../api/http";
 
 import "./login.css";
 
@@ -17,7 +17,7 @@ class Register extends React.Component {
     fullname: "",
     password: "",
     email: "",
-    relationship: "Relación con la Universidad", //default value
+    relationship: "Relación con la Universidad", // default value
   };
 
   register = async (e) => {
@@ -39,6 +39,7 @@ class Register extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.name);
   };
+
   render() {
     return (
       <Content>
@@ -52,7 +53,7 @@ class Register extends React.Component {
                   prefix={<UserOutlined />}
                   name="fullname"
                   value={this.state.fullname}
-                  placeholder={"Nombre completo"}
+                  placeholder="Nombre completo"
                   onChange={this.onChangeData}
                 />
               </Form.Item>
@@ -65,7 +66,7 @@ class Register extends React.Component {
                   prefix={<UserOutlined />}
                   name="username"
                   value={this.state.username}
-                  placeholder={"Nombre de usuario"}
+                  placeholder="Nombre de usuario"
                   onChange={this.onChangeData}
                 />
               </Form.Item>
@@ -78,7 +79,7 @@ class Register extends React.Component {
                   prefix={<LockOutlined />}
                   value={this.state.password}
                   name="password"
-                  placeholder={"Contraseña"}
+                  placeholder="Contraseña"
                   onChange={this.onChangeData}
                 />
               </Form.Item>
@@ -100,7 +101,7 @@ class Register extends React.Component {
                 <Input.Password
                   prefix={<LockOutlined />}
                   name="r-password"
-                  placeholder={"Repite tu Contraseña"}
+                  placeholder="Repite tu Contraseña"
                 />
               </Form.Item>
               <Form.Item
@@ -113,7 +114,7 @@ class Register extends React.Component {
                   prefix={<MailOutlined />}
                   name="email"
                   value={this.state.email}
-                  placeholder={"Email"}
+                  placeholder="Email"
                   onChange={this.onChangeData}
                 />
               </Form.Item>
@@ -130,7 +131,7 @@ class Register extends React.Component {
               <Form.Item>
                 <Button
                   onClick={this.register}
-                  type={"primary"}
+                  type="primary"
                   className="login-form-button"
                 >
                   Registrarme

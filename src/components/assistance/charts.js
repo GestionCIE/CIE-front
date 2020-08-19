@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import { Col, Row } from "antd";
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 
@@ -23,6 +23,7 @@ class Charts extends React.Component {
   componentDidMount() {
     this.getData();
   }
+
   render() {
     const data = {
       labels: this.state.labels,

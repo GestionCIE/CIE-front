@@ -5,9 +5,9 @@ import TracingComponent from "./tracingComponent";
 import "./assistance.css";
 import Charts from "./charts";
 import assistantImg from "../../assets/assistant.svg";
-import { AttendanceStatistics } from "./../commons/eventStatistics";
+import { AttendanceStatistics } from "../commons/eventStatistics";
 
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 const { Option } = Select;
@@ -66,7 +66,7 @@ class Assistance extends React.Component {
           ? "tomo la asistencia"
           : "le quito la asistencia"
       } correctamente`;
-      success({ content: message + " " + recoder.idEvent });
+      success({ content: `${message  } ${  recoder.idEvent}` });
     } else {
       error({ content: "no se ha podido tomar la asistencia" });
     }
@@ -85,13 +85,14 @@ class Assistance extends React.Component {
         dataIndex: "attended",
         render: (text, recoder) => (
           <Checkbox
-            checked={recoder.confirmedAssistance == 1 ? true : false}
+            checked={recoder.confirmedAssistance == 1}
             onChange={(e) => {
               this.addAttendance(e, recoder);
             }}
           >
             {" "}
-            Asistio{" "}
+            Asistio
+            {" "}
           </Checkbox>
         ),
       },
@@ -125,7 +126,11 @@ class Assistance extends React.Component {
                   >
                     {this.state.events.map((e) => {
                       return (
-                        <Option value={e.idEvents}> {e.eventName} </Option>
+                        <Option value={e.idEvents}> 
+                          {' '}
+                          {e.eventName}
+                          {' '}
+                        </Option>
                       );
                     })}
                   </Select>
@@ -138,7 +143,7 @@ class Assistance extends React.Component {
                           size="small"
                           columns={columns}
                           dataSource={this.state.attendance}
-                        ></Table>
+                        />
                       ) : (
                         <img src={assistantImg} className="Img_Assistant" />
                       )}

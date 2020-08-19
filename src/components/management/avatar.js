@@ -5,10 +5,11 @@ class AvatarComponent extends React.Component {
   state = {
     avatars: [],
   };
-  componentDidMount() {
-    const profiles = this.props.profiles;
 
-    let data = [];
+  componentDidMount() {
+    const {profiles} = this.props;
+
+    const data = [];
     for (let i = 0; i < profiles.length; i++) {
       data.push({
         nameshort: profiles[i].nameshort,
@@ -17,6 +18,7 @@ class AvatarComponent extends React.Component {
     }
     this.setState({ avatars: data });
   }
+
   render() {
     return (
       <div>

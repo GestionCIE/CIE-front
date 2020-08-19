@@ -19,7 +19,13 @@ import {
   Checkbox,
   Progress,
 } from "antd";
-import ManagementApi from "../../api/management/managenmentApi";
+import moment from "moment";
+import {
+  BorderOutlined,
+  MessageOutlined,
+  FileOutlined,
+} from "@ant-design/icons";
+
 import "./management.css";
 import AvatarComponent from "./avatar";
 import DetailActivity from "./detailActivity";
@@ -27,16 +33,10 @@ import ContentTabs from "./contentTabs";
 import AssigmentAdviser from "./assigmentAdvisers";
 
 import img_management from "../../assets/management.svg";
-import {
-  BorderOutlined,
-  MessageOutlined,
-  FileOutlined,
-} from "@ant-design/icons";
-import { SocketContext } from "./../../routers/context";
+import { SocketContext } from "../../routers/context";
 
-import moment from "moment";
 import Http from "../../api/http";
-const api = new ManagementApi();
+
 const http = new Http();
 
 const { Step } = Steps;
@@ -54,6 +54,7 @@ const steps_titles = [
     title: "2",
   },
 ];
+
 class management extends Component {
   static contextType = SocketContext;
 
@@ -149,8 +150,6 @@ class management extends Component {
   };
 
   validateDate(start, end) {
-    // start >= now
-    // start >= end
     const todayDate = moment(new Date(), "YYYY-MM-DD")
       .format("YYYY-MM-DD")
       .toString();
@@ -218,7 +217,7 @@ class management extends Component {
   };
 
   getProject = async (id) => {
-    let response = await http.get(`project/getProject?id=${id}`);
+    const response = await http.get(`project/getProject?id=${id}`);
     console.log("projectsssssss: ", response);
     if (response.result.length > 0) {
       return { phases: response.phases, project: response.result };
@@ -258,13 +257,14 @@ class management extends Component {
     this.setState({ detailtActivity: data, showComponent: true });
     this.setVisibleDrawer();
   };
+
   getResponsables = (values) => {
     this.setState({ assign: values });
     this.getParticipants(this.state.idProject);
   };
 
   getParticipants = async (id) => {
-    let options = [];
+    const options = [];
     const response = await http.get(`project/getParticipans?id=${id}`);
     options.push(
       <Option value={response.result.advisor} key={0}>
@@ -317,13 +317,11 @@ class management extends Component {
     const nameshort = _nameshort.split(",");
     if (responsables.length > 0) {
       for (let i = 0; i < responsables.length; i++) {
-        htmlProfile =
-          htmlProfile +
-          `<Tooltip placement="top" title={${responsables[i]}}>
+        htmlProfile += `<Tooltip placement="top" title={${responsables[i]}}>
               <Avatar>{${nameshort[i]}}</Avatar>
           </Tooltip>`;
       }
-      htmlProfile = htmlProfile + `</div>`;
+      htmlProfile += `</div>`;
     } else {
       htmlProfile = <span>Error no se puede obtener los responsables</span>;
     }
@@ -340,9 +338,8 @@ class management extends Component {
       this.state.description != ""
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   createActivity = async () => {
@@ -353,7 +350,7 @@ class management extends Component {
       assings =
         i + 1 == this.state.assign.length
           ? assings + this.state.assign[i]
-          : assings + this.state.assign[i] + ",";
+          : `${assings + this.state.assign[i]},`;
     }
 
     if (this.validate()) {
@@ -396,7 +393,7 @@ class management extends Component {
     this.setState({
       activity: activity.nameActivity,
       description: activity.description,
-      // responsables: activity.responsables.split(","),
+
       progress: activity.state,
     });
 
@@ -407,7 +404,7 @@ class management extends Component {
     const activities = await this.getActivities(id, phase);
 
     this.setState({
-      activities: activities,
+      activities,
       visibleContent: true,
       phaseSelect: phase,
     });
@@ -444,10 +441,10 @@ class management extends Component {
         visibleImg: "none",
         visibleList: "block",
         idProject: id,
-        project: project,
-        phases: phases,
+        project,
+        phases,
         responsables: options,
-        activities: activities,
+        activities,
         key: phases[0],
       });
     } else {
@@ -493,28 +490,26 @@ class management extends Component {
           percent={recoder.percentaje != undefined ? recoder.percentaje : 0}
         />
       );
-    } else {
-      if (recoder.percentaje == 100) {
-        return (
-          <Progress
-            width={40}
-            className="Progress"
-            type="circle"
-            status="success"
-            percent={recoder.percentaje != undefined ? recoder.percentaje : 0}
-          />
-        );
-      } else {
-        return (
-          <Progress
-            width={40}
-            className="Progress"
-            type="circle"
-            percent={recoder.percentaje != undefined ? recoder.percentaje : 0}
-          />
-        );
-      }
     }
+    if (recoder.percentaje == 100) {
+      return (
+        <Progress
+          width={40}
+          className="Progress"
+          type="circle"
+          status="success"
+          percent={recoder.percentaje != undefined ? recoder.percentaje : 0}
+        />
+      );
+    }
+    return (
+      <Progress
+        width={40}
+        className="Progress"
+        type="circle"
+        percent={recoder.percentaje != undefined ? recoder.percentaje : 0}
+      />
+    );
   }
 
   getOptionState() {
@@ -619,11 +614,10 @@ class management extends Component {
                     })}
                     {this.state.advisor != "" ? (
                       <>
-                        {" "}
                         <span>Asesor</span>
                         <Tooltip placement="top" title={this.state.advisor}>
                           <Avatar>{this.state.advisor}</Avatar>
-                        </Tooltip>{" "}
+                        </Tooltip>
                       </>
                     ) : null}
                   </Space>
@@ -781,21 +775,21 @@ class management extends Component {
                                 title="Cantidad de mensajes"
                                 placement="top"
                               >
-                                <MessageOutlined />{" "}
+                                <MessageOutlined />
                                 <span> {item.amountComments} </span>
                               </Tooltip>
                               <Tooltip
                                 title="Cantidad de actividades"
                                 placement="top"
                               >
-                                <FileOutlined />{" "}
+                                <FileOutlined />
                                 <span> {item.amountActivities} </span>
                               </Tooltip>
                             </Space>
                           </div>
                         </List.Item>
                       )}
-                    ></List>
+                    />
                   </div>
                 </Col>
                 <Col span={14}>
@@ -809,7 +803,6 @@ class management extends Component {
                           Editar actividad
                         </Button>
                         <Button onClick={this.showModalAssigment}>
-                          {" "}
                           Asig. Asesor a una fase
                         </Button>
                         {this.state.nameAssigned != "" ? (

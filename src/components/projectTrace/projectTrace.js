@@ -1,13 +1,13 @@
 import React from "react";
 import { Col, Row, Button, Select, Space } from "antd";
-import { is } from "./../../utils/utils";
+import { is } from "../../utils/utils";
 import StateOfActivivities from "./chartsx";
-import charImg from "./../../assets/graph.svg";
+import charImg from "../../assets/graph.svg";
 import "./projectTrace.css";
 
 import GranttGraph from "./granttGraph";
 
-import Http from "./../../api/http";
+import Http from "../../api/http";
 
 const http = new Http();
 
@@ -66,7 +66,7 @@ class ProjectTrace extends React.Component {
   }
 
   async getProjects() {
-    let projects = [];
+    const projects = [];
     const jsonasesor = {
       nameAsesor: this.state.nameAsesor,
     };
@@ -75,7 +75,7 @@ class ProjectTrace extends React.Component {
     for (let i = 0; i < response.result.length; i++) {
       projects.push(response.result[i]);
     }
-    this.setState({ projects: projects });
+    this.setState({ projects });
     console.log("datos table");
   }
 
@@ -94,7 +94,7 @@ class ProjectTrace extends React.Component {
     );
     const phases = response.result.methodologicalPhases.split(",");
     this.setState({
-      phases: phases,
+      phases,
     });
   }
 
@@ -105,6 +105,7 @@ class ProjectTrace extends React.Component {
       }
     }
   }
+
   onChangeGetProfiles = (id) => {
     this.setState({
       idProject: id,
@@ -136,7 +137,7 @@ class ProjectTrace extends React.Component {
     console.log(phase);
     this.setState({
       visibleGraph: false,
-      phase: phase,
+      phase,
 
       grantt: true,
     });
@@ -166,26 +167,28 @@ class ProjectTrace extends React.Component {
         </Col>
         <Col span={24}>
           <Space size={15}>
-            <Select
-              defaultValue="seleccione un proyecto"
-              className="Select_Inputs"
-              onChange={this.onChangeGetProfiles}
-            >
-              {this.state.projects.length > 0 ? (
-                this.state.projects.map((project, index) => {
-                  return (
-                    <Option value={project.idProject}>
-                      {project.projectName}
-                    </Option>
-                  );
-                })
-              ) : (
-                <Option value="-1">No hay Projectos</Option>
-              )}
-            </Select>
+            {is("adviser") ? (
+              <Select
+                defaultValue="seleccione un proyecto"
+                className="Select_Inputs"
+                onChange={this.onChangeGetProfiles}
+              >
+                {this.state.projects.length > 0 ? (
+                  this.state.projects.map((project, index) => {
+                    return (
+                      <Option value={project.idProject}>
+                        {project.projectName}
+                      </Option>
+                    );
+                  })
+                ) : (
+                  <Option value="-1">No hay Projectos</Option>
+                )}
+              </Select>
+            ) : null}
 
             <Select
-              defaultValue="seleccione un Repote"
+              defaultValue="seleccione un Reporte"
               className="Select_Inputs"
               onChange={this.onChangeGraph}
             >
@@ -217,7 +220,7 @@ class ProjectTrace extends React.Component {
           {this.state.visibleGraph ? (
             <StateOfActivivities
               idProject={this.state.idProject}
-              typeGraph={this.state.typegraph}
+              report={this.state.typegraph}
               titleGraph={this.state.titleGraph}
             />
           ) : this.state.grantt ? (

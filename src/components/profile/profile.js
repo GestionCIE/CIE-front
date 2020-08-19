@@ -15,13 +15,9 @@ import {
 import "antd/dist/antd.css";
 import { LoadingOutlined, PlusOutlined, LockOutlined } from "@ant-design/icons";
 import "./profile.css";
-import Http from "./../../api/http";
-import Security from "./../../assets/security.svg";
-import {
-  whatRelationship,
-  getRole,
-  getRelationship,
-} from "./../../utils/utils";
+import Http from "../../api/http";
+import Security from "../../assets/security.svg";
+import { whatRelationship, getRole, getRelationship } from "../../utils/utils";
 import ProfesionalProfile from "./professionalProfile";
 import StudentProfile from "./studentProfile";
 
@@ -58,7 +54,7 @@ class ProfileComponent extends React.Component {
     );
     const user = response.result[0];
     console.log(response);
-    const project = response.project;
+    const { project } = response;
     this.setState({
       name: user.name,
       username: user.username,
@@ -101,6 +97,7 @@ class ProfileComponent extends React.Component {
       modalEditProfile: true,
     });
   };
+
   closeModalEditProfile = () => {
     this.setState({
       modalEditProfile: false,
@@ -239,7 +236,6 @@ class ProfileComponent extends React.Component {
               <label>Rol</label>
               <br />
               <Tag className="Tag_Rol" color="#108ee9">
-                {" "}
                 {this.state.rol}
               </Tag>
             </Col>
@@ -392,26 +388,25 @@ class ProfileComponent extends React.Component {
                 <h6>Datos de contacto</h6>
                 <br />
                 <p>
-                  {" "}
                   <b>Correo Electronico: </b>
                 </p>
                 <p>{this.state.email}</p>
                 <p>{this.state.phone}</p>
                 <p>
-                  <b>Telefono:</b>{" "}
+                  <b>Telefono:</b>
                   <span>
                     {this.state.phone !== undefined
                       ? this.state.phone
-                      : "No tiene telefono"}{" "}
+                      : "No tiene telefono"}
                   </span>
                 </p>
                 <p>
-                  <b>Celular:</b>{" "}
+                  <b>Celular:</b>
                   <span>
                     {this.state.mobile !== undefined
                       ? this.state.mobile
                       : "No tiene celular"}
-                  </span>{" "}
+                  </span>
                 </p>
               </div>
               <div className="Profile_Buttons">
@@ -431,16 +426,15 @@ class ProfileComponent extends React.Component {
                     <b>Nombre: </b> <span>{this.state.name} </span>
                   </p>
                   <p>
-                    <b>Tipo de usuario: </b>{" "}
+                    <b>Tipo de usuario: </b>
                     <span>{getRole(this.state.role)}</span>
                   </p>
                   <p>
-                    <b>Relacion con la CUA: </b>{" "}
+                    <b>Relacion con la CUA: </b>
                     <span>
                       {getRelationship(this.state.relationshipUniversity)}
                     </span>
                   </p>
-                  {/* <p><b>Semestre Academico: </b> <span>9</span></p> */}
                 </div>
 
                 <div>

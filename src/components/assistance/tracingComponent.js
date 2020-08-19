@@ -26,22 +26,22 @@ class TracingComponent extends React.Component {
   };
 
   async reloadTable(id) {
-    let tracing = [];
+    const tracing = [];
 
     const response = await http.get(`tracing/getAttendance?id=${id}`);
     for (let i = 0; i < response.result.length; i++) {
       tracing.push(response.result[i]);
     }
-    this.setState({ tracing: tracing });
+    this.setState({ tracing });
   }
 
   async getEvents() {
-    let { data } = this.state;
+    const { data } = this.state;
     const response = await http.get("tracing/getEvents");
     for (let i = 0; i < response.result.length; i++) {
       data.push(response.result[i]);
     }
-    this.setState({ data: data });
+    this.setState({ data });
   }
 
   componentDidMount() {
@@ -91,9 +91,9 @@ class TracingComponent extends React.Component {
         dataIndex: "attended",
         render: (text, recoder) => (
           <Checkbox
-            checked={recoder.attended == 1 ? true : false}
+            checked={recoder.attended == 1}
             onChange={this.handleTracing.bind(this, recoder)}
-          ></Checkbox>
+          />
         ),
       },
       {
@@ -135,12 +135,12 @@ class TracingComponent extends React.Component {
             >
               <SubMenu
                 key="sub1"
-                title={
+                title={(
                   <span>
                     <ScheduleOutlined />
                     <span>Eventos</span>
                   </span>
-                }
+                )}
               >
                 {this.state.data.map((evento) => {
                   return (
@@ -156,7 +156,7 @@ class TracingComponent extends React.Component {
             </Menu>
           </Col>
           <Col span={16} push={1}>
-            <Table columns={columns} dataSource={this.state.tracing}></Table>
+            <Table columns={columns} dataSource={this.state.tracing} />
           </Col>
         </Row>
       </Content>
