@@ -23,11 +23,12 @@ class CFacebookLogin extends Component {
       content = (
         <FacebookLogin
           appId="586619525379688"
-          autoLoad
           fields="name,email,picture"
           onClick={this.onClickFacebook}
           callback={this.responseFacebook}
-          size="metro"
+          size="small"
+          textButton="Ingresar por facebook"
+          cssClass="Button_Facebook"
         />
       );
     }
