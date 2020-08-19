@@ -167,26 +167,28 @@ class ProjectTrace extends React.Component {
         </Col>
         <Col span={24}>
           <Space size={15}>
-            <Select
-              defaultValue="seleccione un proyecto"
-              className="Select_Inputs"
-              onChange={this.onChangeGetProfiles}
-            >
-              {this.state.projects.length > 0 ? (
-                this.state.projects.map((project, index) => {
-                  return (
-                    <Option value={project.idProject}>
-                      {project.projectName}
-                    </Option>
-                  );
-                })
-              ) : (
-                <Option value="-1">No hay Projectos</Option>
-              )}
-            </Select>
+            {is("adviser") ? (
+              <Select
+                defaultValue="seleccione un proyecto"
+                className="Select_Inputs"
+                onChange={this.onChangeGetProfiles}
+              >
+                {this.state.projects.length > 0 ? (
+                  this.state.projects.map((project, index) => {
+                    return (
+                      <Option value={project.idProject}>
+                        {project.projectName}
+                      </Option>
+                    );
+                  })
+                ) : (
+                  <Option value="-1">No hay Projectos</Option>
+                )}
+              </Select>
+            ) : null}
 
             <Select
-              defaultValue="seleccione un Repote"
+              defaultValue="seleccione un Reporte"
               className="Select_Inputs"
               onChange={this.onChangeGraph}
             >
@@ -218,7 +220,7 @@ class ProjectTrace extends React.Component {
           {this.state.visibleGraph ? (
             <StateOfActivivities
               idProject={this.state.idProject}
-              typeGraph={this.state.typegraph}
+              report={this.state.typegraph}
               titleGraph={this.state.titleGraph}
             />
           ) : this.state.grantt ? (
