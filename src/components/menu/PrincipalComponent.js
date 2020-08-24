@@ -2,12 +2,17 @@ import React from "react";
 import { Layout, Menu } from "antd";
 import {
   UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  ArrowLeftOutlined,
-  FileDoneOutlined, // service & events
-  CustomerServiceOutlined, // seguimiento
   SettingOutlined,
+  HomeOutlined,
+  LogoutOutlined,
+  CalendarOutlined,
+  BarChartOutlined,
+  NotificationOutlined,
+  AppstoreAddOutlined,
+  ReadOutlined,
+  CreditCardOutlined,
+  NodeExpandOutlined,
+  CarryOutOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./index.css";
@@ -53,19 +58,43 @@ class PrincipalComponent extends React.Component {
     this.getModulesByRole();
   }
 
-  addIcon(icon) {
+  addIcon(idModule) {
     let iconComponent = null;
 
-    switch (icon) {
-      case "FileDoneOutlined":
-        iconComponent = <FileDoneOutlined />;
+    switch (idModule) {
+      case 1:
+        iconComponent = <HomeOutlined />;
         break;
-      case "CustomerServiceOutlined":
-        iconComponent = <CustomerServiceOutlined />;
+      case 2 || 9:
+        iconComponent = <AppstoreAddOutlined />;
         break;
 
-      case "SettingOutlined":
+      case 3:
+        iconComponent = <NotificationOutlined />;
+        break;
+
+      case 4:
+        iconComponent = <CreditCardOutlined />;
+        break;
+
+      case 5 || 6 || 7 || 8:
+        iconComponent = <CalendarOutlined />;
+        break;
+
+      case 10:
         iconComponent = <SettingOutlined />;
+        break;
+
+      case 11:
+        iconComponent = <ReadOutlined />;
+        break;
+
+      case 13:
+        iconComponent = <CarryOutOutlined />;
+        break;
+
+      case 14:
+        iconComponent = <BarChartOutlined />;
         break;
 
       default:
@@ -98,7 +127,7 @@ class PrincipalComponent extends React.Component {
             if (e.active)
               return (
                 <Menu.Item className="Menu_Item" key={e.idSystemModules}>
-                  {this.addIcon()}
+                  {this.addIcon(e.idSystemModules)}
                   <Link to={e.route}>
                     <span className="Menu_Item_Span">{e.nameModule}</span>
                   </Link>
@@ -106,7 +135,7 @@ class PrincipalComponent extends React.Component {
               );
           })}
           <Menu.Item key="40" className="Menu_Item">
-            <ArrowLeftOutlined />
+            <LogoutOutlined />
             <Link to="/inicio" onClick={this.exit}>
               <span className="Menu_Item_Span">Salir</span>
             </Link>

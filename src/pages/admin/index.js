@@ -11,6 +11,7 @@ import Assistance from "../../components/assistance/assistance";
 import GeneralComponent from "../../components/general/general";
 import ProfileComponent from "../../components/profile/profile";
 import ProjectTrace from "../../components/projectTrace/projectTrace";
+import Calendar from "./../../components/calendar/calendar";
 import { SocketContext } from "../../routers/context";
 import Http from "../../api/http";
 
@@ -83,6 +84,7 @@ class ContentPrivate extends React.Component {
                 )}
               />
               <Route exact path="/admin/trazproject" component={ProjectTrace} />
+              <Route exact path="/admin/calendar" component={Calendar} />
               <Route exact path="/admin" component={GeneralComponent} />
             </Switch>
           )}
