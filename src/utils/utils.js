@@ -98,3 +98,11 @@ export const getBase64 = (file) => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+export const breakStringDate = (date) => {
+  return {
+    year: date.split("-")[0],
+    month: date.split("-")[1],
+    day: date.split("-")[2],
+  };
+};

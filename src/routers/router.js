@@ -9,7 +9,7 @@ function RouterMain() {
   return (
     <Router history={history}>
       <Route path="/inicio" component={Public} />
-      <Route path="/admin" component={Home} />
+      <Route path="/dashboard" component={Home} />
     </Router>
   );
 }

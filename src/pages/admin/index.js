@@ -60,32 +60,44 @@ class ContentPrivate extends React.Component {
         <SocketContext.Consumer>
           {(context) => (
             <Switch>
-              <Route exact path="/admin/events" component={EventComponent} />
               <Route
                 exact
-                path="/admin/services"
+                path="/dashboard/events"
+                component={EventComponent}
+              />
+              <Route
+                exact
+                path="/dashboard/services"
                 component={ServiceComponent}
               />
-              <Route exact path="/admin/config" component={Configuration} />
+              <Route exact path="/dashboard/config" component={Configuration} />
               <Route
                 exact
-                path="/admin/management"
+                path="/dashboard/management"
                 render={() => (
                   <ProjectManagement idProject={this.props.idProject} />
                 )}
               />
-              <Route exact path="/admin/proyect" component={Project} />
-              <Route exact path="/admin/assistance" component={Assistance} />
+              <Route exact path="/dashboard/proyect" component={Project} />
               <Route
                 exact
-                path="/admin/profile"
+                path="/dashboard/assistance"
+                component={Assistance}
+              />
+              <Route
+                exact
+                path="/dashboard/profile"
                 render={() => (
                   <ProfileComponent handle={this.props.handleImage} />
                 )}
               />
-              <Route exact path="/admin/trazproject" component={ProjectTrace} />
-              <Route exact path="/admin/calendar" component={Calendar} />
-              <Route exact path="/admin" component={GeneralComponent} />
+              <Route
+                exact
+                path="/dashboard/trazproject"
+                component={ProjectTrace}
+              />
+              <Route exact path="/dashboard/calendar" component={Calendar} />
+              <Route exact path="/dashboard" component={GeneralComponent} />
             </Switch>
           )}
         </SocketContext.Consumer>

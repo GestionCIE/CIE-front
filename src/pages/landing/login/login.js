@@ -36,7 +36,7 @@ class Login extends React.Component {
       localStorage.setItem("idUser", id);
       localStorage.setItem("imageUrl", img);
       localStorage.setItem("relationship", relationship);
-      this.props.history.push("/admin");
+      this.props.history.push("/dashboard");
     }
   };
 
