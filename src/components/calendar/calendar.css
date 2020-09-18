@@ -1,0 +1,16 @@
+.Button_Create_Metting {
+    width: 100%;
+}
+
+.Card_Detail_Meeting{
+    width: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   margin-top: 10px;
+
+}
+
+.Card_Detail_Meeting:nth-child(1) {
+    margin-top: 30px;
+}
