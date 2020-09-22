@@ -12,7 +12,6 @@ import {
   Space,
   DatePicker,
   TimePicker,
-  Card,
 } from "antd";
 import moment from "moment";
 
@@ -98,11 +97,27 @@ class CalendarC extends React.Component {
 
     if (result === "created") {
       success({ content: "Se ha añadido una nueva reunion" });
+      this.sendNotication();
       this.getMetting();
       this.closeModal();
     }
     console.log(data);
   };
+
+  async sendNotication() {
+    const { idGuests, date, hour, title, purpose } = this.state;
+    const data = {
+      idGuests,
+      from: getUserLogged().name,
+      typeSubject: 1,
+      message: `El dia ${date} a las ${hour} se le ha invitado por parte de ${
+        getUserLogged().name
+      } a una reunion sobre ${title} que tiene como proposito ${purpose}`,
+    };
+
+    const response = await http.post("notification/email", data);
+    console.log(response);
+  }
 
   reloadCalendar = () => {
     this.getMetting();
