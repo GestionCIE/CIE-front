@@ -1,11 +1,21 @@
 import React from "react";
-import { Drawer, Card, Row, Col, Space, Button, Avatar, Tooltip } from "antd";
-
+import {
+  Drawer,
+  Card,
+  Row,
+  Col,
+  Space,
+  Button,
+  Avatar,
+  Tooltip,
+  Modal,
+} from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import Http from "./../../api/http";
-import FormItemInput from "antd/lib/form/FormItemInput";
+import { withSuccess } from "antd/lib/modal/confirm";
 
-// const http = new Http();
-
+const http = new Http();
+const { confirm, success } = Modal;
 class MeetingDetail extends React.Component {
   // state = {
   //   responsable: {
@@ -22,6 +32,38 @@ class MeetingDetail extends React.Component {
   // componentDidUpdate() {
   //   console.log("Details props UPDATE", this.props.detail);
   // }
+
+  reloadCalendar() {
+    this.props.reloadCalendar();
+  }
+
+  showConfirmDelete(id) {
+    confirm({
+      title: "Deseas cancelar la reunion ?",
+      icon: <ExclamationCircleOutlined />,
+      content:
+        "Esta reuniòn sera cancelada y quitado de la vista de los usuarios",
+      okText: "Eliminar",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        this.deleteMetting(id);
+      },
+    });
+  }
+
+  deleteMetting = async (id) => {
+    console.log("delete ", id);
+    const response = await http.delete(`calendar/metting?id=${id}`);
+    console.log(response);
+    if (response.result == "erased") {
+      success({
+        content: "Se ha cancelado la reunión",
+      });
+      this.reloadCalendar();
+      this.props.closeDetail();
+    }
+  };
 
   render() {
     const { visibleDetail, closeDetail, detail } = this.props;
@@ -43,7 +85,15 @@ class MeetingDetail extends React.Component {
                           <strong>Titulo: </strong>
                         </p>
                         <p> {item.title}</p>
-                        <Button type="danger"> Cancelar Reunión </Button>
+                        <Button
+                          type="danger"
+                          value={item.idcalendar}
+                          onClick={() =>
+                            this.showConfirmDelete(item.idcalendar)
+                          }
+                        >
+                          Cancelar Reunión
+                        </Button>
                       </Space>
                     </Col>
                     <Col span={24}>

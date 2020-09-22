@@ -12,7 +12,7 @@ import {
   Space,
   DatePicker,
   TimePicker,
-  Drawer,
+  Card,
 } from "antd";
 import moment from "moment";
 
@@ -36,6 +36,7 @@ class CalendarC extends React.Component {
     idGuests: "",
     date: moment(new Date(), "YYYY-MM-DD"),
     hour: moment("12:00", "HH:mm"),
+    renderChild: false,
   };
 
   componentDidMount() {
@@ -97,9 +98,14 @@ class CalendarC extends React.Component {
 
     if (result === "created") {
       success({ content: "Se ha añadido una nueva reunion" });
+      this.getMetting();
       this.closeModal();
     }
     console.log(data);
+  };
+
+  reloadCalendar = () => {
+    this.getMetting();
   };
 
   getResponsable = () => {
@@ -116,9 +122,6 @@ class CalendarC extends React.Component {
         value.month() == date.month &&
         value.date() == date.day
       ) {
-        // const responsable =  await this.getProfile(meetings[i].idRes);
-        // const guests = await this.getProfile(meetings[i].idGuests);
-        // console.log("responsable ", responsable, " guests ", guests);
         this.temp.push(meetings[i]);
       }
     }
@@ -141,9 +144,11 @@ class CalendarC extends React.Component {
   };
 
   selectCellCalendar = (value) => {
+    console.log("selectCellCalendar", value);
     const data = this.searchData(value);
     if (data.length > 0) {
       this.showDetail();
+
       console.log(data);
     }
   };
@@ -151,30 +156,21 @@ class CalendarC extends React.Component {
   detailMetting = () => {
     const { visibleDetail } = this.state;
     return (
-      // <Drawer
-      //   title="Detalle de reuniones"
-      //   visible={visibleDetail}
-      //   onClose={this.closeDetail}
-      // ></Drawer>
       <MeetingDetail
         detail={this.temp}
         visibleDetail={visibleDetail}
         closeDetail={this.closeDetail}
+        reloadCalendar={this.reloadCalendar}
       />
     );
   };
 
-  getProfile = async (id) => {
-    const responsable = await http.get(`users/name?id=${id}`);
-    console.log(responsable);
-  };
-
   showDetail = () => {
-    this.setState({ visibleDetail: true });
+    this.setState({ visibleDetail: true, renderChild: true });
   };
 
   closeDetail = () => {
-    this.setState({ visibleDetail: false });
+    this.setState({ visibleDetail: false, renderChild: false });
   };
 
   render() {
@@ -251,7 +247,7 @@ class CalendarC extends React.Component {
             dateCellRender={this.dateCellRender}
             onSelect={this.selectCellCalendar}
           />
-          {this.detailMetting()}
+          {this.state.renderChild ? this.detailMetting() : null}
         </Col>
       </Row>
     );
