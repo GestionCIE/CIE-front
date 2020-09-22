@@ -49,6 +49,20 @@ class Http {
     });
   }
 
+  delete(uri) {
+    return new Promise((resolve, reject) => {
+      fetch(`${this.URL}/${uri}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => resolve(res))
+        .catch((error) => reject(error));
+    });
+  }
+
   uploadImage(uri) {
     return `${this.URL}/${uri}`;
   }
